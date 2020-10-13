@@ -1,0 +1,22 @@
+{
+  "name": "lynxaudio",
+  "version": "1.0.0",
+  "description": "CPSC 300 Audio Recording Software Engineering Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makemepresident/LynxAudio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/makemepresident/LynxAudio/issues"
+  },
+  "homepage": "https://github.com/makemepresident/LynxAudio#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

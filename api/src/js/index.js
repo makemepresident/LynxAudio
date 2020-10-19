@@ -16,9 +16,21 @@ app.post('/postmemo', (req, res) => {
         host: dbep,
         database: 'lynxdb',
         password: 'Yz7S6nF2h6fgACN',
-        port: port}).connect()
+        port: 5432})
 
-    client.query('INSERT INTO audioclips(id, userid, audiopath, cliplength, filesize) VALUES($1, $2, $3, $4, $5)')
+    client.connect()
+
+    let text = 'INSERT INTO audioclips(id, userid, audiopath, cliplength, filesize) VALUES($1, $2, $3, $4, $5)'
+    let values = [1, 2, 'testing', 1, 1]
+    client.query(text, values, (err, res) => {
+                    if(err) {
+                        log('unable to post')
+                        log(err)
+                    } else {
+                        log('success')
+                    }
+                client.end()
+                })
 })
 
 // Post login

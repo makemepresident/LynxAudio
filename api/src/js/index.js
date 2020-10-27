@@ -16,6 +16,11 @@ function construct_client() {
     return client
 }
 
+/**
+ * {
+ *  "id": 
+ * }
+ */
 app.post('/postmemo', (req, res) => {
     let input = req.body
     let client = construct_client()

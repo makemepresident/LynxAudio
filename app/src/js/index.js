@@ -6,11 +6,7 @@ const log = console.log
 
 // Routing
 app.get('/', (req, res) => {
-    try {
-        res.send('hellow world')
-    } catch(e) {
-        log(e)
-    }
+    res.send('henlo')
 })
 
 app.listen(port, () => {

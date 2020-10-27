@@ -6,39 +6,40 @@ const {Client} = require('pg') // Destructuring - equivalent to saying const tt 
 const log = console.log
 app.use(exp.json())
 
-function parseInput(/* input */) {
-    const input = {
-        "id": INT,
-        "userid": INT,
-        "audiobinary": "??",
-        "cliplength": INT,
-        "filesize": INT
+function parseInput(input) {
+    // Make sure all parameters are passed
+    if (input.length != 5) {
+        log("Input length incorrect");
+        return false;
     }
 
-    // Check to make sure all ints are within bounds of db
+    // Check to make sure all values that should be ints are ints
+    if (typeof input.id != "number" ||
+        typeof input.userid != "number" ||
+        typeof input.cliplength != "number" ||
+        typeof input.filesize != "number") {
+            log("Not all values that should be ints are ints. Error");
+            return false;
+    }
+
+    // Checks length of all of the ints to make sure they're within the DB
     if (input.id.length > 6) {
-        log("Escaped bounds of ids");
+        log("Escaped bounds of ids")
+        return false
     }
     if (input.userid.length > 6) {
-        log("Escaped bounds of UserIDs");
+        log("Escaped bounds of UserIDs")
+        return false
     }
-    if (input.cliplength > 5000) {
-        log("Cliplength too long to store!");
+    if (input.cliplength.length > 5000) {
+        log("Cliplength too long to store!")
+        return false
     }
     if (input.filezize.length > 2) {
-        log("Escaped bounds of filesize");
+        log("Escaped bounds of filesize")
+        return false
     }
-
-    // Parse the input as integers
-    try {
-        input.id = parseInt(input.id);
-        input.userid = parseInt(input.userid);
-        input.cliplength = parseInt(input.cliplength);
-        input.filesize = parseInt(input.filesize);
-    } catch (e) {
-        log("Unable to parse id, userid, cliplength, and/or filesize as integers");
-    }
-    return input;
+    return true
 }
 
 function construct_client() {
@@ -53,6 +54,8 @@ function construct_client() {
 
 app.post('/postmemo', (req, res) => {
     let input = req.body
+    if (parseInput(input) != true)
+        return
     let client = construct_client()
     client.connect()
     let values = []

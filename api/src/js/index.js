@@ -16,7 +16,8 @@ function construct_client() {
     return client
 }
 
-function db_insertAudioClip(input) {
+app.post('/postmemo', (req, res) => {
+    let input = req.body
     let client = construct_client()
     client.connect()
     let values = []
@@ -35,14 +36,8 @@ function db_insertAudioClip(input) {
         log('Success')
         client.end()
     })
-}
-
-app.post('/postmemo', (req, res) => {
-    db_insertAudioClip(req.body);
     res.send('Success')
 })
-
-// Post voicememo 
 
 // Post login
 

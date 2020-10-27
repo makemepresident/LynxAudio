@@ -6,6 +6,41 @@ const {Client} = require('pg') // Destructuring - equivalent to saying const tt 
 const log = console.log
 app.use(exp.json())
 
+function parseInput(/* input */) {
+    const input = {
+        "id": INT,
+        "userid": INT,
+        "audiobinary": "??",
+        "cliplength": INT,
+        "filesize": INT
+    }
+
+    // Check to make sure all ints are within bounds of db
+    if (input.id.length > 6) {
+        log("Escaped bounds of ids");
+    }
+    if (input.userid.length > 6) {
+        log("Escaped bounds of UserIDs");
+    }
+    if (input.cliplength > 5000) {
+        log("Cliplength too long to store!");
+    }
+    if (input.filezize.length > 2) {
+        log("Escaped bounds of filesize");
+    }
+
+    // Parse the input as integers
+    try {
+        input.id = parseInt(input.id);
+        input.userid = parseInt(input.userid);
+        input.cliplength = parseInt(input.cliplength);
+        input.filesize = parseInt(input.filesize);
+    } catch (e) {
+        log("Unable to parse id, userid, cliplength, and/or filesize as integers");
+    }
+    return input;
+}
+
 function construct_client() {
     let client = new Client({
         user: 'postgres',

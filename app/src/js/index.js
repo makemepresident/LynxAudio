@@ -6,9 +6,12 @@ const log = console.log
 
 // Routing
 app.get('/', (req, res) => {
-    res.send('henlo')
+    res.send('main page sending request')
+    // responsible for serving index.html (entry function)
 })
 
+
+
 app.listen(port, () => {
-    log("server is running :)")
+    log("Webapp is running")
 })

@@ -8,16 +8,6 @@ const log = console.log
 log(path.join(__dirname, '../public'))
 app.use(exp.static(path.join(__dirname, '../public')))
 
-// Routing
-// app.get('/', (req, res) => {
-//     // responsible for serving index.html (entry function)
-//     try {
-//         res.sendFile('/index.html')
-//     } catch(err) {
-//         log(err)
-//     }
-// })
-
 app.listen(port, () => {
     log("Webapp is running")
 })

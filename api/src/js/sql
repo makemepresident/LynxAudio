@@ -1,9 +1,10 @@
 CREATE TABLE IF NOT EXISTS audio_clips (
-    id INTEGER,
+    id SERIAL,
     userid INTEGER,
     audiobinary BYTEA,
     cliplength SMALLINT,
     filesize SMALLINT,
+    url_hash VARCHAR(10),
     PRIMARY KEY (ID) SERIAL
 );
 

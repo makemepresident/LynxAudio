@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CPSC 300 Audio Recording Software Engineering Project",
   "main": "index.js",
+  "module": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,12 +18,17 @@
   },
   "homepage": "https://github.com/makemepresident/LynxAudio#readme",
   "dependencies": {
+    "blob": "^0.1.0",
     "body-parser": "^1.19.0",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
+    "formidable": "^1.2.2",
     "node-audiorecorder": "^2.2.0",
+    "node-blob": "0.0.2",
     "pg": "^8.4.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "web-audio-recorder-js": "0.0.2"
-  }
+  },
+  "devDependencies": {}
 }

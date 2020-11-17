@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS audio_clips (
     audiobinary BYTEA,
     cliplength SMALLINT,
     filesize SMALLINT,
-    PRIMARY KEY (ID)
+    PRIMARY KEY (ID) SERIAL
 );
 
 CREATE TABLE IF NOT EXISTS users (

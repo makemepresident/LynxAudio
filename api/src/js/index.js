@@ -26,6 +26,7 @@ app.post('/postmemo', (req, res) => {
             console.debug(err)
             return
         }
+        // console.log(fields)
         // Construct values [userid, blob, length, filesize, unique hash]
         // From FormData, grab login information and assign accordinly, otherwise null
         audio_data = new Blob([files.blob], {type: 'audio/wav'})

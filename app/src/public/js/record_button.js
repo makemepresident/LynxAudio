@@ -6,16 +6,19 @@ class Record_Button extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { liked: false }
   }
 
   render() {
-
-    return e(
-      'button',
-      { onClick: () => this.setState({ liked: true }) },
-      'Record'
+    return (
+      <div>
+        <button onClick={this.start}>Record</button>
+        <button onClick={this.stop}>Stop Recording</button>
+      </div>
     )
+  }
+
+  start = () => {
+    
   }
 }
 

@@ -26,18 +26,13 @@ app.post('/postmemo', (req, res) => {
             console.debug(err)
             return
         }
+        // console.log(fields)
         // Construct values [userid, blob, length, filesize, unique hash]
         // From FormData, grab login information and assign accordinly, otherwise null
         audio_data = new Blob([files.blob], {type: 'audio/wav'})
-        let unique_hash = null
-        crypto.randomBytes(10, (err, buff) => {
-            if(err)
-                return
-            console.log(buff.toString('utf-8'))
-            unique_hash = buff.toString('utf-8')
-        });
-        console.log(unique_hash)
-        let input = [null, audio_data, files.duration, audio_data.size, unique_hash]
+        let unique_hash = crypto.randomBytes(5)
+        let input = [null, audio_data, parseInt(fields.duration), audio_data.size, unique_hash.toString('hex')]
+        console.log(input)
         let client = construct_client()
         client.connect()
         let text = 'INSERT INTO audio_clips(userid, audiobinary, cliplength, filesize, url_hash) VALUES($1, $2, $3, $4, $5)'
@@ -55,21 +50,19 @@ app.post('/postmemo', (req, res) => {
     res.send(null)
 })
 
-app.get('/dbreq', (req, res) => {
-    const form = new formidable.IncomingForm();
-    form.parse(req, (err, fields, files) => {
+app.get('/dbreq/:unique_hash', (req, res) => {
+    let client = construct_client()
+    client.connect()
+    let text = 'SELECT * FROM audio_clips WHERE audio_clips.url_hash = $1'
+    client.query(text, [req.params.unique_hash], (err, res) => {
+        // res contains database information
         if(err) {
-            console.debug(err)
+            console.log(err)
             return
         }
-        let client = construct_client()
-        client.connect()
-        let text = 'SELECT * FROM audio_clips(userid, audiobinary, cliplength, filesize, url_hash) WHERE audio_clips.url_hash = $1'
-        client.query(text, [files.url_hash], (err, res) => {
-            // res contains database information
-            console.log(res)
-        })
+        console.log(res.rows)
     })
+    res.send(null)
 })
 
 app.listen(port, () => {

@@ -19,6 +19,23 @@ function construct_client() {
     return client
 }
 
+app.post('/loginreq', (req, res) => {
+    const form = new formidable.IncomingForm();
+    form.parse(req, (err, fields, files) => {
+        if (err) {
+            console.debug(err)
+            return
+        }
+        console.log(fields)
+        console.log(files)
+
+        let client = construct_client()
+        client.connect()
+        console.log("Connection successful")
+    })
+    res.send(null)
+})
+
 app.post('/postmemo', (req, res) => {
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {

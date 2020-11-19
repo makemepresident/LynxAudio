@@ -3,10 +3,11 @@ const path = require('path')
 const axios = require('axios').default
 const fetch = require('node-fetch')
 const formidable = require('formidable')
-const parser = require('body-parser')
+const multer = require('multer')
 // const derby = require('derby')
 // const app = derby.createApp()
 const app = exp()
+const mult = multer()
 const api_host = "http://localhost:80"
 const port = 8080
 const log = console.log
@@ -14,9 +15,9 @@ const log = console.log
 log(path.join(__dirname, '../public'))
 app.use(exp.static(path.join(__dirname, '../public')))
 
-app.use(parser.json())
-app.use(parser.urlencoded())
+app.use(exp.json())
 
+app.use(mult.array())
 
 app.listen(port, () => {
     log("Webapp is running")
@@ -46,11 +47,7 @@ app.get('/:url_hash', (req, res) => {
 })
 
 app.post('/memoreq', (req, res) => {
-    const form = formidable.IncomingForm()
-    form.parse(req, (err, fields, files) => {
-        res.json({ fields, files })
-    })
-    log(userjson)
+    log(req.body)
     /*fetch(api_host + '/postmemo', {
         method: 'POST',
         mode: 'no-cors',
@@ -60,5 +57,11 @@ app.post('/memoreq', (req, res) => {
             'Content-Type': 'application/json'
         }
     })*/
+    res.send(null)
+})
+
+app.post('/loginreq', (req, res) => {
+    // IT FUCKING WORKS
+    log(req.body)
     res.send(null)
 })

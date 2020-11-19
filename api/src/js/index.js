@@ -19,7 +19,7 @@ function construct_client() {
     return client
 }
 
-app.post('/loginreq', (req, res) => {
+app.post('/postlogin', (req, res) => {
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields) => {
         if (err) {

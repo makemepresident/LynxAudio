@@ -1,7 +1,7 @@
 const exp = require('express')
 const crypto = require('crypto')
 const app = exp()
-const port = 80
+const port = 90 // CHANGE BACK TO 80
 const {Client} = require('pg') // Destructuring - equivalent to saying const tt = require('pg') and tt.Client
 const formidable = require('formidable')
 const Blob = require('node-blob')
@@ -21,17 +21,31 @@ function construct_client() {
 
 app.post('/loginreq', (req, res) => {
     const form = new formidable.IncomingForm();
-    form.parse(req, (err, fields, files) => {
+    form.parse(req, (err, fields) => {
         if (err) {
             console.debug(err)
             return
         }
-        console.log(fields)
-        console.log(files)
-
+        // Send queury to DB to find user by username
         let client = construct_client()
         client.connect()
-        console.log("Connection successful")
+        let input = [fields.username]
+        let text = 'SELECT username, password FROM users WHERE username=$1'
+        client.query(text, input, (err, res) => {
+            if (err)  {
+                log('Query unsuccessful')
+                log(err)
+                return
+            } else {
+                log("Query success")
+                if (crypto.createHash('sha256').update(fields.password).digest('hex') == res.rows[0].password) {
+                    log("user verified")
+                    // Implement user sign-on garbage here (cookies or whatever)
+                }
+            }
+            client.end()
+        })
+
     })
     res.send(null)
 })

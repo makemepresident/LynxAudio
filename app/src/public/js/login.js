@@ -1,9 +1,9 @@
 const loginbutton = document.getElementById("login")
-const login_path = 'http://localhost:80/loginreq'
+const login_path = 'http://localhost:90/loginreq' // CHANGE BACK TO 80
 
 loginbutton.onclick = () => {
-    let username = document.getElementById("username")
-    let password = document.getElementById("password")
+    let username = document.getElementById("username").value
+    let password = document.getElementById("password").value
 
     login(username, password);
 }

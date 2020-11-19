@@ -19,6 +19,37 @@ function construct_client() {
     return client
 }
 
+app.post('/loginreq', (req, res) => {
+    const form = new formidable.IncomingForm();
+    form.parse(req, (err, fields) => {
+        if (err) {
+            console.debug(err)
+            return
+        }
+        // Send queury to DB to find user by username
+        let client = construct_client()
+        client.connect()
+        let input = [fields.username]
+        let text = 'SELECT username, password FROM users WHERE username=$1'
+        client.query(text, input, (err, res) => {
+            if (err)  {
+                log('Query unsuccessful')
+                log(err)
+                return
+            } else {
+                log("Query success")
+                if (crypto.createHash('sha256').update(fields.password).digest('hex') == res.rows[0].password) {
+                    log("user verified")
+                    // Implement user sign-on garbage here (cookies or whatever)
+                }
+            }
+            client.end()
+        })
+
+    })
+    res.send(null)
+})
+
 app.post('/postmemo', (req, res) => {
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {

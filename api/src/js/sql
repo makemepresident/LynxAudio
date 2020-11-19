@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS audio_clips (
 
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER,
-    username VARCHAR(20),
+    username CHAR(64),
     "password" VARCHAR(30),
     "first" VARCHAR(12),
     "last" VARCHAR(12),

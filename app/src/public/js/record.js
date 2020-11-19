@@ -2,7 +2,7 @@ const cont = new AudioContext()
 const sourceNode = new AudioBufferSourceNode(cont)
 const recorder = new WebAudioRecorder(sourceNode, {workerDir: '../js/lib/'})
 const limit = 5000 // 5s record limit
-const api_path = 'http://localhost:80/postmemo'
+const app_path = 'http://localhost:8080/memoreq'
 
 let hasMicrophone = false
 let start = null
@@ -40,10 +40,10 @@ async function postMemo(blob) {
     let fd = new FormData()
     fd.append('blob', blob)
     fd.append('duration', end - start)
-    await fetch(api_path, {
+    await fetch(app_path, {
         method: 'POST',
         mode: 'no-cors',
         cache: 'no-cache',
-        body: fd
+        body: fd,
     })
 }

@@ -28,7 +28,7 @@
     "node-audiorecorder": "^2.2.0",
     "node-blob": "0.0.2",
     "node-fetch": "^2.6.1",
-    "pg": "^8.4.1",
+    "pg": "^8.5.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "web-audio-recorder-js": "0.0.2"

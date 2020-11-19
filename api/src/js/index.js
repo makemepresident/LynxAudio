@@ -1,7 +1,7 @@
 const exp = require('express')
 const crypto = require('crypto')
 const app = exp()
-const port = 90 // CHANGE BACK TO 80
+const port = 80
 const {Client} = require('pg') // Destructuring - equivalent to saying const tt = require('pg') and tt.Client
 const formidable = require('formidable')
 const Blob = require('node-blob')

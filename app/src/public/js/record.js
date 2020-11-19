@@ -2,7 +2,7 @@ const cont = new AudioContext()
 const sourceNode = new AudioBufferSourceNode(cont)
 const recorder = new WebAudioRecorder(sourceNode, {workerDir: '../js/lib/'})
 const limit = 5000 // 5s record limit
-const api_path = 'http://localhost:90/postmemo' // CHANGE BACK to 80!
+const api_path = 'http://localhost:80/postmemo'
 
 let hasMicrophone = false
 let start = null

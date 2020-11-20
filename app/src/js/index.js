@@ -1,8 +1,10 @@
 const exp = require('express')
 const path = require('path')
-const axios = require('axios').default
 const fetch = require('node-fetch')
 const formidable = require('formidable')
+const Blob = require('node-blob')
+const { resolve } = require('path')
+const { Console } = require('console')
 const app = exp()
 const api_host = "http://localhost:80"
 const port = 8080
@@ -20,21 +22,19 @@ app.get('/:url_hash', (req, res) => {
     // extract url hash
     // make request to REST API to see if hash exists within database
     // if so, serve page with mediaplayer for extracted binary data
-    console.log(req.params)
+    if (req.params.url_hash == 'favicon.ico') {
+        return;
+    }
     fetch(api_host + '/dbreq/' + req.params.url_hash, {
         method: 'GET',
         mode: 'no-cors',
         cache: 'no-cache',
+    }).then((res) => {
+        return res.json()
+    }).then((json) => {
+        let blob = new Blob([json], {type: 'audio/wav'})
+        // Soomehow get blob data to element?
     })
-
-    // axios({
-    //     method: 'POST',
-    //     url: api_host + '/dbreq/' + req.params.url_hash
-    // }).then((res) => {
-    //     console.log(res)
-    // }).catch((err) => {
-    //     console.log(err)
-    // })
     res.send(null)
 })
 

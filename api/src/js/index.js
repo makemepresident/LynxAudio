@@ -5,8 +5,8 @@ const port = 80
 const {Client} = require('pg') // Destructuring - equivalent to saying const tt = require('pg') and tt.Client
 const formidable = require('formidable')
 const Blob = require('node-blob')
-const { SSL_OP_TLS_BLOCK_PADDING_BUG } = require('constants')
 const log = console.debug
+
 app.use(exp.json())
 
 function construct_client() {
@@ -42,38 +42,12 @@ app.post('/postlogin', (req, res) => {
         }
         client.end()
     })
-
-    /*form.parse(req, (err, fields) => {
-        if (err) {
-            console.debug(err)
-            return
-        }
-        // Send queury to DB to find user by username
-        let client = construct_client()
-        client.connect()
-        let input = [fields.username]
-        let text = 'SELECT username, password FROM users WHERE username=$1'
-        client.query(text, input, (err, res) => {
-            if (err)  {
-                log('Query unsuccessful')
-                log(err)
-                return
-            } else {
-                log("Query success")
-                if (crypto.createHash('sha256').update(fields.password).digest('hex') == res.rows[0].password) {
-                    log("user verified")
-                    // Implement user sign-on garbage here (cookies or whatever)
-                }
-            }
-            client.end()
-        })
-
-    })*/
     res.send(null)
 })
 
 app.post('/postmemo', (req, res) => {
     audio_data = new Blob([req.body.blob], {type: 'audio/wav'})
+    console.log(audio_data)
     let unique_hash = crypto.randomBytes(5)
     let input = [null, audio_data, parseInt(req.body.duration), audio_data.size, unique_hash.toString('hex')]
 
@@ -83,30 +57,35 @@ app.post('/postmemo', (req, res) => {
     client.query(text, input, (err, res) => {
         if (err) {
             log('Query unsuccessful - ')
-                log(err)
-                return
-            } else {
-                log('Query Success')
-            }
-            client.end()
+            log(err)
+            return
+        } else {
+            log('Query Success')
+        }
+        client.end()
     })
     res.send(null)
 })
 
 app.get('/dbreq/:unique_hash', (req, res) => {
+    let that = res
+    let audiobinary = null
     let client = construct_client()
     client.connect()
-    let text = 'SELECT * FROM audio_clips WHERE audio_clips.url_hash = $1'
-    client.query(text, [req.params.unique_hash], (err, res) => {
-        // res contains database information
+    let text = 'SELECT audiobinary FROM audio_clips WHERE url_hash = $1'
+    let input = [req.params.unique_hash]
+    client.query(text, input, (err, res) => {
         if(err) {
+            log('Query unsuccessful - ')
             console.log(err)
             return
+        } else {
+            log("Query successful")
+            audiobinary = new Blob([res.rows[0]], {type: 'audio/wav'})
         }
-        // res.rows will contain the extracted db information
-        // console.log(res.rows)
+        client.end()
+        that.send(JSON.stringify(audiobinary))
     })
-    res.send(null)
 })
 
 app.listen(port, () => {

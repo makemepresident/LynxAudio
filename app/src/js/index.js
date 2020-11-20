@@ -11,8 +11,6 @@ const log = console.log
 log(path.join(__dirname, '../public'))
 app.use(exp.static(path.join(__dirname, '../public')))
 
-app.use(exp.json())
-
 app.listen(port, () => {
     log("Webapp is running")
 })
@@ -43,13 +41,12 @@ app.get('/:url_hash', (req, res) => {
 app.post('/memoreq', (req, res) => {
     let incoming = formidable.IncomingForm()
     incoming.parse(req, (err, fields, files) => {
-        var totalfields = {}
+        var json = {}
         if (err) {
-            console.debug(err)
+            log(err)
         }
-        console.log(fields)
-        totalfields["duration"] = fields.duration
-        totalfields["blob"] = files.blob
+        json["duration"] = fields.duration
+        json["blob"] = files.blob
 
         fetch(api_host + '/postmemo', {
             method: 'POST',
@@ -58,14 +55,31 @@ app.post('/memoreq', (req, res) => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(totalfields)
+            body: JSON.stringify(json)
         })
     })
     res.send(null)
 })
 
 app.post('/loginreq', (req, res) => {
-    // IT FUCKING WORKS
-    log(req.body)
+    let incoming = formidable.IncomingForm()
+    incoming.parse(req, (err, fields) =>  {
+        let json = {}
+        if (err) {
+            log(err)
+        }
+        json["username"] = fields.username
+        json["password"] = fields.password
+
+        fetch(api_host + '/postlogin', {
+            method: 'POST',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(json)
+        })
+    })
     res.send(null)
 })

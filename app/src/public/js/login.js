@@ -8,13 +8,13 @@ loginbutton.onclick = () => {
 }
 
 async function login(username, password) {
-    var jsondata = {"username": username, "password": password}
+    let ld = new FormData()
+    ld.append('username', username)
+    ld.append('password', password)
     await fetch(login_path, {
         method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
+        mode: 'no-cors',
         cache: 'no-cache',
-        body: JSON.stringify(jsondata)
+        body: ld
     })
 }

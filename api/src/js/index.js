@@ -21,8 +21,29 @@ function construct_client() {
 }
 
 app.post('/postlogin', (req, res) => {
-    const form = new formidable.IncomingForm();
-    form.parse(req, (err, fields) => {
+    let username = req.body.username
+    let password = req.body.password
+
+    let client = construct_client()
+    client.connect()
+    let input = [username]
+    let text = 'SELECT username, password FROM users WHERE username=$1'
+    client.query(text, input, (err, res) => {
+        if (err)  {
+            log('Query unsuccessful')
+            log(err)
+            return
+        } else {
+            log("Query success")
+            if (crypto.createHash('sha256').update(password).digest('hex') == res.rows[0].password) {
+                log("user verified")
+                // Implement user sign-on garbage here (cookies or whatever)
+            }
+        }
+        client.end()
+    })
+
+    /*form.parse(req, (err, fields) => {
         if (err) {
             console.debug(err)
             return
@@ -47,7 +68,7 @@ app.post('/postlogin', (req, res) => {
             client.end()
         })
 
-    })
+    })*/
     res.send(null)
 })
 
@@ -55,7 +76,7 @@ app.post('/postmemo', (req, res) => {
     audio_data = new Blob([req.body.blob], {type: 'audio/wav'})
     let unique_hash = crypto.randomBytes(5)
     let input = [null, audio_data, parseInt(req.body.duration), audio_data.size, unique_hash.toString('hex')]
-    
+
     let client = construct_client()
     client.connect()
     let text = 'INSERT INTO audio_clips(userid, audiobinary, cliplength, filesize, url_hash) VALUES($1, $2, $3, $4, $5)'

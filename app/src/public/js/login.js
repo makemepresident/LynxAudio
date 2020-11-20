@@ -1,5 +1,5 @@
 const loginbutton = document.getElementById("login")
-const login_path = 'http://localhost:80/loginreq'
+const login_path = 'http://localhost:8080/loginreq'
 
 loginbutton.onclick = () => {
     let username = document.getElementById("username").value
@@ -8,9 +8,9 @@ loginbutton.onclick = () => {
 }
 
 async function login(username, password) {
-    let ld = new FormData();
-    ld.append('username', username);
-    ld.append('password', password);
+    let ld = new FormData()
+    ld.append('username', username)
+    ld.append('password', password)
     await fetch(login_path, {
         method: 'POST',
         mode: 'no-cors',

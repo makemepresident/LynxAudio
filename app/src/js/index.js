@@ -3,11 +3,7 @@ const path = require('path')
 const axios = require('axios').default
 const fetch = require('node-fetch')
 const formidable = require('formidable')
-const multer = require('multer')
-// const derby = require('derby')
-// const app = derby.createApp()
 const app = exp()
-const mult = multer()
 const api_host = "http://localhost:80"
 const port = 8080
 const log = console.log
@@ -16,8 +12,6 @@ log(path.join(__dirname, '../public'))
 app.use(exp.static(path.join(__dirname, '../public')))
 
 app.use(exp.json())
-
-app.use(mult.array())
 
 app.listen(port, () => {
     log("Webapp is running")
@@ -47,16 +41,26 @@ app.get('/:url_hash', (req, res) => {
 })
 
 app.post('/memoreq', (req, res) => {
-    log(req.body)
-    /*fetch(api_host + '/postmemo', {
-        method: 'POST',
-        mode: 'no-cors',
-        cache: 'no-cache',
-        body: form,
-        headers: {
-            'Content-Type': 'application/json'
+    let incoming = formidable.IncomingForm()
+    incoming.parse(req, (err, fields, files) => {
+        var totalfields = {}
+        if (err) {
+            console.debug(err)
         }
-    })*/
+        console.log(fields)
+        totalfields["duration"] = fields.duration
+        totalfields["blob"] = files.blob
+
+        fetch(api_host + '/postmemo', {
+            method: 'POST',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(totalfields)
+        })
+    })
     res.send(null)
 })
 

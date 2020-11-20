@@ -5,6 +5,7 @@ const port = 80
 const {Client} = require('pg') // Destructuring - equivalent to saying const tt = require('pg') and tt.Client
 const formidable = require('formidable')
 const Blob = require('node-blob')
+const { SSL_OP_TLS_BLOCK_PADDING_BUG } = require('constants')
 const log = console.debug
 app.use(exp.json())
 
@@ -51,31 +52,22 @@ app.post('/postlogin', (req, res) => {
 })
 
 app.post('/postmemo', (req, res) => {
-    const form = new formidable.IncomingForm();
-    form.parse(req, (err, fields, files) => {
-        if(err) {
-            console.debug(err)
-            return
-        }
-        // console.log(fields)
-        // Construct values [userid, blob, length, filesize, unique hash]
-        // From FormData, grab login information and assign accordinly, otherwise null
-        audio_data = new Blob([files.blob], {type: 'audio/wav'})
-        let unique_hash = crypto.randomBytes(5)
-        let input = [null, audio_data, parseInt(fields.duration), audio_data.size, unique_hash.toString('hex')]
-        let client = construct_client()
-        client.connect()
-        let text = 'INSERT INTO audio_clips(userid, audiobinary, cliplength, filesize, url_hash) VALUES($1, $2, $3, $4, $5)'
-        client.query(text, input, (err, res) => {
-            if(err) {
-                log('Query unsuccessful - ')
+    audio_data = new Blob([req.body.blob], {type: 'audio/wav'})
+    let unique_hash = crypto.randomBytes(5)
+    let input = [null, audio_data, parseInt(req.body.duration), audio_data.size, unique_hash.toString('hex')]
+    
+    let client = construct_client()
+    client.connect()
+    let text = 'INSERT INTO audio_clips(userid, audiobinary, cliplength, filesize, url_hash) VALUES($1, $2, $3, $4, $5)'
+    client.query(text, input, (err, res) => {
+        if (err) {
+            log('Query unsuccessful - ')
                 log(err)
                 return
             } else {
                 log('Query Success')
             }
             client.end()
-        })
     })
     res.send(null)
 })

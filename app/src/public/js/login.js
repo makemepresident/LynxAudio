@@ -14,7 +14,6 @@ async function login(username, password) {
         headers: {
             "Content-Type": "application/json"
         },
-        //mode: 'no-cors',
         cache: 'no-cache',
         body: JSON.stringify(jsondata)
     })

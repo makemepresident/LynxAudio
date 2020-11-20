@@ -42,8 +42,8 @@ async function postMemo(blob) {
     fd.append('duration', end - start)
     await fetch(app_path, {
         method: 'POST',
-        //mode: 'no-cors',
+        mode: 'no-cors',
         cache: 'no-cache',
-        body: fd,
+        body: fd
     })
 }

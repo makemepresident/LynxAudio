@@ -3,6 +3,8 @@ const path = require('path')
 const fetch = require('node-fetch')
 const formidable = require('formidable')
 const Blob = require('node-blob')
+const multer = require('multer')
+const upload = multer({dest: '../../../uploads/'})
 const app = exp()
 const api_host = "http://localhost:80"
 const port = 8080
@@ -37,8 +39,22 @@ app.get('/:url_hash', (req, res) => {
     })
 })
 
-app.post('/memoreq', (req, res) => {
-    let incoming = formidable.IncomingForm()
+app.post('/memoreq', upload.single('blob'), (req, res) => {
+    var json = {}
+    json["filename"] = req.file.filename + "." + req.body.encoding
+    json["filesize"] = req.file.size
+    json["duration"] = req.body.duration
+    log(JSON.stringify(json))
+    /*fetch(api_host + '/postmemo', {
+        method: 'POST',
+        mode: 'no-cors',
+        cache: 'no-cache',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(json)
+    })*/
+    /*let incoming = formidable.IncomingForm()
     incoming.parse(req, (err, fields, files) => {
         var json = {}
         if (err) {
@@ -46,9 +62,10 @@ app.post('/memoreq', (req, res) => {
         }
         json["duration"] = fields.duration
         json["url"] = fields.url
-        json["blob"] = files.blob
+        files.blob.mv('./uploads/' + "test")
+        //json["blob"] = files.blob
 
-        fetch(api_host + '/postmemo', {
+        /*fetch(api_host + '/postmemo', {
             method: 'POST',
             mode: 'no-cors',
             cache: 'no-cache',
@@ -57,7 +74,7 @@ app.post('/memoreq', (req, res) => {
             },
             body: JSON.stringify(json)
         })
-    })
+    })*/
     res.send(null)
 })
 

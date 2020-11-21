@@ -46,15 +46,13 @@ app.post('/postlogin', (req, res) => {
 })
 
 app.post('/postmemo', (req, res) => {
-    audio_data = new Blob([req.body.blob], {type: 'audio/wav'})
-    console.log(audio_data)
     let unique_hash = crypto.randomBytes(5)
-    let input = [null, audio_data, parseInt(req.body.duration), audio_data.size, unique_hash.toString('hex')]
-
-    let client = construct_client()
-    client.connect()
+    //let input = [null, req.filename, parseInt(req.body.duration), req.body., unique_hash.toString('hex')]
+    console.log(input)
+    //let client = construct_client()
+    //client.connect()
     let text = 'INSERT INTO audio_clips(userid, audiobinary, cliplength, filesize, url_hash) VALUES($1, $2, $3, $4, $5)'
-    client.query(text, input, (err, res) => {
+    /*client.query(text, input, (err, res) => {
         if (err) {
             log('Query unsuccessful - ')
             log(err)
@@ -63,7 +61,7 @@ app.post('/postmemo', (req, res) => {
             log('Query Success')
         }
         client.end()
-    })
+    })*/
     res.send(null)
 })
 

@@ -4,7 +4,7 @@ const fetch = require('node-fetch')
 const formidable = require('formidable')
 const Blob = require('node-blob')
 const multer = require('multer')
-const upload = multer({dest: '../../../uploads/'})
+const upload = multer({dest: '../public/uploads/'})
 const app = exp()
 const api_host = "http://localhost:80"
 const port = 8080
@@ -20,7 +20,11 @@ app.listen(port, () => {
     log("Webapp is running")
 })
 
-app.get('/:url_hash', (req, res) => {
+app.get('/uploads/:filename', (req, res) => {
+
+})
+
+app.get('/webplayer/:url_hash', (req, res) => {
     // req.params returns object with url hash as string {url_hash: 'henlo}
     // extract url hash
     // make request to REST API to see if hash exists within database
@@ -34,18 +38,18 @@ app.get('/:url_hash', (req, res) => {
         cache: 'no-cache',
     }).then((res) => {
         return res.json()
-    }).then((json) => {
-        res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(json)})
+    }).then((filename) => {
+        filename = path.join("../uploads/", filename)
+        res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(filename)})
     })
 })
 
 app.post('/memoreq', upload.single('blob'), (req, res) => {
     var json = {}
-    json["filename"] = req.file.filename + "." + req.body.encoding
+    json["filename"] = req.file.filename
     json["filesize"] = req.file.size
     json["duration"] = req.body.duration
-    log(JSON.stringify(json))
-    /*fetch(api_host + '/postmemo', {
+    fetch(api_host + '/postmemo', {
         method: 'POST',
         mode: 'no-cors',
         cache: 'no-cache',
@@ -53,7 +57,7 @@ app.post('/memoreq', upload.single('blob'), (req, res) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(json)
-    })*/
+    })
     /*let incoming = formidable.IncomingForm()
     incoming.parse(req, (err, fields, files) => {
         var json = {}

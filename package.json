@@ -35,6 +35,7 @@
     "pug": "^3.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "serve-favicon": "^2.5.0",
     "web-audio-recorder-js": "0.0.2"
   },
   "devDependencies": {}

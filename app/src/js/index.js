@@ -4,6 +4,7 @@ const fetch = require('node-fetch')
 const formidable = require('formidable')
 const Blob = require('node-blob')
 const multer = require('multer')
+const favicon = require('serve-favicon')
 const upload = multer({dest: '../public/uploads/'})
 const app = exp()
 const api_host = "http://localhost:80"
@@ -11,6 +12,7 @@ const port = 8080
 const log = console.log
 
 app.use(exp.static(path.join(__dirname, '../public')))
+app.use(favicon(path.join(__dirname, "../public/favicon.ico")))
 
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "../public"))
@@ -20,18 +22,11 @@ app.listen(port, () => {
     log("Webapp is running")
 })
 
-app.get('/uploads/:filename', (req, res) => {
-
-})
-
 app.get('/webplayer/:url_hash', (req, res) => {
     // req.params returns object with url hash as string {url_hash: 'henlo}
     // extract url hash
     // make request to REST API to see if hash exists within database
     // if so, serve page with mediaplayer for extracted binary data
-    if (req.params.url_hash == 'favicon.ico') {
-        return;
-    }
     fetch(api_host + '/dbreq/' + req.params.url_hash, {
         method: 'GET',
         mode: 'no-cors',

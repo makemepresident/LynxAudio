@@ -3,15 +3,16 @@ const path = require('path')
 const fetch = require('node-fetch')
 const formidable = require('formidable')
 const Blob = require('node-blob')
-const { resolve } = require('path')
-const { Console } = require('console')
 const app = exp()
 const api_host = "http://localhost:80"
 const port = 8080
 const log = console.log
 
-log(path.join(__dirname, '../public'))
 app.use(exp.static(path.join(__dirname, '../public')))
+
+app.set("view engine", "ejs")
+app.set("views", path.join(__dirname, "../public"))
+app.engine('html', require('ejs').renderFile);  
 
 app.listen(port, () => {
     log("Webapp is running")
@@ -32,10 +33,8 @@ app.get('/:url_hash', (req, res) => {
     }).then((res) => {
         return res.json()
     }).then((json) => {
-        let blob = new Blob([json], {type: 'audio/wav'})
-        // Soomehow get blob data to element?
+        res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(json)})
     })
-    res.send(null)
 })
 
 app.post('/memoreq', (req, res) => {
@@ -46,6 +45,7 @@ app.post('/memoreq', (req, res) => {
             log(err)
         }
         json["duration"] = fields.duration
+        json["url"] = fields.url
         json["blob"] = files.blob
 
         fetch(api_host + '/postmemo', {

@@ -46,14 +46,11 @@ app.post('/postlogin', (req, res) => {
 })
 
 app.post('/postmemo', (req, res) => {
-    audio_data = new Blob([req.body.blob], {type: 'audio/wav'})
-    console.log(audio_data)
     let unique_hash = crypto.randomBytes(5)
-    let input = [null, audio_data, parseInt(req.body.duration), audio_data.size, unique_hash.toString('hex')]
-
+    let input = [null, req.body.filename, parseInt(req.body.duration), parseInt(req.body.filesize), unique_hash.toString('hex')]
     let client = construct_client()
     client.connect()
-    let text = 'INSERT INTO audio_clips(userid, audiobinary, cliplength, filesize, url_hash) VALUES($1, $2, $3, $4, $5)'
+    let text = 'INSERT INTO audio_clips(userid, filename, cliplength, filesize, url_hash) VALUES($1, $2, $3, $4, $5)'
     client.query(text, input, (err, res) => {
         if (err) {
             log('Query unsuccessful - ')
@@ -69,22 +66,21 @@ app.post('/postmemo', (req, res) => {
 
 app.get('/dbreq/:unique_hash', (req, res) => {
     let that = res
-    let audiobinary = null
+    let filename = null
     let client = construct_client()
     client.connect()
-    let text = 'SELECT audiobinary FROM audio_clips WHERE url_hash = $1'
+    let text = 'SELECT filename FROM audio_clips WHERE url_hash = $1'
     let input = [req.params.unique_hash]
     client.query(text, input, (err, res) => {
-        if(err) {
+        if(err || res.rows[0] == undefined) {
             log('Query unsuccessful - ')
             console.log(err)
-            return
         } else {
             log("Query successful")
-            audiobinary = new Blob([res.rows[0]], {type: 'audio/wav'})
+            filename = res.rows[0].filename
         }
         client.end()
-        that.send(JSON.stringify(audiobinary))
+        that.send(JSON.stringify(filename))
     })
 })
 

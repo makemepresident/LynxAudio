@@ -60,7 +60,6 @@ recbtn.onclick = () => {
 async function postMemo(blob, encoding) {
     let fd = new FormData()
     fd.append('blob', blob)
-    fd.append('encoding', encoding)
     fd.append('duration', end - start)
     await fetch(app_path, {
         method: 'POST',

@@ -19,14 +19,14 @@
 </div>
 
 <script type="text/javascript">
-  // In here needs to have some valid method of parsing audio and appending to audioplayer
-  // let audiosource = document.getElementById("audiosource")
-  // let audioplayer = document.getElementById("audioplayer")
-  // let something = <%- data %>;
-  // audiosource.src = something.objurl
-  // audioplayer.load()
-  
+  let audiosource = document.getElementById("audiosource")
+  let audioplayer = document.getElementById("audioplayer")
+  let something = <%- data %>
+
+  audiosource.src = something
+  audioplayer.load()
 </script>
+
 </body>
 
 </html>

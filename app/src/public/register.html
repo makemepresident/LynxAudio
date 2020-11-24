@@ -11,23 +11,74 @@
 
 <div id="top">
     <h3 id="error" style="visibility: hidden;"></h1>
-    <a href="index.html">Return to homepage</a>
 </div>
 
 <div id="registerform">
-    <input type="text" id="username" style="border-style: solid" placeholder="Username">
-    <input type="password" id="password" style="border-style: solid" placeholder="Password" >
-    <input type="password" id="verify" style="border-style: solid" placeholder="Verify Password">
-    <input type="text" id="first" style="border-style: solid" placeholder="First Name">
-    <input type="text" id="last" style="border-style: solid" placeholder="Last Name">
-    <input type="email" id="email" style="border-style: solid" placeholder="Email Address">
-
-    <button id="register">Register</button>
+    <table>
+        <tr>
+            <td>
+                <input type="text" id="username" style="border-style: solid" placeholder="Username" name="reginput">
+            </td>
+            <td>
+                <label for="username" id="usernamelabel" name="reglabel"></label>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="password" id="password" style="border-style: solid" placeholder="Password" name="reginput">
+            </td>
+            <td>
+                <label for="password" id="passwordlabel" name="reglabel"></label>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="password" id="verify" style="border-style: solid" placeholder="Verify Password" name="reginput">
+            </td>
+            <td>
+                <label for="verify" id="verifylabel" name="reglabel"></label>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" id="first" style="border-style: solid" placeholder="First Name" name="reginput">
+            </td>
+            <td>
+                <label for="first" id="firstlabel" name="reglabel"></label>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" id="last" style="border-style: solid" placeholder="Last Name" name="reginput">
+            </td>
+            <td>
+                <label for="last" id="lastlabel" name="reglabel"></label>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="email" id="email" style="border-style: solid" placeholder="Email Address" name="reginput">
+            </td>
+            <td>
+                <label for="email" id="emaillabel" name="reglabel"></label>
+                
+            </td>
+        </tr>
+    </table>
+    <div>
+        <button id="register">Register</button>
+    </div>
+    <div>
+        <a href="index.html">Return to homepage</a>
+    </div>
 </div>
 
-<script type="text/javascript" src="./js/register.js">
-    
-</script>
+<script type="text/javascript" src="./js/register.js"></script>
 
 </body>
 

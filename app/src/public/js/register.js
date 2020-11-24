@@ -18,11 +18,11 @@ let validusername = false
 username.onkeyup = () => {
     if (username.value.length > 0) {
         if (username.value.length > 30) {
-            printError("Userame too long!")
+            document.getElementById("usernamelabel").innerHTML = "Username too long!"
             username.style.borderColor = "red"
             validfirst = false
         } else {
-            printError("Username good")
+            document.getElementById("usernamelabel").innerHTML = "Username good"
             username.style.borderColor = "green"
             validfirst = true;
         }
@@ -32,16 +32,16 @@ username.onkeyup = () => {
 first.onkeyup = () => {
     if (first.value.length > 0) {
         if (first.value.length > 30) {
-            printError("First Name too long!")
+            document.getElementById("firstlabel").innerHTML = "First Name too long!"
             first.style.borderColor = "red"
             validfirst = false
         } else {
-            printError("First name good")
+            document.getElementById("firstlabel").innerHTML = "First name good"
             first.style.borderColor = "green"
             validfirst = true;
         }
     } else {
-        printError("First name field empty")
+        document.getElementById("firstlabel").innerHTML = "First name field empty"
         first.style.borderColor = "red"
         validfirst = false;
     }
@@ -50,16 +50,16 @@ first.onkeyup = () => {
 last.onkeyup = () => {
     if (last.value.length > 0) {
         if (last.value.length > 30) {
-            printError("Last Name too long!")
+            document.getElementById("lastlabel").innerHTML = "Last Name too long!"
             last.style.borderColor = "red"
             validlast = false
         } else {
-            printError("Last name good")
+            document.getElementById("lastlabel").innerHTML = "Last name good"
             last.style.borderColor = "green"
             validlast = true;
         }
     } else {
-        printError("Last name field empty")
+        document.getElementById("lastlabel").innerHTML = "Last name field empty"
         last.style.borderColor = "red"
         validlast = false;
     }
@@ -67,11 +67,11 @@ last.onkeyup = () => {
 
 password.onkeyup = () => {
     if (password.value.length < 8) {
-        printError("Password must be greater than or equal to 8 characters")
+        document.getElementById("passwordlabel").innerHTML = "Password must be greater than or equal to 8 characters"
         password.style.borderColor = "red"
         validpass = false
     } else {
-        printError("Password valid")
+        document.getElementById("passwordlabel").innerHTML = "Password valid"
         password.style.borderColor = "green"
         validpass = true
     }
@@ -79,11 +79,11 @@ password.onkeyup = () => {
 
 verify.onkeyup = () => {
     if (password.value != verify.value) {
-        printError("Passwords do not match!")
+        document.getElementById("verifylabel").innerHTML = "Passwords do not match!"
         verify.style.borderColor = "red"
         validverify = false
     } else {
-        printError("Passwords match!")
+        document.getElementById("verifylabel").innerHTML = "Passwords match!"
         verify.style.borderColor = "green"
         validverify = true
     }
@@ -92,14 +92,14 @@ verify.onkeyup = () => {
 email.onkeyup = () => {
     if (!email.value.includes("@")) {
         if (email.value.length > 50) {
-            printError("Email address too long")
+            document.getElementById("emaillabel").innerHTML = "Email address too long"
         } else {
-            printError("Email address invalid")
+            document.getElementById("emaillabel").innerHTML = "Email address invalid"
         }
         email.style.borderColor = "red"
         validemail = false
     } else {
-        printError("Email valid!")
+        document.getElementById("emaillabel").innerHTML = "Email valid!"
         email.style.borderColor = "green"
         validemail = true
     }
@@ -110,7 +110,7 @@ register.onclick = () => {
         register.disabled = true
         postRegister()
     } else {
-        printError("Please fill all of the forms!")
+        printError("Please fill all of the forms accurately!")
     }
 }
 
@@ -140,7 +140,7 @@ async function postRegister() {
             // Set user cookie with userid
             window.location.href = "./index.html"
         } else if (result == "false") {
-            printError("Username has already been taken.")
+            document.getElementById("usernamelabel").innerHTML = "Username has already been taken."
             username.style.borderColor = "red"
         }
     })

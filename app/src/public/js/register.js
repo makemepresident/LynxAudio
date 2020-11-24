@@ -13,52 +13,94 @@ let validverify = false
 let validemail = false
 let validfirst = false
 let falidlast = false
+let validusername = false
+
+username.onkeyup = () => {
+    if (username.value.length > 0) {
+        if (username.value.length > 30) {
+            printError("Userame too long!")
+            username.style.borderColor = "red"
+            validfirst = false
+        } else {
+            printError("Username good")
+            username.style.borderColor = "green"
+            validfirst = true;
+        }
+    }
+}
 
 first.onkeyup = () => {
     if (first.value.length > 0) {
-        validfirst = true;
+        if (first.value.length > 30) {
+            printError("First Name too long!")
+            first.style.borderColor = "red"
+            validfirst = false
+        } else {
+            printError("First name good")
+            first.style.borderColor = "green"
+            validfirst = true;
+        }
     } else {
+        printError("First name field empty")
+        first.style.borderColor = "red"
         validfirst = false;
     }
 }
 
 last.onkeyup = () => {
-    if (first.value.length > 0) {
-        validlast = true;
+    if (last.value.length > 0) {
+        if (last.value.length > 30) {
+            printError("Last Name too long!")
+            last.style.borderColor = "red"
+            validlast = false
+        } else {
+            printError("Last name good")
+            last.style.borderColor = "green"
+            validlast = true;
+        }
     } else {
+        printError("Last name field empty")
+        last.style.borderColor = "red"
         validlast = false;
     }
 }
 
 password.onkeyup = () => {
     if (password.value.length < 8) {
-        error.style = "visibility: visible"
-        error.innerHTML = "Password must be greater than or equal to 8 characters"
+        printError("Password must be greater than or equal to 8 characters")
+        password.style.borderColor = "red"
         validpass = false
     } else {
-        error.innerHTML = "Password valid"
+        printError("Password valid")
+        password.style.borderColor = "green"
         validpass = true
     }
 }
 
 verify.onkeyup = () => {
     if (password.value != verify.value) {
-        error.style = "visibility: visible"
-        error.innerHTML = "Passwords do not match!"
+        printError("Passwords do not match!")
+        verify.style.borderColor = "red"
         validverify = false
     } else {
-        error.innerHTML = "Passwords match!"
+        printError("Passwords match!")
+        verify.style.borderColor = "green"
         validverify = true
     }
 }
 
 email.onkeyup = () => {
     if (!email.value.includes("@")) {
-        error.style = "visibility: visible"
-        error.innerHTML = "Email address invalid"
+        if (email.value.length > 50) {
+            printError("Email address too long")
+        } else {
+            printError("Email address invalid")
+        }
+        email.style.borderColor = "red"
         validemail = false
     } else {
-        error.innerHTML = "Email valid!"
+        printError("Email valid!")
+        email.style.borderColor = "green"
         validemail = true
     }
 }
@@ -68,9 +110,13 @@ register.onclick = () => {
         register.disabled = true
         postRegister()
     } else {
-        error.style = "visibility: visible"
-        error.innerHTML = "Please fill all of the forms!"
+        printError("Please fill all of the forms!")
     }
+}
+
+function printError(errorMsg) {
+    error.style = "visibility: visible"
+    error.innerHTML = errorMsg
 }
 
 async function postRegister() {
@@ -89,10 +135,13 @@ async function postRegister() {
     }).then((res) => {
         return res.text()
     }).then((result) => {
+        console.log(result)
         if (result == "true") {
-            window.location.href("./index.html")
+            // Set user cookie with userid
+            window.location.href = "./index.html"
         } else if (result == "false") {
-            // Username already exists
+            printError("Username has already been taken.")
+            username.style.borderColor = "red"
         }
     })
 }

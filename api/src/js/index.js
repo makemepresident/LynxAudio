@@ -49,6 +49,7 @@ app.post('/postlogin', (req, res) => {
 app.post('/postregister', (req, res) => {
     let ressend = res
     let input = [req.body.username, req.body.password, req.body.first, req.body.last, req.body.email]
+
     let client = construct_client()
     client.connect()
     let query = 'INSERT INTO users(username, password, first, last, email) VALUES($1, $2, $3, $4, $5) ON CONFLICT ON CONSTRAINT users_username_key DO NOTHING'

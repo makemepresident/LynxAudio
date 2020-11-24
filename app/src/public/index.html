@@ -2,30 +2,31 @@
 
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-
-  <title>Lynx</title>
-
-  <link rel="stylesheet" href="../css/stylesheet.css">
-
+  	<meta charset="utf-8">
+  	<title>Lynx</title>
+  	<link rel="stylesheet" href="../css/stylesheet.css">
 </head>
 
 <body>
 
-	<a id="registration" href="register.html">Register</a>
+	<div>
+		<input type="text" id="hashlookup" placeholder="Hash ID">
+		<button id="hashbutton">Go to hash!</button>
+	</div>
 	<!-- <div id="record_button"></div> -->
 	
 	<div id="recordaudio">
-		<input type="text" id="filenameid">
+		<input type="text" id="filenameid" placeholder="Recording title">
 		<button id="recordbutton">Record</button>
-		<button id="postbutton">POST</button>
+		<!--<button id="postbutton">POST</button>-->
 	</div>
 
 	<div id="logindiv">
-		<input type="text" id="username">
-		<input type="password" id="password">
+		<input type="text" id="username" placeholder="Username">
+		<input type="password" id="password" placeholder="Password">
 		<button id="login">Login</button>
 	</div>
+	<a id="registration" href="register.html">Register</a>
 
 
 	<!-- <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
@@ -33,6 +34,17 @@
 	<script src="./js/lib/WebAudioRecorder.js"></script>
 	<script src="./js/record.js"></script>
 	<script src="./js/login.js"></script>
+	<script>
+		let hashbutton = document.getElementById("hashbutton")
+		let hashid = document.getElementById("hashlookup")
+		hashbutton.onclick = () => {
+			await fetch('/webplayer/' + hashid.value, {
+				method: 'GET',
+				mode: 'no-cors',
+				cache: 'no-cache',
+    		})
+		}
+	</script>
 	<!-- <script src="../js/record_button.js"></script> -->
 
 </body>

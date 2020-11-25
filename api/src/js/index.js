@@ -70,10 +70,10 @@ app.post('/postmemo', (req, res) => {
     let that = res
     let unique_hash = crypto.randomBytes(5)
     let unique_string = unique_hash.toString('hex')
-    let input = [null, req.body.filename, parseInt(req.body.duration), parseInt(req.body.filesize), unique_string]
+    let input = [null, req.body.filename, parseInt(req.body.duration), parseInt(req.body.filesize), unique_string, req.body.usergivenid]
     let client = construct_client()
     client.connect()
-    let text = 'INSERT INTO audio_clips(userid, filename, cliplength, filesize, url_hash) VALUES($1, $2, $3, $4, $5)'
+    let text = 'INSERT INTO audio_clips(userid, filename, cliplength, filesize, url_hash, usergivenid) VALUES($1, $2, $3, $4, $5, $6)'
     client.query(text, input, (err, res) => {
         if (err) {
             log('Query unsuccessful - ')

@@ -19,9 +19,15 @@
     </audio>
   </div>
 
+  <div id="share">
+    <label>Share this with others!</span>
+    <textarea rows="1" cols="45" id="sharelink"></textarea>
+  </div>
+
   <a href="/index.html">Return to homepage</a>
 
   <script type="text/javascript">
+    document.getElementById("sharelink").innerHTML = window.location
     let audiosource = document.getElementById("audiosource")
     let audioplayer = document.getElementById("audioplayer")
     let something = <%- data %>

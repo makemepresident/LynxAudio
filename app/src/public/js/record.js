@@ -8,7 +8,7 @@ let hasMicrophone = false
 let start = null
 let end = null
 let recbtn = document.getElementById('recordbutton')
-let text = document.getElementById('filenameid')
+let text = document.getElementById('usergivenid')
 
 let a = false
 recbtn.onclick = () => {
@@ -61,6 +61,7 @@ async function postMemo(blob, encoding) {
     let fd = new FormData()
     fd.append('blob', blob)
     fd.append('duration', end - start)
+    fd.append('usergivenid', text.value)
     await fetch(app_path, {
         method: 'POST',
         mode: 'no-cors',

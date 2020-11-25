@@ -43,6 +43,7 @@ app.get('/webplayer/:url_hash', (req, res) => {
 app.post('/memoreq', upload.single('blob'), (req, res) => {
     let that = res
     var json = {}
+    json["usergivenid"] = req.file.usergivenid
     json["filename"] = req.file.filename
     json["filesize"] = req.file.size
     json["duration"] = req.body.duration

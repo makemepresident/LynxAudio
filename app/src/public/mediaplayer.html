@@ -1,6 +1,7 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
 
@@ -12,20 +13,21 @@
 
 <body>
 
-<div id="mediaplayer">
-  <audio type="audio/wav" id="audioplayer" controls>
-    <source id="audiosource" src="" />
-  </audio>
-</div>
+  <div id="mediaplayer">
+    <audio type="audio/wav" id="audioplayer" controls>
+      <source id="audiosource" src="" />
+    </audio>
+  </div>
 
-<script type="text/javascript">
-  let audiosource = document.getElementById("audiosource")
-  let audioplayer = document.getElementById("audioplayer")
-  let something = <%- data %>
+  <a href="/index.html">Return to homepage</a>
 
-  audiosource.src = something
-  audioplayer.load()
-</script>
+  <script type="text/javascript">
+    let audiosource = document.getElementById("audiosource")
+    let audioplayer = document.getElementById("audioplayer")
+    let something = <%- data %>
+    audiosource.src = something
+    audioplayer.load()
+  </script>
 
 </body>
 

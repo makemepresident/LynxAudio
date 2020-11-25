@@ -5,6 +5,7 @@ const port = 80
 const {Client} = require('pg') // Destructuring - equivalent to saying const tt = require('pg') and tt.Client
 const formidable = require('formidable')
 const Blob = require('node-blob')
+const e = require('express')
 const log = console.debug
 
 app.use(exp.json())
@@ -43,6 +44,26 @@ app.post('/postlogin', (req, res) => {
         client.end()
     })
     res.send(null)
+})
+
+app.post('/postregister', (req, res) => {
+    let ressend = res
+    let input = [req.body.username, req.body.password, req.body.first, req.body.last, req.body.email]
+
+    let client = construct_client()
+    client.connect()
+    let query = 'INSERT INTO users(username, password, first, last, email) VALUES($1, $2, $3, $4, $5) ON CONFLICT ON CONSTRAINT users_username_key DO NOTHING'
+    client.query(query, input, (err, res) =>  {
+        if (err) {
+            console.log(err)
+        } else {
+            if (res.rowCount == 1) {
+                ressend.send("true")
+            } else if (res.rowCount == 0) {
+                ressend.send("false")
+            }
+        }
+    })
 })
 
 app.post('/postmemo', (req, res) => {

@@ -6,6 +6,7 @@ const Blob = require('node-blob')
 const multer = require('multer')
 const favicon = require('serve-favicon')
 const upload = multer({dest: '../public/uploads/'})
+const crypto = require('crypto')
 const app = exp()
 const api_host = "http://localhost:80"
 const port = 8080
@@ -53,27 +54,6 @@ app.post('/memoreq', upload.single('blob'), (req, res) => {
         },
         body: JSON.stringify(json)
     })
-    /*let incoming = formidable.IncomingForm()
-    incoming.parse(req, (err, fields, files) => {
-        var json = {}
-        if (err) {
-            log(err)
-        }
-        json["duration"] = fields.duration
-        json["url"] = fields.url
-        files.blob.mv('./uploads/' + "test")
-        //json["blob"] = files.blob
-
-        /*fetch(api_host + '/postmemo', {
-            method: 'POST',
-            mode: 'no-cors',
-            cache: 'no-cache',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(json)
-        })
-    })*/
     res.send(null)
 })
 
@@ -98,4 +78,40 @@ app.post('/loginreq', (req, res) => {
         })
     })
     res.send(null)
+})
+
+app.post('/regreq', (req, res) => {
+    let incoming = formidable.IncomingForm()
+    let passback = res
+    incoming.parse(req, (err, fields) => {
+        if (err) {
+            log(err)
+        }
+
+        if (fields.username.length > 30 || fields.password.length > 255 || fields.first.length > 30 || fields.last.length > 30 || fields.email.length > 50) {
+            res.send("false")
+        } else {
+            let json = {}
+            json["username"] = fields.username
+            json["password"] = crypto.createHash('sha256').update(fields.password).digest('hex')
+            json["first"] = fields.first
+            json["last"] = fields.last
+            json["email"] = fields.email
+
+            fetch(api_host + '/postregister', {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(json)
+            }).then((res) => {
+                return res.text()
+            }).then((result) => {
+                console.log(result)
+                res.send(result)
+            })
+        }
+    })
 })

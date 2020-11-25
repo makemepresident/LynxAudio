@@ -1,17 +1,26 @@
 #recordaudio {
-    height: 250px;
     width: 750px;
-    position: relative;
-    margin-top: 300px;
+    display: inline-block;
+    margin: 50px 0 50px 0;
     left: 35%;
 }
 
-#filenameid {
-    width: 70%;
+input {
+    padding: 5px;
+}
+button {
+    padding: 5px;
 }
 
-#postbutton {
-    height: 20px;
-    width: 60px;
-    left: 50%;
+table {
+    display: inline-block;
+}
+
+.reginput {
+    width: 240px;
+    display: inline-block;
+}
+
+.reglabel {
+    display: inline-block;
 }

@@ -80,6 +80,10 @@ async function postMemo(blob, encoding) {
     }).then((res) => {
         return res.text()
     }).then((hash) => {
-        window.location.href = "/webplayer/" + hash;
+        if (hash == "Internal Server Error") {
+            console.log("Quit being sneaky and trying to write bad stuff to the db")
+        } else {
+            window.location.href = "/webplayer/" + hash;
+        }
     })
 }

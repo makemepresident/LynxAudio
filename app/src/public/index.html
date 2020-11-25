@@ -8,26 +8,45 @@
 </head>
 
 <body>
+	<h1>Lynx</h1>
 	<div id="signeddiv" style="display: none;">
 		<label id="signedin"></label>
 		<a onclick="logout()">Logout</a>
 	</div>
-  
+	
+
 	<div>
-		<input type="text" id="hashlookup" placeholder="Hash ID">
+		<label for="hashlookup" class="inp">
+			<input type="text" id="hashlookup" placeholder="&nbsp;">
+			<span class="label" id="hashlookuplabel">Hash ID</span>
+			<span class="focus-bg"></span>
+		</label>
 		<button id="hashbutton">Go to hash!</button>
 	</div>
 	<!-- <div id="record_button"></div> -->
 	
 	<div id="recordaudio">
 		<label for="usergivenid" id="nameerror"></label>
-		<input type="text" id="usergivenid" placeholder="Recording title">
+		<label for="usergivenid" class=inp>
+			<input type="text" id="usergivenid" placeholder="&nbsp;">
+			<span class="label"id="usergivenidlabel">Recording</span>
+			<span class="focus-bg"></span>
+		</label>
 		<button id="recordbutton">Record</button>
 	</div>
 
 	<div id="logindiv">
-		<input type="text" id="username" placeholder="Username">
-		<input type="password" id="password" placeholder="Password">
+		<label for="username" class="inp">
+			<input type="text" id="username" placeholder="&nbsp;">
+			<span class="label" id="usernamelabel">Username</span>
+			<span class="focus-bg"></span>
+		</label>
+		<label for="password" class="inp">
+			<input type="password" id="password" placeholder="&nbsp;">
+			<span class="label" id="passwordlabel">Password</span>
+			<span class="focus-bg"></span>
+			
+		</label>
 		<button id="login">Login</button>
 		<a id="registration" href="register.html">Register</a>
 	</div>

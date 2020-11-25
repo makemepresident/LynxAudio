@@ -10,6 +10,16 @@ let end = null
 let recbtn = document.getElementById('recordbutton')
 let text = document.getElementById('usergivenid')
 
+text.onkeyup = () => {
+    if (text.value.length > 50) {
+        document.getElementById("nameerror").innerHTML = "Name too long"
+        recbtn.disabled = true
+    } else {
+        document.getElementById("nameerror").innerHTML = ""
+        recbtn.disabled = false
+    }
+}
+
 let a = false
 recbtn.onclick = () => {
     if(a == true) {

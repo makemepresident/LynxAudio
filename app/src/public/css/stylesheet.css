@@ -2,6 +2,15 @@
     font-family: 'Roboto', sans-serif;
 	box-sizing: border-box;
 }
+body{
+	margin-top:10em;
+	margin-left:auto;
+	margin-right:auto;
+	width:30em;
+	background-color: rgb(31, 26, 37);
+	
+	color: rgb(238, 180, 23);
+}
 
 #recordaudio {
     width: 750px;
@@ -9,6 +18,8 @@
     margin: 50px 0 50px 0;
     left: 35%;
 }
+
+
 
 .inp {
 	position: relative;

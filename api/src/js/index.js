@@ -24,11 +24,13 @@ function construct_client() {
 app.post('/postlogin', (req, res) => {
     let username = req.body.username
     let password = req.body.password
+    let result = {}
+    let that = res
 
     let client = construct_client()
     client.connect()
     let input = [username]
-    let text = 'SELECT username, password FROM users WHERE username=$1'
+    let text = 'SELECT id, username, password, first FROM users WHERE username=$1'
     client.query(text, input, (err, res) => {
         if (err)  {
             log('Query unsuccessful')
@@ -36,14 +38,18 @@ app.post('/postlogin', (req, res) => {
             return
         } else {
             log("Query success")
-            if (crypto.createHash('sha256').update(password).digest('hex') == res.rows[0].password) {
-                log("user verified")
-                // Implement user sign-on garbage here (cookies or whatever)
+            if (password == res.rows[0].password) {
+                result["result"] = "true"
+                result["username"] = res.rows[0].username
+                result["id"] = res.rows[0].id
+                result["firstname"] = res.rows[0].first
+            } else {
+                result["result"] = "false"
             }
         }
         client.end()
+        that.send(JSON.stringify(result))
     })
-    res.send(null)
 })
 
 app.post('/postregister', (req, res) => {
@@ -67,11 +73,13 @@ app.post('/postregister', (req, res) => {
 })
 
 app.post('/postmemo', (req, res) => {
+    let that = res
     let unique_hash = crypto.randomBytes(5)
-    let input = [null, req.body.filename, parseInt(req.body.duration), parseInt(req.body.filesize), unique_hash.toString('hex')]
+    let unique_string = unique_hash.toString('hex')
+    let input = [null, req.body.filename, parseInt(req.body.duration), parseInt(req.body.filesize), unique_string, req.body.usergivenid]
     let client = construct_client()
     client.connect()
-    let text = 'INSERT INTO audio_clips(userid, filename, cliplength, filesize, url_hash) VALUES($1, $2, $3, $4, $5)'
+    let text = 'INSERT INTO audio_clips(userid, filename, cliplength, filesize, url_hash, usergivenid) VALUES($1, $2, $3, $4, $5, $6)'
     client.query(text, input, (err, res) => {
         if (err) {
             log('Query unsuccessful - ')
@@ -81,8 +89,8 @@ app.post('/postmemo', (req, res) => {
             log('Query Success')
         }
         client.end()
+        that.send(unique_string)
     })
-    res.send(null)
 })
 
 app.get('/dbreq/:unique_hash', (req, res) => {

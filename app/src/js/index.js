@@ -41,23 +41,33 @@ app.get('/webplayer/:url_hash', (req, res) => {
 })
 
 app.post('/memoreq', upload.single('blob'), (req, res) => {
+    let that = res
     var json = {}
-    json["filename"] = req.file.filename
-    json["filesize"] = req.file.size
-    json["duration"] = req.body.duration
-    fetch(api_host + '/postmemo', {
-        method: 'POST',
-        mode: 'no-cors',
-        cache: 'no-cache',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(json)
-    })
-    res.send(null)
+    if (req.body.usergivenid.length > 50) {
+        res.sendStatus(500)
+    } else {
+        json["usergivenid"] = req.body.usergivenid
+        json["filename"] = req.file.filename
+        json["filesize"] = req.file.size
+        json["duration"] = req.body.duration
+        fetch(api_host + '/postmemo', {
+            method: 'POST',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(json)
+        }).then((res) => {
+            return res.text()
+        }).then((hash) => {
+            that.send(hash)
+        })
+    }
 })
 
 app.post('/loginreq', (req, res) => {
+    let that = res
     let incoming = formidable.IncomingForm()
     incoming.parse(req, (err, fields) =>  {
         let json = {}
@@ -65,7 +75,7 @@ app.post('/loginreq', (req, res) => {
             log(err)
         }
         json["username"] = fields.username
-        json["password"] = fields.password
+        json["password"] = crypto.createHash('sha256').update(fields.password).digest('hex')
 
         fetch(api_host + '/postlogin', {
             method: 'POST',
@@ -75,9 +85,12 @@ app.post('/loginreq', (req, res) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(json)
+        }).then((res) => {
+            return res.json()
+        }).then((result) => {
+            res.send(JSON.stringify(result))
         })
     })
-    res.send(null)
 })
 
 app.post('/regreq', (req, res) => {

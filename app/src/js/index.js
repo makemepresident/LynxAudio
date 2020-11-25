@@ -23,6 +23,7 @@ app.listen(port, () => {
 })
 
 app.get('/webplayer/:url_hash', (req, res) => {
+    console.log(req.params.url_hash)
     // req.params returns object with url hash as string {url_hash: 'henlo}
     // extract url hash
     // make request to REST API to see if hash exists within database
@@ -52,6 +53,11 @@ app.post('/memoreq', upload.single('blob'), (req, res) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(json)
+    }).then((res) => {
+        return res.text()
+    }).then((unique_hash) => {
+        console.log(unique_hash)
+        res.send(unique_hash)
     })
     /*let incoming = formidable.IncomingForm()
     incoming.parse(req, (err, fields, files) => {
@@ -74,7 +80,6 @@ app.post('/memoreq', upload.single('blob'), (req, res) => {
             body: JSON.stringify(json)
         })
     })*/
-    res.send(null)
 })
 
 app.post('/loginreq', (req, res) => {

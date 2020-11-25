@@ -47,13 +47,14 @@ app.post('/postlogin', (req, res) => {
 
 app.post('/postmemo', (req, res) => {
     let unique_hash = crypto.randomBytes(5)
-    let input = [null, req.body.filename, parseInt(req.body.duration), parseInt(req.body.filesize), unique_hash.toString('hex')]
+    let unique_string = unique_hash.toString('hex')
+    let input = [null, req.body.filename, parseInt(req.body.duration), parseInt(req.body.filesize), unique_string]
     let client = construct_client()
     client.connect()
     let text = 'INSERT INTO audio_clips(userid, filename, cliplength, filesize, url_hash) VALUES($1, $2, $3, $4, $5)'
     client.query(text, input, (err, res) => {
         if (err) {
-            log('Query unsuccessful - ')
+            log('Query unsuccessful')
             log(err)
             return
         } else {
@@ -61,7 +62,7 @@ app.post('/postmemo', (req, res) => {
         }
         client.end()
     })
-    res.send(null)
+    res.send(unique_string)
 })
 
 app.get('/dbreq/:unique_hash', (req, res) => {
@@ -78,9 +79,10 @@ app.get('/dbreq/:unique_hash', (req, res) => {
         } else {
             log("Query successful")
             filename = res.rows[0].filename
+            console.log(filename)
         }
         client.end()
-        that.send(JSON.stringify(filename))
+        that.send(filename)
     })
 })
 

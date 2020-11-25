@@ -157,8 +157,7 @@ button {
 	padding: 4em 1.2em;
 	background: url(recordwhite.png);
 	background-size: 100px auto;
-	background-repeat-x: no-repeat;
-	background-repeat-y: no-repeat;
+	background-repeat: no-repeat;
 	background-position-x: center;
 	background-position-y: center;
 }
@@ -168,8 +167,7 @@ button {
 	background: url(recordgray.png);
 	background-color: #FFF;
 	background-size: 100px auto;
-	background-repeat-x: no-repeat;
-	background-repeat-y: no-repeat;
+	background-repeat: no-repeat;
 	background-position-x: center;
 	background-position-y: center;
 }

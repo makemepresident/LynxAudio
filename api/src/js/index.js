@@ -24,13 +24,13 @@ function construct_client() {
 app.post('/postlogin', (req, res) => {
     let username = req.body.username
     let password = req.body.password
-    let result = null
+    let result = {}
     let that = res
 
     let client = construct_client()
     client.connect()
     let input = [username]
-    let text = 'SELECT username, password FROM users WHERE username=$1'
+    let text = 'SELECT id, username, password, first FROM users WHERE username=$1'
     client.query(text, input, (err, res) => {
         if (err)  {
             log('Query unsuccessful')
@@ -39,13 +39,16 @@ app.post('/postlogin', (req, res) => {
         } else {
             log("Query success")
             if (password == res.rows[0].password) {
-                result = true
+                result["result"] = "true"
+                result["username"] = res.rows[0].username
+                result["id"] = res.rows[0].id
+                result["firstname"] = res.rows[0].first
             } else {
-                result = false
+                result["result"] = "false"
             }
         }
         client.end()
-        that.send(result.toString())
+        that.send(JSON.stringify(result))
     })
 })
 

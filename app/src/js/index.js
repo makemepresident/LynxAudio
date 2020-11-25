@@ -67,6 +67,7 @@ app.post('/memoreq', upload.single('blob'), (req, res) => {
 })
 
 app.post('/loginreq', (req, res) => {
+    let that = res
     let incoming = formidable.IncomingForm()
     incoming.parse(req, (err, fields) =>  {
         let json = {}
@@ -85,9 +86,9 @@ app.post('/loginreq', (req, res) => {
             },
             body: JSON.stringify(json)
         }).then((res) => {
-            return res.text()
-        }).then((boole) => {
-            console.log(boole)
+            return res.json()
+        }).then((result) => {
+            res.send(JSON.stringify(result))
         })
     })
 })

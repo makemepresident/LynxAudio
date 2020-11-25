@@ -8,6 +8,10 @@
 </head>
 
 <body>
+	<div id="signeddiv" style="display: none;">
+		<label id="signedin"></label>
+		<a onclick="logout()">Logout</a>
+	</div>
 
 	<div>
 		<input type="text" id="hashlookup" placeholder="Hash ID">
@@ -27,7 +31,6 @@
 		<button id="login">Login</button>
 	</div>
 	<a id="registration" href="register.html">Register</a>
-
 
 	<!-- <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
 	<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script> -->

@@ -74,7 +74,7 @@ app.post('/loginreq', (req, res) => {
             log(err)
         }
         json["username"] = fields.username
-        json["password"] = fields.password
+        json["password"] = crypto.createHash('sha256').update(fields.password).digest('hex')
 
         fetch(api_host + '/postlogin', {
             method: 'POST',
@@ -84,9 +84,12 @@ app.post('/loginreq', (req, res) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(json)
+        }).then((res) => {
+            return res.text()
+        }).then((boole) => {
+            console.log(boole)
         })
     })
-    res.send(null)
 })
 
 app.post('/regreq', (req, res) => {

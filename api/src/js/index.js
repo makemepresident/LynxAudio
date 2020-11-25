@@ -24,6 +24,8 @@ function construct_client() {
 app.post('/postlogin', (req, res) => {
     let username = req.body.username
     let password = req.body.password
+    let result = null
+    let that = res
 
     let client = construct_client()
     client.connect()
@@ -36,14 +38,15 @@ app.post('/postlogin', (req, res) => {
             return
         } else {
             log("Query success")
-            if (crypto.createHash('sha256').update(password).digest('hex') == res.rows[0].password) {
-                log("user verified")
-                // Implement user sign-on garbage here (cookies or whatever)
+            if (password == res.rows[0].password) {
+                result = true
+            } else {
+                result = false
             }
         }
         client.end()
+        that.send(result.toString())
     })
-    res.send(null)
 })
 
 app.post('/postregister', (req, res) => {

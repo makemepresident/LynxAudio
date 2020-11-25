@@ -3,14 +3,18 @@ const loginconf = document.getElementById("signedin")
 const login_path = 'http://localhost:8080/loginreq'
 
 const cookies = document.cookie
+let userid = null
+let username = null
+let first = null
 
 if (cookies) {
     let splitCookie = cookies.split("; ")
-    let userid = splitCookie[0].split("=")[1]
-    let username = splitCookie[1].split("=")[1]
-    let first = splitCookie[2].split("=")[1]
+    userid = splitCookie[0].split("=")[1]
+    username = splitCookie[1].split("=")[1]
+    first = splitCookie[2].split("=")[1]
     loginconf.innerHTML = "Hello " + first + "!"
     document.getElementById("signeddiv").style = "display: visible"
+    document.getElementById("logindiv").style.display = "none"
 }
 
 loginbutton.onclick = () => {

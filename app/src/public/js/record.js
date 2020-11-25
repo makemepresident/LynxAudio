@@ -72,6 +72,7 @@ async function postMemo(blob, encoding) {
     fd.append('blob', blob)
     fd.append('duration', end - start)
     fd.append('usergivenid', text.value)
+    fd.append('userid', )
     await fetch(app_path, {
         method: 'POST',
         mode: 'no-cors',

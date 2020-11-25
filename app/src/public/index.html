@@ -38,11 +38,7 @@
 		let hashbutton = document.getElementById("hashbutton")
 		let hashid = document.getElementById("hashlookup")
 		hashbutton.onclick = () => {
-			await fetch('/webplayer/' + hashid.value, {
-				method: 'GET',
-				mode: 'no-cors',
-				cache: 'no-cache',
-    		})
+			window.location.href = "/webplayer/" + hashid.value;
 		}
 	</script>
 	<!-- <script src="../js/record_button.js"></script> -->

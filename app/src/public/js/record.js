@@ -66,5 +66,9 @@ async function postMemo(blob, encoding) {
         mode: 'no-cors',
         cache: 'no-cache',
         body: fd
+    }).then((res) => {
+        return res.text()
+    }).then((hash) => {
+        window.location.href = "/webplayer/" + hash;
     })
 }

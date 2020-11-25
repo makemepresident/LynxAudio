@@ -41,6 +41,7 @@ app.get('/webplayer/:url_hash', (req, res) => {
 })
 
 app.post('/memoreq', upload.single('blob'), (req, res) => {
+    let that = res
     var json = {}
     json["filename"] = req.file.filename
     json["filesize"] = req.file.size
@@ -53,8 +54,11 @@ app.post('/memoreq', upload.single('blob'), (req, res) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(json)
+    }).then((res) => {
+        return res.text()
+    }).then((hash) => {
+        that.send(hash)
     })
-    res.send(null)
 })
 
 app.post('/loginreq', (req, res) => {

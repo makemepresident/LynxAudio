@@ -46,6 +46,7 @@ app.post('/memoreq', upload.single('blob'), (req, res) => {
     if (req.body.usergivenid.length > 50) {
         res.sendStatus(500)
     } else {
+        json["userid"] = req.body.userid
         json["usergivenid"] = req.body.usergivenid
         json["filename"] = req.file.filename
         json["filesize"] = req.file.size

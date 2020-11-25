@@ -19,11 +19,13 @@ username.onkeyup = () => {
     if (username.value.length > 0) {
         if (username.value.length > 30) {
             document.getElementById("usernamelabel").innerHTML = "Username too long!"
-            username.style.borderColor = "red"
+            document.getElementById("usernamelabel").style.color = "red"
+            username.style.boxShadow = "inset 0 -2px 0 #F00"
             validfirst = false
         } else {
             document.getElementById("usernamelabel").innerHTML = "Username good"
-            username.style.borderColor = "green"
+            document.getElementById("usernamelabel").style.color = "#07f"
+            username.style.boxShadow = "inset 0 -2px 0 #07f"
             validfirst = true;
         }
     }

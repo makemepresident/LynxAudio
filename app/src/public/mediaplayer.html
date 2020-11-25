@@ -1,6 +1,7 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
 
@@ -12,20 +13,27 @@
 
 <body>
 
-<div id="mediaplayer">
-  <audio type="audio/wav" id="audioplayer" controls>
-    <source id="audiosource" src="" />
-  </audio>
-</div>
+  <div id="mediaplayer">
+    <audio type="audio/wav" id="audioplayer" controls>
+      <source id="audiosource" src="" />
+    </audio>
+  </div>
 
-<script type="text/javascript">
-  let audiosource = document.getElementById("audiosource")
-  let audioplayer = document.getElementById("audioplayer")
-  let something = <%- data %>
+  <div id="share">
+    <label>Share this with others!</span>
+    <textarea rows="1" cols="45" id="sharelink"></textarea>
+  </div>
 
-  audiosource.src = something
-  audioplayer.load()
-</script>
+  <a href="/index.html">Return to homepage</a>
+
+  <script type="text/javascript">
+    document.getElementById("sharelink").innerHTML = window.location
+    let audiosource = document.getElementById("audiosource")
+    let audioplayer = document.getElementById("audioplayer")
+    let something = <%- data %>
+    audiosource.src = something
+    audioplayer.load()
+  </script>
 
 </body>
 

@@ -8,7 +8,17 @@ let hasMicrophone = false
 let start = null
 let end = null
 let recbtn = document.getElementById('recordbutton')
-let text = document.getElementById('filenameid')
+let text = document.getElementById('usergivenid')
+
+text.onkeyup = () => {
+    if (text.value.length > 50) {
+        document.getElementById("nameerror").innerHTML = "Name too long"
+        recbtn.disabled = true
+    } else {
+        document.getElementById("nameerror").innerHTML = ""
+        recbtn.disabled = false
+    }
+}
 
 let a = false
 recbtn.onclick = () => {
@@ -61,10 +71,20 @@ async function postMemo(blob, encoding) {
     let fd = new FormData()
     fd.append('blob', blob)
     fd.append('duration', end - start)
+    fd.append('usergivenid', text.value)
+    fd.append('userid', )
     await fetch(app_path, {
         method: 'POST',
         mode: 'no-cors',
         cache: 'no-cache',
         body: fd
+    }).then((res) => {
+        return res.text()
+    }).then((hash) => {
+        if (hash == "Internal Server Error") {
+            console.log("Quit being sneaky and trying to write bad stuff to the db")
+        } else {
+            window.location.href = "/webplayer/" + hash;
+        }
     })
 }

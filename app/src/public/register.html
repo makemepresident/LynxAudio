@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8">
     <title>Lynx Register</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+    </style>
     <link rel="stylesheet" href="../css/stylesheet.css">
 </head>
 
@@ -14,67 +17,50 @@
 </div>
 
 <div id="registerform">
-    <table>
-        <tr>
-            <td>
-                <input type="text" id="username" style="border-style: solid" placeholder="Username" name="reginput">
-            </td>
-            <td>
-                <label for="username" id="usernamelabel" name="reglabel"></label>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="password" id="password" style="border-style: solid" placeholder="Password" name="reginput">
-            </td>
-            <td>
-                <label for="password" id="passwordlabel" name="reglabel"></label>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="password" id="verify" style="border-style: solid" placeholder="Verify Password" name="reginput">
-            </td>
-            <td>
-                <label for="verify" id="verifylabel" name="reglabel"></label>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="text" id="first" style="border-style: solid" placeholder="First Name" name="reginput">
-            </td>
-            <td>
-                <label for="first" id="firstlabel" name="reglabel"></label>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="text" id="last" style="border-style: solid" placeholder="Last Name" name="reginput">
-            </td>
-            <td>
-                <label for="last" id="lastlabel" name="reglabel"></label>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="email" id="email" style="border-style: solid" placeholder="Email Address" name="reginput">
-            </td>
-            <td>
-                <label for="email" id="emaillabel" name="reglabel"></label>
-                
-            </td>
-        </tr>
-    </table>
-    <div>
-        <button id="register">Register</button>
-    </div>
-    <div>
-        <a href="index.html">Return to homepage</a>
+    <div class="parentgrid">
+        <div class="column">
+            <label for="username" class="inp">
+                <input type="text" id="username" placeholder="&nbsp;" name="reginput">
+                <span class="label" id="usernamelabel">Username</span>
+                <span class="focus-bg"></span>
+            </label>
+            <label for="password" class="inp">
+                <input type="password" id="password" placeholder="&nbsp;" name="reginput">
+                <span class="label" id="passwordlabel">Password</span>
+                <span class="focus-bg"></span>
+            </label>
+            <label for="verify" class="inp">
+                <input type="password" id="verify" placeholder="&nbsp;" name="reginput">
+                <span class="label" id="verifylabel">Verify Password</span>
+                <span class="focus-bg"></span>
+            </label>
+        </div>
+
+        <div class="column">
+            <label for="first" class="inp">
+                <input type="text" id="first" style="border-style: solid" placeholder="&nbsp;" name="reginput">
+                <span class="label" id="firstlabel">First Name</span>
+                <span class="focus-bg"></span>
+            </label>
+            <label for="last" class="inp">
+                <input type="text" id="last" style="border-style: solid" placeholder="&nbsp;" name="reginput">
+                <span class="label" id="lastlabel">Last Name</span>
+                <span class="focus-bg"></span>
+            </label>
+            <label for="email" class="inp">
+                <input type="email" id="email" style="border-style: solid" placeholder="&nbsp;" name="reginput">
+                <span class="label" id="emaillabel">Email Address</span>
+                <span class="focus-bg"></span>
+            </label>
+        </div>
+
+        <div>
+            <button id="register">Register</button>
+        </div>
+
+        <div>
+            <a href="index.html">Return to homepage</a>
+        </div>
     </div>
 </div>
 

@@ -30,6 +30,9 @@ recbtn.onclick = () => {
         return
     }
 
+
+    
+
     navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
         audioContext = new AudioContext();
 
@@ -65,6 +68,24 @@ recbtn.onclick = () => {
         start = new Date();
         recorder.startRecording()
     })
+    let bar = document.getElementById("progressbar")
+    width = 0
+    interval = setInterval(frame, (10000 / 100))
+
+    function frame() {
+        if (width >= 100) {
+            clearInterval(interval)
+            gumStream.getAudioTracks()[0].stop()
+            a = false
+            recorder.finishRecording()
+            recbtn.style.backgroundColor = null
+        } else {
+            width++;
+            bar.style.width = width + '%'
+        }
+    }
+    
+    
 }
 
 async function postMemo(blob, encoding) {

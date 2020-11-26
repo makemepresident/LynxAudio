@@ -221,18 +221,31 @@ button {
 }
 
 .returntohomepage {
-    display: inline-grid;
-    justify-items: center;
-    width: 100%;
+   display: inline-grid;
+   justify-items: center;
+   width: 100%;
 }
 
 .mediatitle.share {
-    width: 100%;
-    text-align: center;
+   width: 100%;
+   text-align: center;
 }
 
 #sharelink {
-    width: 100%;
-    text-align: center;
-    resize: none;
+   width: 100%;
+   text-align: center;
+   resize: none;
+  
+.progressbarcontainer {
+	 margin-top:10px;
+   width: 100%;
+	 background-color:rgb(58 61 67);
+	 border: 0.1em solid #FFF;
+	 border-radius: 0.12em;
+}
+
+.progressbar {
+	 width:0%;
+   height: 24px;
+   background-color:rgb(35, 40, 45);
 }

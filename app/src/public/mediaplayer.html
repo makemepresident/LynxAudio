@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
     <h1 class="title">Media Player</h1>
 
     <div id="signeddiv" style="display: none;">
@@ -40,6 +39,10 @@
         </div>
     </div>
 
+    <div id="top" style="visibility: hidden;">
+        <h5 id="error" style="color: red"></h5>
+    </div>
+
     <div id="mediaplayer">
         <div class="recordingcontainer">
             <h5 class="mediatitle" id="mediatitle"></h5>
@@ -61,15 +64,21 @@
 
     <script type="text/javascript" src="../../js/login.js"></script>
     <script type="text/javascript">
-        document.getElementById("sharelink").innerHTML = window.location
-        let audioplayer = document.getElementsByClassName("audioplayer")[0]
-
+        const error = document.getElementById("error")
         let data = <%- data %>
-        document.getElementById("audiosource").src = data.filename
-        document.getElementById("mediatitle").innerHTML = data.usergivenid
-        document.getElementById("filesize").innerHTML = "Filesize " + data.filesize
 
-        audioplayer.load()
+        console.log(data)
+        if (data == "error") {
+            error.innerHTML = "Hash not found. Was it deleted, or never existed at all?"
+            document.getElementById("top").style = "visibility: visible"
+        } else {
+            let audioplayer = document.getElementsByClassName("audioplayer")[0]
+            document.getElementById("sharelink").innerHTML = window.location
+            document.getElementById("audiosource").src = data.filename
+            document.getElementById("mediatitle").innerHTML = data.usergivenid
+            document.getElementById("filesize").innerHTML = "Filesize " + data.filesize
+            audioplayer.load()
+        }
     </script>
 </body>
 

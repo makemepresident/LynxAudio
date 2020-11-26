@@ -40,8 +40,13 @@ app.get('/webplayer/:url_hash', (req, res) => {
     }).then((res) => {
         return res.json()
     }).then((recordparams) => {
-        recordparams.filename = path.join("../uploads/", recordparams.filename)
-        res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(recordparams)})
+        console.log(recordparams)
+        if (recordparams.result != "error") {
+            recordparams.result.filename = path.join("../uploads/", recordparams.result.filename)
+            res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(recordparams.result)})
+        } else {
+            res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(recordparams.result)})
+        }
     })
 })
 
@@ -172,7 +177,7 @@ app.post('/delreq', (req, res) => {
 
         let json = {}
         json["filename"] = fields.filename
-        
+
         try {
             fs.unlinkSync('../public/uploads/' + fields.filename)
         } catch (error) {

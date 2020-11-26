@@ -106,12 +106,16 @@ app.get('/dbreq/:unique_hash', (req, res) => {
     let text = 'SELECT * FROM audio_clips WHERE url_hash = $1'
     let input = [req.params.unique_hash]
     client.query(text, input, (err, res) => {
-        if(err || res.rows[0] == undefined) {
+        if(err) {
             log('Query unsuccessful - ')
             console.log(err)
         } else {
-            log("Query successful")
-            filename = res.rows[0]
+            if (res.rowCount == 0) {
+                filename["result"] = "error"
+            } else {
+                log("Query successful")
+                filename["result"] = res.rows[0]
+            }
         }
         client.end()
         that.send(JSON.stringify(filename))
@@ -149,6 +153,7 @@ app.post('/delpost', (req, res) => {
             that.send("err")
         } else {
             log("Query successful")
+            client.end()
             that.send("success")
         }
     })

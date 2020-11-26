@@ -35,16 +35,17 @@ app.post('/postlogin', (req, res) => {
         if (err)  {
             log('Query unsuccessful')
             log(err)
-            return
         } else {
             log("Query success")
-            if (password == res.rows[0].password) {
+            if (res.rowCount == 0) {
+                result["result"] = "userresult"
+            } else if (password == res.rows[0].password) {
                 result["result"] = "true"
                 result["username"] = res.rows[0].username
                 result["id"] = res.rows[0].id
                 result["firstname"] = res.rows[0].first
             } else {
-                result["result"] = "false"
+                result["result"] = "passresult"
             }
         }
         client.end()
@@ -99,10 +100,10 @@ app.post('/postmemo', (req, res) => {
 
 app.get('/dbreq/:unique_hash', (req, res) => {
     let that = res
-    let filename = {}
+    let filename = null
     let client = construct_client()
     client.connect()
-    let text = 'SELECT * FROM audio_clips WHERE url_hash = $1'
+    let text = 'SELECT filename FROM audio_clips WHERE url_hash = $1'
     let input = [req.params.unique_hash]
     client.query(text, input, (err, res) => {
         if(err || res.rows[0] == undefined) {
@@ -110,7 +111,7 @@ app.get('/dbreq/:unique_hash', (req, res) => {
             console.log(err)
         } else {
             log("Query successful")
-            filename = res.rows[0]
+            filename = res.rows[0].filename
         }
         client.end()
         that.send(JSON.stringify(filename))
@@ -119,7 +120,6 @@ app.get('/dbreq/:unique_hash', (req, res) => {
 
 app.post('/allmemopost', (req, res) => {
     let that = res
-    console.log(req.body.userid)
 
     let client = construct_client()
     client.connect()

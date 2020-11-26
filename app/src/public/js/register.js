@@ -162,6 +162,11 @@ async function postRegister() {
             document.getElementById("usernamelabel").style.color = "rgb(255, 0, 0)"
             username.style.boxShadow = "inset 0 -2px 0 #F00"
             register.disabled = false
+        } else if (result == "profane") {
+            document.getElementById("usernamelabel").innerHTML = "Username contains profanity"
+            document.getElementById("usernamelabel").style.color = "rgb(255, 0, 0)"
+            username.style.boxShadow = "inset 0 -2px 0 #F00"
+            register.disabled = false
         }
     })
 }

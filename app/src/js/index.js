@@ -14,7 +14,7 @@ const port = 8080
 const log = console.log
 
 const upload = multer({dest: '../public/uploads/'})
-//Filter filter = new Filter()
+const customFilter = new Filter({ placeHolder: '*' })
 
 app.use(exp.static(path.join(__dirname, '../public')))
 app.use(favicon(path.join(__dirname, "../public/favicon.ico")))
@@ -38,9 +38,9 @@ app.get('/webplayer/:url_hash', (req, res) => {
         cache: 'no-cache',
     }).then((res) => {
         return res.json()
-    }).then((recordparams) => {
-        recordparams.filename = path.join("../uploads/", recordparams.filename)
-        res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(recordparams)})
+    }).then((filename) => {
+        filename = path.join("../uploads/", filename)
+        res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(filename)})
     })
 })
 
@@ -51,7 +51,7 @@ app.post('/memoreq', upload.single('blob'), (req, res) => {
         res.sendStatus(500)
     } else {
         json["userid"] = req.body.userid
-        json["usergivenid"] = req.body.usergivenid
+        json["usergivenid"] = customFilter.clean(req.body.usergivenid)
         json["filename"] = req.file.filename
         json["filesize"] = req.file.size
         json["duration"] = req.body.duration
@@ -108,12 +108,14 @@ app.post('/regreq', (req, res) => {
 
         if (fields.username.length > 30 || fields.password.length > 255 || fields.first.length > 30 || fields.last.length > 30 || fields.email.length > 50) {
             res.send("false")
+        } else if (customFilter.isProfane(fields.username)) {
+            res.send("profane")
         } else {
             let json = {}
             json["username"] = fields.username
             json["password"] = crypto.createHash('sha256').update(fields.password).digest('hex')
-            json["first"] = fields.first
-            json["last"] = fields.last
+            json["first"] = customFilter.clean(fields.first)
+            json["last"] = customFilter.clean(fields.last)
             json["email"] = fields.email
 
             fetch(api_host + '/postregister', {
@@ -127,7 +129,6 @@ app.post('/regreq', (req, res) => {
             }).then((res) => {
                 return res.text()
             }).then((result) => {
-                console.log(result)
                 res.send(result)
             })
         }

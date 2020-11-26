@@ -55,7 +55,6 @@ app.post('/postlogin', (req, res) => {
 app.post('/postregister', (req, res) => {
     let ressend = res
     let input = [req.body.username, req.body.password, req.body.first, req.body.last, req.body.email]
-
     let client = construct_client()
     client.connect()
     let query = 'INSERT INTO users(username, password, first, last, email) VALUES($1, $2, $3, $4, $5) ON CONFLICT ON CONSTRAINT users_username_key DO NOTHING'
@@ -77,6 +76,9 @@ app.post('/postmemo', (req, res) => {
     let unique_hash = crypto.randomBytes(5)
     let unique_string = unique_hash.toString('hex')
     let input = [null, req.body.filename, parseInt(req.body.duration), parseInt(req.body.filesize), unique_string, req.body.usergivenid]
+    if (req.body.userid != null) {
+        input[0] = parseInt(req.body.userid)
+    }
     let client = construct_client()
     client.connect()
     let text = 'INSERT INTO audio_clips(userid, filename, cliplength, filesize, url_hash, usergivenid) VALUES($1, $2, $3, $4, $5, $6)'
@@ -110,6 +112,24 @@ app.get('/dbreq/:unique_hash', (req, res) => {
         }
         client.end()
         that.send(JSON.stringify(filename))
+    })
+})
+
+app.post('/allmemopost', (req, res) => {
+    let that = res
+    console.log(req.body.userid)
+
+    let client = construct_client()
+    client.connect()
+    let text = 'SELECT * FROM audio_clips WHERE userid=$1'
+    let input = [req.body.userid]
+    client.query(text, input, (err, res) => {
+        if (err) {
+            log(err)
+        } else {
+            log("Query successful")
+            that.send(JSON.stringify(res.rows))
+        }
     })
 })
 

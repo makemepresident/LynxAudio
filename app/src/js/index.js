@@ -46,6 +46,7 @@ app.post('/memoreq', upload.single('blob'), (req, res) => {
     if (req.body.usergivenid.length > 50) {
         res.sendStatus(500)
     } else {
+        json["userid"] = req.body.userid
         json["usergivenid"] = req.body.usergivenid
         json["filename"] = req.file.filename
         json["filesize"] = req.file.size
@@ -126,5 +127,31 @@ app.post('/regreq', (req, res) => {
                 res.send(result)
             })
         }
+    })
+})
+
+app.post('/allreq', (req, res) => {
+    let incoming = formidable.IncomingForm()
+    let passback = res
+    incoming.parse(req, (err, fields) => {
+        if (err) {
+            log(err)
+        }
+
+        let json = {}
+        json["userid"] = fields.userid
+        fetch(api_host + '/allmemopost', {
+            method: 'POST',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(json)
+        }).then((res) => {
+            return res.json()
+        }).then((result) => {
+            res.send(JSON.stringify(result))
+        })
     })
 })

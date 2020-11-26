@@ -7,7 +7,7 @@ let userid = null
 let username = null
 let first = null
 
-if (cookies) {
+if (cookies.includes("id")) {
     let splitCookie = cookies.split("; ")
     userid = splitCookie[0].split("=")[1]
     username = splitCookie[1].split("=")[1]

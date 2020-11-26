@@ -61,7 +61,7 @@ recbtn.onclick = () => {
         })
 
         a = true
-        recbtn.style.backgroundColor = '#FF0000'
+        recbtn.style.backgroundColor = 'rgb(199, 0, 0)'
         start = new Date();
         recorder.startRecording()
     })
@@ -72,7 +72,7 @@ async function postMemo(blob, encoding) {
     fd.append('blob', blob)
     fd.append('duration', end - start)
     fd.append('usergivenid', text.value)
-    fd.append('userid', )
+    fd.append('userid', userid)
     await fetch(app_path, {
         method: 'POST',
         mode: 'no-cors',

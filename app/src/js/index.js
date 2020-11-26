@@ -7,6 +7,7 @@ const multer = require('multer')
 const favicon = require('serve-favicon')
 const crypto = require('crypto')
 const Filter = require('bad-words')
+const fs = require('fs')
 const app = exp()
 
 const api_host = "http://localhost:80"
@@ -171,6 +172,15 @@ app.post('/delreq', (req, res) => {
 
         let json = {}
         json["filename"] = fields.filename
+        
+        try {
+            fs.unlinkSync('../public/uploads/' + fields.filename)
+        } catch (error) {
+            console.log(error)
+            res.sendStatus(500)
+            return
+        }
+
         fetch(api_host + '/delpost', {
             method: 'POST',
             mode: 'no-cors',

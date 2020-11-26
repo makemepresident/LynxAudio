@@ -181,6 +181,12 @@ button {
 	padding: 0.35em 0.5em;
 }
 
+.loginbuttons.deletebutton {
+    font-size: 10px;
+    margin-bottom: 0.25em;
+    
+}
+
 .column.reg {
 	margin: 5px;
 }
@@ -195,16 +201,14 @@ button {
 
 .mediatitle {
 	display: inline-block;
-	margin: 1em 0px 0.25em 0px;
-	margin-block-start: 0;
-	margin-block-end: 0;
-	width: 50%;
+	margin: 0px 0px 0.25em 0px;
+	width: 40%;
 }
 
 .filesize {
 	display: inline-block;
 	margin: 0px 0px 0.25em 0px;
-	width: 49%;
+	width: 40%;
 	text-align: right;
 }
 

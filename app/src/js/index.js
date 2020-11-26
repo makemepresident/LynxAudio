@@ -160,3 +160,29 @@ app.post('/allreq', (req, res) => {
         })
     })
 })
+
+app.post('/delreq', (req, res) => {
+    let incoming = formidable.IncomingForm()
+    let passback = res
+    incoming.parse(req, (err, fields) => {
+        if (err) {
+            log(err)
+        }
+
+        let json = {}
+        json["filename"] = fields.filename
+        fetch(api_host + '/delpost', {
+            method: 'POST',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(json)
+        }).then((res) => {
+            return res.text()
+        }).then((result) => {
+            res.send(result)
+        })
+    })
+})

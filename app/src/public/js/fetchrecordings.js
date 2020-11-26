@@ -1,4 +1,5 @@
 const allreq_path = 'http://localhost:8080/allreq'
+const delreq_path = "http://localhost:8080/delreq"
 const error = document.getElementById("error")
 const mediaplayer = document.getElementById("mediaplayer")
 
@@ -42,9 +43,36 @@ if (userid == null) {
                 source.id = "audiosource"
                 source.src = "../uploads/" + result[i].filename
 
+                let deletebtn = document.createElement("button")
+                deletebtn.classList.add("loginbuttons")
+                deletebtn.classList.add("deletebutton")
+                deletebtn.onclick = () => {
+                    let formbody2 = new FormData()
+                    formbody2.append("filename", source.src.split("/uploads/")[1])
+                    fetch(delreq_path, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        cache: 'no-cache',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: formbody2
+                    }).then((res) => {
+                        return res.text()
+                    }).then((result) => {
+                        if (result == "success") {
+                            location.reload()
+                        } else {
+                            console.log("Error deleting")
+                        }
+                    })
+                }
+                deletebtn.innerHTML = "Delete Memo"
+
                 audioplayer.appendChild(source)
                 container.appendChild(title)
                 container.appendChild(filesize)
+                container.appendChild(deletebtn)
                 container.appendChild(audioplayer)
                 mediaplayer.appendChild(container)
             }

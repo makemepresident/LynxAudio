@@ -130,7 +130,26 @@ app.post('/allmemopost', (req, res) => {
             log(err)
         } else {
             log("Query successful")
+            client.end()
             that.send(JSON.stringify(res.rows))
+        }
+    })
+})
+
+app.post('/delpost', (req, res) => {
+    let that = res
+
+    let client = construct_client()
+    client.connect()
+    let text = 'DELETE FROM audio_clips WHERE filename=$1'
+    let input = [req.body.filename]
+    client.query(text, input, (err, res) => {
+        if (err) {
+            log(err)
+            that.send("err")
+        } else {
+            log("Query successful")
+            that.send("success")
         }
     })
 })

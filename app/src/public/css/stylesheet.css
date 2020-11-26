@@ -203,10 +203,8 @@ button {
 
 .filesize {
 	display: inline-block;
-	margin: 1em 0px 0.25em 0px;
-	margin-block-start: 0;
-	margin-block-end: 0;
-	width: 50%;
+	margin: 0px 0px 0.25em 0px;
+	width: 49%;
 	text-align: right;
 }
 
@@ -216,4 +214,21 @@ button {
 
 .recordingcontainer {
 	margin-bottom: 15px;
+}
+
+.returntohomepage {
+    display: inline-grid;
+    justify-items: center;
+    width: 100%;
+}
+
+.mediatitle.share {
+    width: 100%;
+    text-align: center;
+}
+
+#sharelink {
+    width: 100%;
+    text-align: center;
+    resize: none;
 }

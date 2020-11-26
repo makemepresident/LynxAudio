@@ -35,8 +35,8 @@
     document.getElementById("sharelink").innerHTML = window.location
     let audiosource = document.getElementById("audiosource")
     let audioplayer = document.getElementById("audioplayer")
-    let something = <%- data %>
-    audiosource.src = something
+    let data = <%- data %>
+    audiosource.src = data.filename
     audioplayer.load()
   </script>
 

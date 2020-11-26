@@ -38,9 +38,9 @@ app.get('/webplayer/:url_hash', (req, res) => {
         cache: 'no-cache',
     }).then((res) => {
         return res.json()
-    }).then((filename) => {
-        filename = path.join("../uploads/", filename)
-        res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(filename)})
+    }).then((recordparams) => {
+        recordparams.filename = path.join("../uploads/", recordparams.filename)
+        res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(recordparams)})
     })
 })
 

@@ -99,10 +99,10 @@ app.post('/postmemo', (req, res) => {
 
 app.get('/dbreq/:unique_hash', (req, res) => {
     let that = res
-    let filename = null
+    let filename = {}
     let client = construct_client()
     client.connect()
-    let text = 'SELECT filename FROM audio_clips WHERE url_hash = $1'
+    let text = 'SELECT * FROM audio_clips WHERE url_hash = $1'
     let input = [req.params.unique_hash]
     client.query(text, input, (err, res) => {
         if(err || res.rows[0] == undefined) {
@@ -110,7 +110,7 @@ app.get('/dbreq/:unique_hash', (req, res) => {
             console.log(err)
         } else {
             log("Query successful")
-            filename = res.rows[0].filename
+            filename = res.rows[0]
         }
         client.end()
         that.send(JSON.stringify(filename))

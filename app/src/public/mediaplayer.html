@@ -18,6 +18,8 @@
     <a onclick="logout()" class="loginbuttons logout">Logout</a>
   </div>
 
+  <h5 id="recordname"></h5>
+
   <div id="mediaplayer">
     <audio type="audio/wav" id="audioplayer" controls>
       <source id="audiosource" src="" />
@@ -35,8 +37,10 @@
     document.getElementById("sharelink").innerHTML = window.location
     let audiosource = document.getElementById("audiosource")
     let audioplayer = document.getElementById("audioplayer")
-    let something = <%- data %>
-    audiosource.src = something
+    let recordname = document.getElementById("recordname")
+    let data = <%- data %>
+    audiosource.src = data.filename
+    recordname.innerHTML = data.usergivenid
     audioplayer.load()
   </script>
 

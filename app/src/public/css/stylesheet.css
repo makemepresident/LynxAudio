@@ -181,6 +181,12 @@ button {
 	padding: 0.35em 0.5em;
 }
 
+.loginbuttons.deletebutton {
+    font-size: 10px;
+    margin-bottom: 0.25em;
+    
+}
+
 .column.reg {
 	margin: 5px;
 }
@@ -195,18 +201,14 @@ button {
 
 .mediatitle {
 	display: inline-block;
-	margin: 1em 0px 0.25em 0px;
-	margin-block-start: 0;
-	margin-block-end: 0;
-	width: 50%;
+	margin: 0px 0px 0.25em 0px;
+	width: 40%;
 }
 
 .filesize {
 	display: inline-block;
-	margin: 1em 0px 0.25em 0px;
-	margin-block-start: 0;
-	margin-block-end: 0;
-	width: 50%;
+	margin: 0px 0px 0.25em 0px;
+	width: 40%;
 	text-align: right;
 }
 
@@ -218,16 +220,32 @@ button {
 	margin-bottom: 15px;
 }
 
+.returntohomepage {
+   display: inline-grid;
+   justify-items: center;
+   width: 100%;
+}
+
+.mediatitle.share {
+   width: 100%;
+   text-align: center;
+}
+
+#sharelink {
+   width: 100%;
+   text-align: center;
+   resize: none;
+  
 .progressbarcontainer {
-	margin-top:10px;
-    width: 100%;
-	background-color:rgb(58 61 67);
-	border: 0.1em solid #FFF;
-	border-radius: 0.12em;
+	 margin-top:10px;
+   width: 100%;
+	 background-color:rgb(58 61 67);
+	 border: 0.1em solid #FFF;
+	 border-radius: 0.12em;
 }
 
 .progressbar {
-	width:0%;
-    height: 24px;
-    background-color:rgb(35, 40, 45);
+	 width:0%;
+   height: 24px;
+   background-color:rgb(35, 40, 45);
 }

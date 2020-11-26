@@ -7,6 +7,7 @@ const multer = require('multer')
 const favicon = require('serve-favicon')
 const crypto = require('crypto')
 const Filter = require('bad-words')
+const fs = require('fs')
 const app = exp()
 
 const api_host = "http://localhost:80"
@@ -38,9 +39,13 @@ app.get('/webplayer/:url_hash', (req, res) => {
         cache: 'no-cache',
     }).then((res) => {
         return res.json()
-    }).then((filename) => {
-        filename = path.join("../uploads/", filename)
-        res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(filename)})
+    }).then((recordparams) => {
+        if (recordparams.result != "error") {
+            recordparams.result.filename = path.join("../uploads/", recordparams.result.filename)
+            res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(recordparams.result)})
+        } else {
+            res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(recordparams.result)})
+        }
     })
 })
 
@@ -157,6 +162,41 @@ app.post('/allreq', (req, res) => {
             return res.json()
         }).then((result) => {
             res.send(JSON.stringify(result))
+        })
+    })
+})
+
+app.post('/delreq', (req, res) => {
+    let incoming = formidable.IncomingForm()
+    let passback = res
+    incoming.parse(req, (err, fields) => {
+        if (err) {
+            log(err)
+        }
+
+        let json = {}
+        json["filename"] = fields.filename
+
+        try {
+            fs.unlinkSync('../public/uploads/' + fields.filename)
+        } catch (error) {
+            console.log(error)
+            res.sendStatus(500)
+            return
+        }
+
+        fetch(api_host + '/delpost', {
+            method: 'POST',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(json)
+        }).then((res) => {
+            return res.text()
+        }).then((result) => {
+            res.send(result)
         })
     })
 })

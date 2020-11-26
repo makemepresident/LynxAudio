@@ -3,47 +3,82 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Lynx</title>
-  <link rel="stylesheet" href="../css/stylesheet.css">
+    <meta charset="utf-8">
+    <title>Lynx</title>
+    <link rel="stylesheet" href="../css/stylesheet.css">
 </head>
 
 <body>
+    <h1 class="title">Media Player</h1>
 
-  <h1 class="title">Media Player</h1>
+    <div id="signeddiv" style="display: none;">
+        <label id="signedin"></label>
+        <a onclick="logout()" class="loginbuttons logout">Logout</a>
+    </div>
 
-  <div id="signeddiv" style="display: none;">
-    <label id="signedin"></label>
-    <a href="index.html" class="loginbuttons logout">Home Page</a>
-    <a onclick="logout()" class="loginbuttons logout">Logout</a>
-  </div>
+    <div id="logindiv" class="parentgrid1">
+        <div class="column">
+            <label for="username" class="inp">
+                <input type="text" id="username" placeholder="&nbsp;">
+                <span class="label" id="usernamelabel">Username</span>
+                <span class="focus-bg"></span>
+            </label>
+            <label for="password" class="inp">
+                <input type="password" id="password" placeholder="&nbsp;">
+                <span class="label" id="passwordlabel">Password</span>
+                <span class="focus-bg"></span>
+            </label>
+            <div class="parentgrid2">
+                <div class="column">
+                    <button id="login" class="loginbuttons">Login</button>
+                </div>
+                <div class="column">
+                    <a id="registration" href="register.html" class="loginbuttons">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <h5 id="recordname"></h5>
+    <div id="top" style="visibility: hidden;">
+        <h5 id="error" style="color: red"></h5>
+    </div>
 
-  <div id="mediaplayer">
-    <audio type="audio/wav" id="audioplayer" controls>
-      <source id="audiosource" src="" />
-    </audio>
-  </div>
+    <div id="mediaplayer">
+        <div class="recordingcontainer">
+            <h5 class="mediatitle" id="mediatitle"></h5>
+            <h5 class="filesize" id="filesize"></h5>
+            <audio type="audio/wav" class="audioplayer" controls>
+                <source id="audiosource" src=""/>
+            </audio>
+        </div>
+    </div>
 
-  <div id="share">
-    <label>Share this with others!</span>
-    <textarea rows="1" cols="45" id="sharelink"></textarea>
-  </div>
+    <div id="share">
+        <h5 class="mediatitle share">Share this with others!</h5>
+        <textarea rows="1" id="sharelink" readonly></textarea>
+    </div>
 
-  <a href="/index.html">Return to homepage</a>
+    <div class="returntohomepage">
+        <a href="/index.html" class="loginbuttons">Return to homepage</a>
+    </div>
 
-  <script type="text/javascript">
-    document.getElementById("sharelink").innerHTML = window.location
-    let audiosource = document.getElementById("audiosource")
-    let audioplayer = document.getElementById("audioplayer")
-    let recordname = document.getElementById("recordname")
-    let data = <%- data %>
-    audiosource.src = data.filename
-    recordname.innerHTML = data.usergivenid
-    audioplayer.load()
-  </script>
+    <script type="text/javascript" src="../../js/login.js"></script>
+    <script type="text/javascript">
+        const error = document.getElementById("error")
+        let data = <%- data %>
 
+        console.log(data)
+        if (data == "error") {
+            error.innerHTML = "Hash not found. Was it deleted, or never existed at all?"
+            document.getElementById("top").style = "visibility: visible"
+        } else {
+            let audioplayer = document.getElementsByClassName("audioplayer")[0]
+            document.getElementById("sharelink").innerHTML = window.location
+            document.getElementById("audiosource").src = data.filename
+            document.getElementById("mediatitle").innerHTML = data.usergivenid
+            document.getElementById("filesize").innerHTML = "Filesize " + data.filesize
+            audioplayer.load()
+        }
+    </script>
 </body>
-
 </html>

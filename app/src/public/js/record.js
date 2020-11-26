@@ -89,6 +89,9 @@ recbtn.onclick = () => {
 }
 
 async function postMemo(blob, encoding) {
+    if (text.value == "") {
+        text.value = "Unnamed"
+    }
     let fd = new FormData()
     fd.append('blob', blob)
     fd.append('duration', end - start)

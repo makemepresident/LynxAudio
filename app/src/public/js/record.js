@@ -68,6 +68,7 @@ recbtn.onclick = () => {
         start = new Date();
         recorder.startRecording()
     })
+
     let bar = document.getElementById("progressbar")
     width = 0
     interval = setInterval(frame, (10000 / 100))
@@ -84,8 +85,6 @@ recbtn.onclick = () => {
             bar.style.width = width + '%'
         }
     }
-    
-    
 }
 
 async function postMemo(blob, encoding) {

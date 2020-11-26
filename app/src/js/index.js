@@ -5,12 +5,16 @@ const formidable = require('formidable')
 const Blob = require('node-blob')
 const multer = require('multer')
 const favicon = require('serve-favicon')
-const upload = multer({dest: '../public/uploads/'})
 const crypto = require('crypto')
+const Filter = require('bad-words')
 const app = exp()
+
 const api_host = "http://localhost:80"
 const port = 8080
 const log = console.log
+
+const upload = multer({dest: '../public/uploads/'})
+//Filter filter = new Filter()
 
 app.use(exp.static(path.join(__dirname, '../public')))
 app.use(favicon(path.join(__dirname, "../public/favicon.ico")))

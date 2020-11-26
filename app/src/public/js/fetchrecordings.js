@@ -21,7 +21,7 @@ if (userid == null) {
             error.innerHTML = "No recordings exist for your userid!"
             document.getElementById("top").style = "visibility: visible"
         } else {
-            for (i = 0; i < result.length; i++) {
+            for (i = result.length - 1; i >= 0; i--) {
                 let container = document.createElement("div")
                 container.classList.add("recordingcontainer")
 

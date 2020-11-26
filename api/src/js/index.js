@@ -35,16 +35,17 @@ app.post('/postlogin', (req, res) => {
         if (err)  {
             log('Query unsuccessful')
             log(err)
-            return
         } else {
             log("Query success")
-            if (password == res.rows[0].password) {
+            if (res.rowCount == 0) {
+                result["result"] = "userresult"
+            } else if (password == res.rows[0].password) {
                 result["result"] = "true"
                 result["username"] = res.rows[0].username
                 result["id"] = res.rows[0].id
                 result["firstname"] = res.rows[0].first
             } else {
-                result["result"] = "false"
+                result["result"] = "passresult"
             }
         }
         client.end()
@@ -119,7 +120,6 @@ app.get('/dbreq/:unique_hash', (req, res) => {
 
 app.post('/allmemopost', (req, res) => {
     let that = res
-    console.log(req.body.userid)
 
     let client = construct_client()
     client.connect()

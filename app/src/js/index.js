@@ -40,7 +40,6 @@ app.get('/webplayer/:url_hash', (req, res) => {
     }).then((res) => {
         return res.json()
     }).then((recordparams) => {
-        console.log(recordparams)
         if (recordparams.result != "error") {
             recordparams.result.filename = path.join("../uploads/", recordparams.result.filename)
             res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(recordparams.result)})

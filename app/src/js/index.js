@@ -129,3 +129,29 @@ app.post('/regreq', (req, res) => {
         }
     })
 })
+
+app.post('/allreq', (req, res) => {
+    let incoming = formidable.IncomingForm()
+    let passback = res
+    incoming.parse(req, (err, fields) => {
+        if (err) {
+            log(err)
+        }
+
+        let json = {}
+        json["userid"] = fields.userid
+        fetch(api_host + '/allmemopost', {
+            method: 'POST',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(json)
+        }).then((res) => {
+            return res.json()
+        }).then((result) => {
+            res.send(JSON.stringify(result))
+        })
+    })
+})

@@ -9,8 +9,14 @@
 
 <body>
 	<h1 class="title">Lynx</h1>
+
+	<div id="regsuccess" style="display: none">
+		<h5 id="regsuccess">Registration Success! Please sign in with your new username and password.</h2>
+	</div>
+
 	<div id="signeddiv" style="display: none;">
 		<label id="signedin"></label>
+		<a href="myrecordings.html" class="loginbuttons logout">My Recordings</a>
 		<a onclick="logout()" class="loginbuttons logout">Logout</a>
 	</div>
 	
@@ -54,6 +60,12 @@
 	<script src="./js/lib/WebAudioRecorder.js"></script>
 	<script src="./js/record.js"></script>
 	<script src="./js/login.js"></script>
+	<script type="text/javascript">
+		if (document.cookie.includes("regsuccess")) {
+			document.getElementById("regsuccess").style = "display: visible"
+			document.cookie = "regsuccess=;expires=Thu, 01 Jan 1970 00:00:00;path=/;"
+		}
+	</script>
 
 </body>
 

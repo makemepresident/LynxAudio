@@ -155,6 +155,7 @@ async function postRegister() {
     }).then((result) => {
         console.log(result)
         if (result == "true") {
+            document.cookie = "regsuccess=" + result + ";path=/"
             window.location.href = "./index.html"
         } else if (result == "false") {
             document.getElementById("usernamelabel").innerHTML = "Username taken"

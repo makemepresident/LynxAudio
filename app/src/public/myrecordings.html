@@ -1,0 +1,56 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>My Recordings</title>
+    <link rel="stylesheet" href="../css/stylesheet.css">
+</head>
+
+<body>
+
+<h1 class="title">My Recordings</h1>
+
+<div id="signeddiv" style="display: none;">
+    <label id="signedin"></label>
+    <a href="index.html" class="loginbuttons logout">Home Page</a>
+    <a onclick="logout()" class="loginbuttons logout">Logout</a>
+</div>
+
+<div id="logindiv" class="parentgrid1">
+    <div class="column">
+        <label for="username" class="inp">
+            <input type="text" id="username" placeholder="&nbsp;">
+            <span class="label" id="usernamelabel">Username</span>
+            <span class="focus-bg"></span>
+        </label>
+        <label for="password" class="inp">
+            <input type="password" id="password" placeholder="&nbsp;">
+            <span class="label" id="passwordlabel">Password</span>
+            <span class="focus-bg"></span>
+        </label>
+        <div class="parentgrid2">
+            <div class="column">
+                <button id="login" class="loginbuttons">Login</button>
+            </div>
+            <div class="column">
+                <a id="registration" href="register.html" class="loginbuttons">Register</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="top">
+    <h5 id="error" style="display: hidden;"></h1>
+</div>
+
+<div id="mediaplayer">
+    <!-- Populated by fetchrecordings.js -->
+</div>
+
+<script type="text/javascript" src="./js/login.js"></script>
+<script type="text/javascript" src="./js/fetchrecordings.js"></script>
+
+</body>
+
+</html>

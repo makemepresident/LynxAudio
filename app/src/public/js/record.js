@@ -30,6 +30,21 @@ recbtn.onclick = () => {
         return
     }
 
+    function genprogressbar() {
+        bar = document.getElementById("progressbar")
+        timeelapsed = 0
+        interval = setInterval(frame, 10000);
+        function frame() {
+            if (timeelapsed >= 10000) {
+                clearInterval(interval)
+            } else {
+                timeelapsed++
+                bar.style.width += 0.01
+            }
+        }
+    }
+    genprogressbar()
+
     navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
         audioContext = new AudioContext();
 

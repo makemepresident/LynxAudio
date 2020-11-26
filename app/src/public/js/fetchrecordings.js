@@ -4,7 +4,7 @@ const mediaplayer = document.getElementById("mediaplayer")
 
 if (userid == null) {
     error.innerHTML = "User not signed in!"
-    error.style = "display: visible"
+    document.getElementById("top").style = "visibility: visible"
 } else {
     let formbody = new FormData()
     formbody.append("userid", userid)
@@ -19,7 +19,7 @@ if (userid == null) {
     }).then((result) => {
         if (result.length == 0) {
             error.innerHTML = "No recordings exist for your userid!"
-            error.style = "display: visible"
+            document.getElementById("top").style = "visibility: visible"
         } else {
             for (i = 0; i < result.length; i++) {
                 let container = document.createElement("div")

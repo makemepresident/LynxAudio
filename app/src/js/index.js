@@ -46,17 +46,22 @@ app.get('/webplayer/:url_hash', (req, res) => {
         } else {
             res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(recordparams.result)})
         }
+    }).catch((err) => {
+        res.render(path.join(__dirname, "../public/internalerror.html"))
     })
 })
 
 app.post('/memoreq', upload.single('blob'), (req, res) => {
-    let that = res
     var json = {}
     if (req.body.usergivenid.length > 50) {
         res.sendStatus(500)
     } else {
         json["userid"] = req.body.userid
-        json["usergivenid"] = customFilter.clean(req.body.usergivenid)
+        if (req.body.usergivenid == "") {
+            json["usergivenid"] = req.body.usergivenid
+        } else {
+            json["usergivenid"] = customFilter.clean(req.body.usergivenid)
+        }
         json["filename"] = req.file.filename
         json["filesize"] = req.file.size
         json["duration"] = req.body.duration
@@ -71,7 +76,10 @@ app.post('/memoreq', upload.single('blob'), (req, res) => {
         }).then((res) => {
             return res.text()
         }).then((hash) => {
-            that.send(hash)
+            res.send(hash)
+        }).catch((err) => {
+            fs.unlinkSync('../public/uploads/' + json["filename"])
+            res.sendStatus(500)
         })
     }
 })
@@ -99,6 +107,8 @@ app.post('/loginreq', (req, res) => {
             return res.json()
         }).then((result) => {
             res.send(JSON.stringify(result))
+        }).catch((err) => {
+            res.sendStatus(500)
         })
     })
 })
@@ -135,6 +145,8 @@ app.post('/regreq', (req, res) => {
                 return res.text()
             }).then((result) => {
                 res.send(result)
+            }).catch((err) => {
+                res.sendStatus(500)
             })
         }
     })
@@ -162,6 +174,8 @@ app.post('/allreq', (req, res) => {
             return res.json()
         }).then((result) => {
             res.send(JSON.stringify(result))
+        }).catch((err) => {
+            res.sendStatus(500)
         })
     })
 })
@@ -177,14 +191,6 @@ app.post('/delreq', (req, res) => {
         let json = {}
         json["filename"] = fields.filename
 
-        try {
-            fs.unlinkSync('../public/uploads/' + fields.filename)
-        } catch (error) {
-            console.log(error)
-            res.sendStatus(500)
-            return
-        }
-
         fetch(api_host + '/delpost', {
             method: 'POST',
             mode: 'no-cors',
@@ -196,7 +202,10 @@ app.post('/delreq', (req, res) => {
         }).then((res) => {
             return res.text()
         }).then((result) => {
+            fs.unlinkSync('../public/uploads/' + fields.filename)
             res.send(result)
+        }).catch((err) => {
+            res.sendStatus(500)
         })
     })
 })

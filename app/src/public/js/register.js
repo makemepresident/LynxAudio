@@ -18,40 +18,29 @@ let validusername = false
 username.onkeyup = () => {
     if (username.value.length > 0) {
         if (username.value.length > 30) {
-            document.getElementById("usernamelabel").innerHTML = "Username too long!"
-            document.getElementById("usernamelabel").style.color = "rgb(255, 0, 0)"
-            username.style.boxShadow = "inset 0 -2px 0 #F00"
-            validfirst = false
+            setRed("usernamelabel", username, "Username is too long")
+            validusername = false
         } else {
-            document.getElementById("usernamelabel").innerHTML = "Username good"
-            document.getElementById("usernamelabel").style.color = "rgba(255, 255, 255, 0.75)"
-            username.style.boxShadow = "inset 0 -2px 0 #FFF"
-            validfirst = true;
+            setWhite("usernamelabel", username, "Username good")
+            validusername = true;
         }
     } else {
-        document.getElementById("usernamelabel").innerHTML = "Username can't be length 0!"
-        document.getElementById("usernamelabel").style.color = "rgb(255, 0, 0)"
-        username.style.boxShadow = "inset 0 -2px 0 #F00"
+        setRed("usernamelabel", username, "Username can't be length 0")
+        validusername = false
     }
 }
 
 first.onkeyup = () => {
     if (first.value.length > 0) {
         if (first.value.length > 30) {
-            document.getElementById("firstlabel").innerHTML = "First Name too long!"
-            document.getElementById("firstlabel").style.color = "rgb(255, 0, 0)"
-            first.style.boxShadow = "inset 0 -2px 0 #F00"
+            setRed("firstlabel", first, "First Name too long")
             validfirst = false
         } else {
-            document.getElementById("firstlabel").innerHTML = "First name good"
-            document.getElementById("firstlabel").style.color = "rgba(255, 255, 255, 0.75)"
-            first.style.boxShadow = "inset 0 -2px 0 #FFF"
+            setWhite("firstlabel", first, "First name good")
             validfirst = true;
         }
     } else {
-        document.getElementById("firstlabel").innerHTML = "First name field empty"
-        document.getElementById("firstlabel").style.color = "rgb(255, 0, 0)"
-        first.style.boxShadow = "inset 0 -2px 0 #F00"
+        setRed("firstlabel", first, "First name field empty")
         validfirst = false;
     }
 }
@@ -59,72 +48,57 @@ first.onkeyup = () => {
 last.onkeyup = () => {
     if (last.value.length > 0) {
         if (last.value.length > 30) {
-            document.getElementById("lastlabel").innerHTML = "Last Name too long!"
-            document.getElementById("lastlabel").style.color = "rgb(255, 0, 0)"
-            last.style.boxShadow = "inset 0 -2px 0 #F00"
+            setRed("lastlabel", last, "Last Name too long")
             validlast = false
         } else {
-            document.getElementById("lastlabel").innerHTML = "Last name good"
-            document.getElementById("lastlabel").style.color = "rgba(255, 255, 255, 0.75)"
-            last.style.boxShadow = "inset 0 -2px 0 #FFF"
+            setWhite("lastlabel", last, "Last name good")
             validlast = true;
         }
     } else {
-        document.getElementById("lastlabel").innerHTML = "Last name field empty"
-        document.getElementById("lastlabel").style.color = "rgb(255, 0, 0)"
-        last.style.boxShadow = "inset 0 -2px 0 #F00"
+        setRed("lastlabel", last, "Last name field empty")
         validlast = false;
     }
 }
 
 password.onkeyup = () => {
     if (password.value.length < 8) {
-        document.getElementById("passwordlabel").innerHTML = "Password invalid"
-        document.getElementById("passwordlabel").style.color = "rgb(255, 0, 0)"
-        password.style.boxShadow = "inset 0 -2px 0 #F00"
+        setRed("passwordlabel", password, "Password invalid")
         validpass = false
     } else {
-        document.getElementById("passwordlabel").innerHTML = "Password valid"
-        document.getElementById("passwordlabel").style.color = "rgba(255, 255, 255, 0.75)"
-        password.style.boxShadow = "inset 0 -2px 0 #FFF"
+        setWhite("passwordlabel", password, "Password valid")
         validpass = true
+        if (password.value == verify.value) {
+            setWhite("verifylabel", verify, "Passwords match")
+        }
     }
 }
 
 verify.onkeyup = () => {
     if (password.value != verify.value) {
-        document.getElementById("verifylabel").innerHTML = "Passwords do not match!"
-        document.getElementById("verifylabel").style.color = "rgb(255, 0, 0)"
-        verify.style.boxShadow = "inset 0 -2px 0 #F00"
+        setRed("verifylabel", verify, "Passwords do not match")
         validverify = false
     } else {
-        document.getElementById("verifylabel").innerHTML = "Passwords match!"
-        document.getElementById("verifylabel").style.color = "rgba(255, 255, 255, 0.75)"
-        verify.style.boxShadow = "inset 0 -2px 0 #FFF"
+        setWhite("verifylabel", verify, "Passwords match")
         validverify = true
     }
 }
 
 email.onkeyup = () => {
-    if (!email.value.includes("@")) {
-        if (email.value.length > 50) {
-            document.getElementById("emaillabel").innerHTML = "Email address too long"
-        } else {
-            document.getElementById("emaillabel").innerHTML = "Email address invalid"
-        }
-        document.getElementById("emaillabel").style.color = "rgb(255, 0, 0)"
-        email.style.boxShadow = "inset 0 -2px 0 #F00"
-        validemail = false
-    } else {
-        document.getElementById("emaillabel").innerHTML = "Email valid!"
-        document.getElementById("emaillabel").style.color = "rgba(255, 255, 255, 0.75)"
-        email.style.boxShadow = "inset 0 -2px 0 #FFF"
+    if (email.value.includes("@") && email.value.includes(".") && email.value.length <= 50) {
+        setWhite("emaillabel", email, "Email valid")
         validemail = true
+    } else {
+        if (email.value.length > 50) {
+            setRed("emaillabel", email, "Email address too long")
+        } else {
+            setRed("emaillabel", email, "Email address invalid")
+        }
+        validemail = false
     }
 }
 
 register.onclick = () => {
-    if (validemail && validpass && validverify && validfirst && validlast) {
+    if (validusername && validemail && validpass && validverify && validfirst && validlast) {
         register.disabled = true
         postRegister()
     } else {
@@ -151,22 +125,39 @@ async function postRegister() {
         cache: 'no-cache',
         body: formbody
     }).then((res) => {
-        return res.text()
+        if (res.status == 500) {
+            console.error("Internal server error, check to make sure API is running")
+        } else {
+            return res.text()
+        }
     }).then((result) => {
-        console.log(result)
-        if (result == "true") {
-            document.cookie = "regsuccess=" + result + ";path=/"
-            window.location.href = "./index.html"
-        } else if (result == "false") {
-            document.getElementById("usernamelabel").innerHTML = "Username taken"
-            document.getElementById("usernamelabel").style.color = "rgb(255, 0, 0)"
-            username.style.boxShadow = "inset 0 -2px 0 #F00"
-            register.disabled = false
-        } else if (result == "profane") {
-            document.getElementById("usernamelabel").innerHTML = "Username contains profanity"
-            document.getElementById("usernamelabel").style.color = "rgb(255, 0, 0)"
-            username.style.boxShadow = "inset 0 -2px 0 #F00"
-            register.disabled = false
+        if (result) {
+            if (result == "true") {
+                document.cookie = "regsuccess=" + result + ";path=/"
+                window.location.href = "./index.html"
+            } else if (result == "false") {
+                document.getElementById("usernamelabel").innerHTML = "Username taken"
+                document.getElementById("usernamelabel").style.color = "rgb(255, 0, 0)"
+                username.style.boxShadow = "inset 0 -2px 0 #F00"
+                register.disabled = false
+            } else if (result == "profane") {
+                document.getElementById("usernamelabel").innerHTML = "Username contains profanity"
+                document.getElementById("usernamelabel").style.color = "rgb(255, 0, 0)"
+                username.style.boxShadow = "inset 0 -2px 0 #F00"
+                register.disabled = false
+            }
         }
     })
+}
+
+function setRed(label, input, text) {
+    document.getElementById(label).innerHTML = text
+    document.getElementById(label).style.color = "rgb(255, 0, 0)"
+    input.style.boxShadow = "inset 0 -2px 0 #F00"
+}
+
+function setWhite(label, input, text) {
+    document.getElementById(label).innerHTML = text
+    document.getElementById(label).style.color = "rgba(255, 255, 255, 0.75)"
+    input.style.boxShadow = "inset 0 -2px 0 #FFF"
 }

@@ -67,7 +67,6 @@
         const error = document.getElementById("error")
         let data = <%- data %>
 
-        console.log(data)
         if (data == "error") {
             error.innerHTML = "Hash not found. Was it deleted, or never existed at all?"
             document.getElementById("top").style = "visibility: visible"

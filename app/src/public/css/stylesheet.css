@@ -250,3 +250,78 @@ button {
     height: 24px;
     background-color:rgb(35, 40, 45);
 }
+
+/* Audio container */
+
+.audiocontainer {
+    width: 100%;
+    display: grid;
+    background-color: #000;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .2);
+    align-items: center;
+    grid-template-columns: min-content auto min-content;
+    height: 75px;
+}
+
+.time1 {
+    text-align: center;
+    margin-right: 20px;
+}
+
+.time2 {
+    text-align: center;
+    margin-left: 20px;
+}
+
+.playpause {
+    cursor: pointer;
+    text-align: center;
+    margin: 0 20px;
+}
+
+.volume {
+    cursor: pointer;
+    text-align: center;
+    margin: 0 20px;
+}
+
+.slider {
+    margin: 0 auto;
+    width: 100%;
+    height: 6px;
+    align-self: center;
+    background-color: #FFF;
+}
+
+.dot {
+    height: 16px;
+    width: 16px;
+    border-radius: 8px;
+    position: relative;
+    top: -5px;
+    left: 8px;
+    background-color: #F00;
+    float: right;
+    cursor: pointer;
+}
+
+.progress {
+    height: 100%;
+    background-color: #F00;
+    width: 0%;
+}
+
+@keyframes spin {
+    to {transform: rotate(360deg);}
+}
+
+.loading {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #FFF;
+    border-right-color: transparent;
+    border-left-color: transparent;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+}

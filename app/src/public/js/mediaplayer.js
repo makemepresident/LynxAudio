@@ -19,8 +19,8 @@ audiocontroller.onloadedmetadata = () => {
     let totalseconds = audiocontroller.duration.toFixed(2)
     totaltime.innerHTML = totalseconds
 
-    document.onmouseup = (event) => {
-        dot.onmousemove = null;
+    window.onmouseup = (event) => {
+        window.onmousemove = null;
     }
     
     dot.onmousedown = (event) => {
@@ -32,10 +32,7 @@ audiocontroller.onloadedmetadata = () => {
         let max = parseInt(window.getComputedStyle(slider).width)
         let current = parseInt(window.getComputedStyle(progress).width)
     
-        console.log(max)
-        console.log(current)
-    
-        dot.onmousemove = (event2) => {
+        window.onmousemove = (event2) => {
             event2 = event2 || window.event;
             event2.preventDefault();
             

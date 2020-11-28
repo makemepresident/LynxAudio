@@ -325,3 +325,28 @@ button {
     border-radius: 50%;
     animation: spin .8s linear infinite;
 }
+
+/* Begin volume container */
+
+.volcontainer {
+    position: relative;
+    grid-template-columns: auto;
+    background-color: #000;
+    float: right;
+    padding: 12px;
+    height: 30px;
+    width: 10vw;
+    left: calc(45vw + 5px);
+    bottom: 52.5px;
+}
+
+.voldot {
+    height: 12px;
+    width: 12px;
+    top: -4px;
+    left: 7px;
+}
+
+.slider {
+    height: 4px;
+}

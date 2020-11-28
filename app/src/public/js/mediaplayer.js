@@ -8,6 +8,10 @@ let audiosource = document.getElementById("audiosource")
 let loading = document.getElementById("loading")
 let playpausevis = document.getElementById("playpausevis")
 let slider = document.getElementById("slider")
+let volumebutton = document.getElementById("volumebutton")
+let volumecontainer = document.getElementById("volumecontainer")
+
+let volumeshown = false
 
 audiocontroller.onloadedmetadata = () => {
     loading.style = "display: none"
@@ -66,6 +70,16 @@ playpause.onclick = () => {
     } else {
         playpause.setAttribute("d", "M 18 12 L 0 24 V 0 0")
         audiocontroller.pause()
+    }
+}
+
+volumebutton.onclick = () => {
+    if (!volumeshown) {
+        volumeshown = true;
+        volumecontainer.style = "display: visible"
+    } else {
+        volumeshown = false;
+        volumecontainer.style = "display: none"
     }
 }
 

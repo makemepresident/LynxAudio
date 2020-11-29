@@ -32,6 +32,10 @@ volumebutton.onclick = () => {
     }
 }
 
+volumedot.onmouseup = () => {
+    window.onmousemove = null
+}
+
 volumedot.onmousedown = (event) => {
     event = event || window.event;
     event.preventDefault();
@@ -47,11 +51,14 @@ volumedot.onmousedown = (event) => {
             
         let calculatedwidth = (event2.clientX - x) + parseInt(current)
         if (calculatedwidth >= min && calculatedwidth < max) {
-            volumeprogress.style = "width: " + ((event2.clientX - x) + current) + "px"
             let ratio = (calculatedwidth / max)
             audiocontroller.volume = ratio.toFixed(2)
         }
     }
+}
+
+audiocontroller.onvolumechange = () => {
+    volumeprogress.style.width = (audiocontroller.volume * 100) + "%"
 }
 
 // Audio controller handers
@@ -91,8 +98,6 @@ audiocontroller.onloadedmetadata = () => {
             
             let calculatedwidth = (event2.clientX - x) + parseInt(current)
             if (calculatedwidth >= min && calculatedwidth <= max) {
-                progress.style = "width: " + ((event2.clientX - x) + current) + "px"
-
                 let ratio = (calculatedwidth / max)
                 let value = (ratio * totalseconds)
 
@@ -102,15 +107,15 @@ audiocontroller.onloadedmetadata = () => {
     }
 }
 
+audiocontroller.ontimeupdate = () => {
+    currenttime.innerHTML = audiocontroller.currentTime.toFixed(2)
+    progress.style.width = ((audiocontroller.currentTime / audiocontroller.duration) * 100).toFixed(2) + "%"
+}
+
 audiocontroller.onended = () => {
     playpause.setAttribute("d", "M 18 12 L 0 24 V 0 0")
     progress.style.width = "0%"
     currenttime.innerHTML = "0.00"
-}
-
-audiocontroller.ontimeupdate = () => {
-    currenttime.innerHTML = audiocontroller.currentTime.toFixed(2)
-    progress.style.width = ((audiocontroller.currentTime / audiocontroller.duration) * 100).toFixed(2) + "%"
 }
 
 audiosource.src = "../uploads/3b7e7251bfec10f7751fb574188f7b65"

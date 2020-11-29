@@ -18,8 +18,12 @@ body{
 	color: #FFF;
 }
 
+h1 {
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 1);
+}
+
 .title {
-	margin-top: 25vh; 
+	margin-top: 25vh;
 	color: #FFF;
 }
 
@@ -163,7 +167,7 @@ button {
 	background-size: 100px auto;
 	background-repeat: no-repeat;
 	background-position-x: center;
-	background-position-y: center;
+    background-position-y: center;
 }
 
 .loginbuttons#recordbutton:hover {
@@ -201,14 +205,14 @@ button {
 
 .mediatitle {
 	display: inline-block;
-	margin: 0px 0px 0.25em 0px;
-	width: 40%;
+	margin: 0px 0px 15px 0px;
+	width: 50%;
 }
 
 .filesize {
 	display: inline-block;
 	margin: 0px 0px 0.25em 0px;
-	width: 40%;
+	width: 50%;
 	text-align: right;
 }
 
@@ -232,9 +236,14 @@ button {
 }
 
 #sharelink {
-   width: 100%;
-   text-align: center;
-   resize: none;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+    resize: none;
+}
+
+#share {
+    font-size: 25px;
 }
 
 .progressbarcontainer {
@@ -242,7 +251,7 @@ button {
     width: 100%;
 	background-color:rgb(58 61 67);
 	border: 0.1em solid #FFF;
-	border-radius: 0.12em;
+    border-radius: 0.12em;
 }
 
 .progressbar {
@@ -251,14 +260,85 @@ button {
     background-color:rgb(35, 40, 45);
 }
 
+/* My Recording Page */
+
+.infocontainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr min-content;
+    background-color: rgba(0, 0, 0, 0.12);
+    padding: 15px;
+    margin: 0 0 25px 0;
+    border: #000;
+    box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.75);
+}
+
+.infoitem {
+    margin: 0 0 10px 0;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.infocontent {
+    display: inline;
+    font-size: 16px;
+}
+
+.webplayerview {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.infocontent {
+    overflow-x: hidden;
+}
+
+.myrecordings {
+    overflow-x: scroll;
+    margin-right: 10px;
+}
+
+.myrecordings {
+    overflow-x: scroll;
+    margin-right: 10px;
+}
+
+.myrecordings::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.myrecordings::-webkit-scrollbar-track {
+    background: none;
+}
+
+.myrecordings::-webkit-scrollbar-thumb {
+    background: none;
+    border-radius: 4px;
+}
+
+.myrecordings:hover::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.myrecordings::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.row {
+    white-space: nowrap;
+}
+
 /* Audio container */
 
 .audiocontainer {
     width: 100%;
     display: grid;
-    background-color: #000;
+    border: #000;
     border-radius: 8px;
-    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .2);
+    box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.12);
     align-items: center;
     grid-template-columns: min-content auto min-content;
     height: 75px;
@@ -331,13 +411,18 @@ button {
 .volcontainer {
     position: relative;
     grid-template-columns: auto;
-    background-color: #000;
     float: right;
-    padding: 12px;
+    padding: 0px 20px;
     height: 30px;
     width: 10vw;
-    left: calc(45vw + 5px);
+    left: calc(45vw + 15px);
     bottom: 52.5px;
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.75);
+}
+
+.controls {
+    box-shadow: none;
+    background-color: transparent;
 }
 
 .voldot {
@@ -349,4 +434,8 @@ button {
 
 .slider {
     height: 4px;
+}
+
+.volprogress {
+    width: 100%;
 }

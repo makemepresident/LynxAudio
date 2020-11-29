@@ -1,18 +1,24 @@
+// Play/Pause/Loading
+let playpause = document.getElementById("playpause")
+let playpausepath = document.getElementById("playpausepath")
+let playpausevis = document.getElementById("playpausevis")
+let loading = document.getElementById("loading")
 
-// Main controller
-let playpause = document.getElementById("playpausepath")
+// Audio text elements
 let currenttime = document.getElementById("currenttime")
 let totaltime = document.getElementById("totaltime")
-let dot = document.getElementById("progressdot")
+
+// Progress Elements
 let progress = document.getElementById("progress")
+let slider = document.getElementById("slider")
+let dot = document.getElementById("progressdot")
+
+// Controller
 let audiocontroller = document.getElementById("audiocontroller")
 let audiosource = document.getElementById("audiosource")
-let loading = document.getElementById("loading")
-let playpausevis = document.getElementById("playpausevis")
-let slider = document.getElementById("slider")
-let volumebutton = document.getElementById("volumebutton")
 
 // Volume controller
+let volumebutton = document.getElementById("volumebutton")
 let volumecontroller = document.getElementById("volumecontainer")
 let volumeslider = document.getElementById("volslider")
 let volumeprogress = document.getElementById("volprogress")
@@ -25,10 +31,10 @@ let volumeshown = false
 volumebutton.onclick = () => {
     if (!volumeshown) {
         volumeshown = true;
-        volumecontainer.style = "display: visible"
+        volumecontainer.style = "visibility: visible;"
     } else {
         volumeshown = false;
-        volumecontainer.style = "display: none"
+        volumecontainer.style = "visibility: hidden;"
     }
 }
 
@@ -65,10 +71,10 @@ audiocontroller.onvolumechange = () => {
 
 playpause.onclick = () => {
     if (audiocontroller.paused == true) {
-        playpause.setAttribute("d", "M 0 0 L 0 24 L 6 24 L 6 0 M 18 0 L 18 24 L 12 24 L 12 0")
+        playpausepath.setAttribute("d", "M 0 0 L 0 24 L 6 24 L 6 0 M 18 0 L 18 24 L 12 24 L 12 0")
         audiocontroller.play()
     } else {
-        playpause.setAttribute("d", "M 18 12 L 0 24 V 0 0")
+        playpausepath.setAttribute("d", "M 18 12 L 0 24 V 0 0")
         audiocontroller.pause()
     }
 }
@@ -113,10 +119,7 @@ audiocontroller.ontimeupdate = () => {
 }
 
 audiocontroller.onended = () => {
-    playpause.setAttribute("d", "M 18 12 L 0 24 V 0 0")
+    playpausepath.setAttribute("d", "M 18 12 L 0 24 V 0 0")
     progress.style.width = "0%"
     currenttime.innerHTML = "0.00"
 }
-
-audiosource.src = "../uploads/3b7e7251bfec10f7751fb574188f7b65"
-audiocontroller.load()

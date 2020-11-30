@@ -46,15 +46,15 @@ if (userid == null) {
                     row.className = "row"
                     let row2 = document.createElement("div")
                     row2.className = "row"
+                    let row3 = document.createElement("div")
+                    row3.className = "row"
                     let row4 = document.createElement("div")
                     row4.className = "row"
-                    let row5 = document.createElement("div")
-                    row5.className = "row"
 
                     column.appendChild(row)
                     column.appendChild(row2)
+                    column2.appendChild(row3)
                     column2.appendChild(row4)
-                    column2.appendChild(row5)
 
                     let clipname = document.createElement("h5")
                     clipname.className = "infoitem"
@@ -93,10 +93,10 @@ if (userid == null) {
                     row.appendChild(usergivenid)
                     row2.appendChild(length)
                     row2.appendChild(cliplength)
-                    row4.appendChild(file)
-                    row4.appendChild(filename)
-                    row5.appendChild(hash)
-                    row5.appendChild(urlhash)
+                    row3.appendChild(file)
+                    row3.appendChild(filename)
+                    row4.appendChild(hash)
+                    row4.appendChild(urlhash)
 
                     let webview = document.createElement("a")
                     webview.className = "loginbuttons webplayerview"

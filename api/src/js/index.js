@@ -52,7 +52,7 @@ app.post('/postlogin', (req, res) => {
 })
 
 app.post('/postregister', (req, res) => {
-    let ressend = res
+    let that = res
     let input = [req.body.username, req.body.password, req.body.first, req.body.last, req.body.email]
     let client = construct_client()
     client.connect()
@@ -62,10 +62,11 @@ app.post('/postregister', (req, res) => {
             console.log(err)
         } else {
             if (res.rowCount == 1) {
-                ressend.send("true")
+                that.send("true")
             } else if (res.rowCount == 0) {
-                ressend.send("false")
+                that.send("false")
             }
+            client.end()
         }
     })
 })
@@ -86,7 +87,6 @@ app.post('/postmemo', (req, res) => {
     client.query(text, input, (err, res) => {
         if (err) {
             log(err)
-            return
         } else {
             client.end()
             that.send(unique_string)
@@ -97,19 +97,18 @@ app.post('/postmemo', (req, res) => {
 app.get('/dbreq/:unique_hash', (req, res) => {
     let that = res
     let filename = {}
+
     let client = construct_client()
     client.connect()
     let text = 'SELECT * FROM audio_clips WHERE url_hash = $1'
     let input = [req.params.unique_hash]
     client.query(text, input, (err, res) => {
         if(err) {
-            log('Query unsuccessful - ')
             console.log(err)
         } else {
             if (res.rowCount == 0) {
                 filename["result"] = "error"
             } else {
-                log("Query successful")
                 filename["result"] = res.rows[0]
             }
         }
@@ -129,7 +128,6 @@ app.post('/allmemopost', (req, res) => {
         if (err) {
             log(err)
         } else {
-            log("Query successful")
             client.end()
             that.send(JSON.stringify(res.rows))
         }

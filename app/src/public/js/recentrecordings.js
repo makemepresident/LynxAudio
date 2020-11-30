@@ -18,6 +18,7 @@ fetch(recreq_path, {
             document.getElementById("recentfailure").style = "display: block"
         } else {
             for (i = 0; i < result.length; i++) {
+                // Don't ever make me thing about this again, this was garbage to write
                 let infocontainer = document.createElement("div")
                 infocontainer.className = "infocontainer"
 

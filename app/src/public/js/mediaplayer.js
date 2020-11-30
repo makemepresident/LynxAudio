@@ -28,15 +28,17 @@ let volumedot = document.getElementById("voldot")
 let returntohome = document.getElementById("returntohome")
 let returntorecordings = document.getElementById("returntorecordings")
 
+// Bools
 let volumeshown = false
 
+// Shows button that takes you back to either myrecordings.html or the homepage depending on where you came from
 if (document.referrer.includes("myrecordings.html")) {
     returntorecordings.style = "display: block"
 } else {
     returntohome.style = "display: block"
 }
 
-// Volume button handlers
+// Volume controller handlers
 
 volumebutton.onclick = (event) => {
     event.stopPropagation()

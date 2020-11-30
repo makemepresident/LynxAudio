@@ -1,16 +1,20 @@
 const loginbutton = document.getElementById("login")
 const loginconf = document.getElementById("signedin")
+const usernamelabel = document.getElementById("usernamelabel")
+const passwordlabel = document.getElementById("passwordlabel")
+const username = document.getElementById("username")
+const password = document.getElementById("password")
 const login_path = 'http://localhost:8080/loginreq'
 
 const cookies = document.cookie
 let userid = null
-let username = null
+let usernamecook = null
 let first = null
 
 if (cookies.includes("id")) {
     let splitCookie = cookies.split("; ")
     userid = splitCookie[0].split("=")[1]
-    username = splitCookie[1].split("=")[1]
+    usernamecook = splitCookie[1].split("=")[1]
     first = splitCookie[2].split("=")[1]
     loginconf.innerHTML = "Hello " + first + "!"
     document.getElementById("signeddiv").style = "display: visible"
@@ -18,15 +22,13 @@ if (cookies.includes("id")) {
 }
 
 loginbutton.onclick = () => {
-    document.getElementById("usernamelabel").innerHTML = "Username"
-    document.getElementById("usernamelabel").style.color = "rgba(255, 255, 255, 0.75)"
-    document.getElementById("username").style.boxShadow = "inset 0 -2px 0 #FFF"
-    document.getElementById("passwordlabel").innerHTML = "Password"
-    document.getElementById("passwordlabel").style.color = "rgba(255, 255, 255, 0.75)"
-    document.getElementById("password").style.boxShadow = "inset 0 -2px 0 #FFF"
-    let username = document.getElementById("username").value
-    let password = document.getElementById("password").value
-    login(username, password);
+    usernamelabel.innerHTML = "Username"
+    usernamelabel.style.color = "rgba(255, 255, 255, 0.75)"
+    username.style.boxShadow = "inset 0 -2px 0 #FFF"
+    passwordlabel.innerHTML = "Password"
+    passwordlabel.style.color = "rgba(255, 255, 255, 0.75)"
+    username.style.boxShadow = "inset 0 -2px 0 #FFF"
+    login();
 }
 
 function logout() {
@@ -36,10 +38,10 @@ function logout() {
     location.reload()
 }
 
-async function login(username, password) {
+async function login() {
     let ld = new FormData()
-    ld.append('username', username)
-    ld.append('password', password)
+    ld.append('username', username.value)
+    ld.append('password', password.value)
     await fetch(login_path, {
         method: 'POST',
         mode: 'no-cors',
@@ -59,13 +61,13 @@ async function login(username, password) {
                 document.cookie = "firstname=" + result.firstname + ";path=/"
                 location.reload()
             } else if (result.result == "userresult") {
-                document.getElementById("usernamelabel").innerHTML = "Username invalid."
-                document.getElementById("usernamelabel").style.color = "rgb(255, 0, 0)"
-                document.getElementById("username").style.boxShadow = "inset 0 -2px 0 #F00"
+                usernamelabel.innerHTML = "Username invalid."
+                usernamelabel.style.color = "rgb(255, 0, 0)"
+                username.style.boxShadow = "inset 0 -2px 0 #F00"
             } else if (result.result == "passresult") {
-                document.getElementById("passwordlabel").innerHTML = "Incorrect username/password!"
-                document.getElementById("passwordlabel").style.color = "rgb(255, 0, 0)"
-                document.getElementById("password").style.boxShadow = "inset 0 -2px 0 #F00"
+                passwordlabel.innerHTML = "Incorrect username/password!"
+                passwordlabel.style.color = "rgb(255, 0, 0)"
+                password.style.boxShadow = "inset 0 -2px 0 #F00"
             }
         }
     })

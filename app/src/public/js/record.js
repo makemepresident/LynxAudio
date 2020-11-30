@@ -2,11 +2,12 @@ let audioContext = new AudioContext()
 let input;
 let recorder;
 let gumStream;
-const limit = 5000 // 5s record limit
+const limit = 10000 // 10s record limit
 const app_path = 'http://localhost:8080/memoreq'
 let hasMicrophone = false
 let start = null
 let end = null
+let clicked = false
 let recbtn = document.getElementById('recordbutton')
 let text = document.getElementById('usergivenid')
 
@@ -20,22 +21,15 @@ text.onkeyup = () => {
     }
 }
 
-let a = false
 recbtn.onclick = () => {
     let bar = document.getElementById("progressbar")
     width = 0
 
-    if(a == true) {
-        clearInterval(interval)
-        bar.style.width = "0%"
-        gumStream.getAudioTracks()[0].stop()
-        a = false
+    if(clicked == true) {
         recorder.finishRecording()
-        recbtn.style.backgroundColor = null
         return
     }
 
-    
     navigator.permissions.query({name:"microphone"}).then((res) => {
         if (res.state == "granted") {
             navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
@@ -58,17 +52,21 @@ recbtn.onclick = () => {
                 })
 
                 recorder.onComplete = (rec, blob) => {
-                    recbtn.style.backgroundColor = null
                     end = new Date()
+                    recbtn.style.backgroundColor = null
+                    recbtn.disabled = true
+                    clearInterval(interval)
+                    gumStream.getAudioTracks()[0].stop()
+                    clicked = false
                     postMemo(blob, recorder.encoding)
                 }
 
                 recorder.setOptions({
-                    timelimit: 5,
+                    timelimit: 10,
                     encodeAfterRecord: true
                 })
 
-                a = true
+                clicked = true
                 recbtn.style.backgroundColor = 'rgb(199, 0, 0)'
                 start = new Date();
 
@@ -77,11 +75,7 @@ recbtn.onclick = () => {
 
                 function frame() {
                     if (width >= 100) {
-                        clearInterval(interval)
-                        gumStream.getAudioTracks()[0].stop()
-                        a = false
                         recorder.finishRecording()
-                        recbtn.style.backgroundColor = null
                     } else {
                         width++;
                         bar.style.width = width + '%'

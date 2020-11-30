@@ -27,33 +27,89 @@ if (userid == null) {
                 error.innerHTML = "No recordings exist for your userid!"
                 document.getElementById("top").style = "visibility: visible"
             } else {
-                for (i = result.length - 1; i >= 0; i--) {
-                    let container = document.createElement("div")
-                    container.classList.add("recordingcontainer")
+                let mediaplayer = document.getElementById("mediaplayer")
+                for (i = 0; i < result.length; i++) {
+                    let infocontainer = document.createElement("div")
+                    infocontainer.className = "infocontainer"
 
-                    let title = document.createElement("h5")
-                    title.classList.add("mediatitle")
-                    title.innerHTML = result[i].usergivenid
+                    let column = document.createElement("div")
+                    column.className = "column myrecordings"
+                    infocontainer.appendChild(column)
+                    let column2 = document.createElement("div")
+                    column2.className = "column myrecordings"
+                    infocontainer.appendChild(column2)
+                    let column3 = document.createElement("div")
+                    column3.className = "column button"
+                    infocontainer.appendChild(column3)
 
-                    let filesize = document.createElement("h5")
-                    filesize.classList.add("filesize")
-                    filesize.innerHTML = "Filesize " + result[i].filesize
+                    let row = document.createElement("div")
+                    row.className = "row"
+                    let row2 = document.createElement("div")
+                    row2.className = "row"
+                    let row3 = document.createElement("div")
+                    row3.className = "row"
+                    let row4 = document.createElement("div")
+                    row4.className = "row"
 
-                    let audioplayer = document.createElement("audio")
-                    audioplayer.nodeType="audio/wav"
-                    audioplayer.classList.add("audioplayer")
-                    audioplayer.controls = 'controls'
+                    column.appendChild(row)
+                    column.appendChild(row2)
+                    column2.appendChild(row3)
+                    column2.appendChild(row4)
 
-                    let source = document.createElement("source")
-                    source.id = "audiosource"
-                    source.src = "../uploads/" + result[i].filename
+                    let clipname = document.createElement("h5")
+                    clipname.className = "infoitem"
+                    clipname.innerHTML = "Clip name: "
 
-                    let deletebtn = document.createElement("button")
+                    let usergivenid = document.createElement("p")
+                    usergivenid.className = "infocontent"
+                    usergivenid.innerHTML = " " + result[i].usergivenid
+
+                    let length = document.createElement("h5")
+                    length.className = "infoitem"
+                    length.innerHTML = "Length: "
+
+                    let cliplength = document.createElement("p")
+                    cliplength.className = "infocontent"
+                    let inseconds = (result[i].cliplength / 1000).toFixed(2)
+                    cliplength.innerHTML = " " + inseconds + " seconds"
+
+                    let file = document.createElement("h5")
+                    file.className = "infoitem"
+                    file.innerHTML = "File name: "
+
+                    let filename = document.createElement("p")
+                    filename.className = "infocontent"
+                    filename.innerHTML = " " + result[i].filename
+
+                    let hash = document.createElement("h5")
+                    hash.className = "infoitem"
+                    hash.innerHTML = "URL: "
+
+                    let urlhash = document.createElement("p")
+                    urlhash.className = "infocontent"
+                    urlhash.innerHTML = " " + result[i].url_hash
+
+                    row.appendChild(clipname)
+                    row.appendChild(usergivenid)
+                    row2.appendChild(length)
+                    row2.appendChild(cliplength)
+                    row3.appendChild(file)
+                    row3.appendChild(filename)
+                    row4.appendChild(hash)
+                    row4.appendChild(urlhash)
+
+                    let webview = document.createElement("a")
+                    webview.className = "loginbuttons webplayerview"
+                    webview.innerHTML = "View"
+                    webview.href = "../webplayer/" + result[i].url_hash
+
+                    let deletebtn = document.createElement("a")
                     deletebtn.classList.add("loginbuttons")
-                    deletebtn.classList.add("deletebutton")
+                    deletebtn.classList.add("webplayerview")
+                    deletebtn.id = result[i].filename
                     deletebtn.onclick = () => {
                         let formbody2 = new FormData()
-                        formbody2.append("filename", source.src.split("/uploads/")[1])
+                        formbody2.append("filename", deletebtn.id)
                         fetch(delreq_path, {
                             method: 'POST',
                             mode: 'no-cors',
@@ -76,14 +132,12 @@ if (userid == null) {
                             }
                         })
                     }
-                    deletebtn.innerHTML = "Delete Memo"
+                    deletebtn.innerHTML = "Delete"
 
-                    audioplayer.appendChild(source)
-                    container.appendChild(title)
-                    container.appendChild(filesize)
-                    container.appendChild(deletebtn)
-                    container.appendChild(audioplayer)
-                    mediaplayer.appendChild(container)
+                    column3.appendChild(webview)
+                    column3.appendChild(deletebtn)
+
+                    mediaplayer.appendChild(infocontainer)
                 }
             }
         } else {

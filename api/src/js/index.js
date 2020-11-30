@@ -33,10 +33,8 @@ app.post('/postlogin', (req, res) => {
     let text = 'SELECT id, username, password, first FROM users WHERE username=$1'
     client.query(text, input, (err, res) => {
         if (err)  {
-            log('Query unsuccessful')
             log(err)
         } else {
-            log("Query success")
             if (res.rowCount == 0) {
                 result["result"] = "userresult"
             } else if (password == res.rows[0].password) {
@@ -54,7 +52,7 @@ app.post('/postlogin', (req, res) => {
 })
 
 app.post('/postregister', (req, res) => {
-    let ressend = res
+    let that = res
     let input = [req.body.username, req.body.password, req.body.first, req.body.last, req.body.email]
     let client = construct_client()
     client.connect()
@@ -64,10 +62,11 @@ app.post('/postregister', (req, res) => {
             console.log(err)
         } else {
             if (res.rowCount == 1) {
-                ressend.send("true")
+                that.send("true")
             } else if (res.rowCount == 0) {
-                ressend.send("false")
+                that.send("false")
             }
+            client.end()
         }
     })
 })
@@ -87,33 +86,29 @@ app.post('/postmemo', (req, res) => {
     let text = 'INSERT INTO audio_clips(userid, filename, cliplength, filesize, url_hash, usergivenid) VALUES($1, $2, $3, $4, $5, $6)'
     client.query(text, input, (err, res) => {
         if (err) {
-            log('Query unsuccessful - ')
             log(err)
-            return
         } else {
-            log('Query Success')
+            client.end()
+            that.send(unique_string)
         }
-        client.end()
-        that.send(unique_string)
     })
 })
 
 app.get('/dbreq/:unique_hash', (req, res) => {
     let that = res
     let filename = {}
+
     let client = construct_client()
     client.connect()
     let text = 'SELECT * FROM audio_clips WHERE url_hash = $1'
     let input = [req.params.unique_hash]
     client.query(text, input, (err, res) => {
         if(err) {
-            log('Query unsuccessful - ')
             console.log(err)
         } else {
             if (res.rowCount == 0) {
                 filename["result"] = "error"
             } else {
-                log("Query successful")
                 filename["result"] = res.rows[0]
             }
         }
@@ -127,13 +122,12 @@ app.post('/allmemopost', (req, res) => {
 
     let client = construct_client()
     client.connect()
-    let text = 'SELECT * FROM audio_clips WHERE userid=$1'
+    let text = 'SELECT * FROM audio_clips WHERE userid=$1 ORDER BY audio_clips.id DESC'
     let input = [req.body.userid]
     client.query(text, input, (err, res) => {
         if (err) {
             log(err)
         } else {
-            log("Query successful")
             client.end()
             that.send(JSON.stringify(res.rows))
         }
@@ -152,9 +146,27 @@ app.post('/delpost', (req, res) => {
             log(err)
             that.send("err")
         } else {
-            log("Query successful")
             client.end()
             that.send("success")
+        }
+    })
+})
+
+app.get('/recpost', (req, res) => {
+    let that = res
+
+    let client = construct_client()
+    client.connect()
+    let text = "SELECT audio_clips.id,usergivenid,cliplength,username,url_hash "
+                 + "FROM audio_clips "
+                 + "INNER JOIN users ON audio_clips.userid = users.id ORDER BY audio_clips.id "
+                 + "DESC LIMIT 5"
+    client.query(text, (err, res) => {
+        if (err) {
+            log(err)
+        } else {
+            client.end()
+            that.send(JSON.stringify(res.rows))
         }
     })
 })

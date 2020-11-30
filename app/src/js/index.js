@@ -14,7 +14,7 @@ const api_host = "http://localhost:80"
 const port = 8080
 const log = console.log
 
-const upload = multer({dest: '../public/uploads/'})
+const upload = multer({ dest: '../public/uploads/' })
 const customFilter = new Filter({ placeHolder: '*' })
 
 app.use(exp.static(path.join(__dirname, '../public')))
@@ -32,7 +32,7 @@ app.get('/webplayer/:url_hash', (req, res) => {
     // req.params returns object with url hash as string {url_hash: 'henlo}
     // extract url hash
     // make request to REST API to see if hash exists within database
-    // if so, serve page with mediaplayer for extracted binary data
+    // if so, serve page with mediaplayer for filename
     fetch(api_host + '/dbreq/' + req.params.url_hash, {
         method: 'GET',
         mode: 'no-cors',
@@ -91,25 +91,26 @@ app.post('/loginreq', (req, res) => {
         let json = {}
         if (err) {
             log(err)
-        }
-        json["username"] = fields.username
-        json["password"] = crypto.createHash('sha256').update(fields.password).digest('hex')
+        } else {
+            json["username"] = fields.username
+            json["password"] = crypto.createHash('sha256').update(fields.password).digest('hex')
 
-        fetch(api_host + '/postlogin', {
-            method: 'POST',
-            mode: 'no-cors',
-            cache: 'no-cache',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(json)
-        }).then((res) => {
-            return res.json()
-        }).then((result) => {
-            res.send(JSON.stringify(result))
-        }).catch((err) => {
-            res.sendStatus(500)
-        })
+            fetch(api_host + '/postlogin', {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(json)
+            }).then((res) => {
+                return res.json()
+            }).then((result) => {
+                res.send(JSON.stringify(result))
+            }).catch((err) => {
+                res.sendStatus(500)
+            })
+        }
     })
 })
 
@@ -119,35 +120,35 @@ app.post('/regreq', (req, res) => {
     incoming.parse(req, (err, fields) => {
         if (err) {
             log(err)
-        }
-
-        if (fields.username.length > 30 || fields.password.length > 255 || fields.first.length > 30 || fields.last.length > 30 || fields.email.length > 50) {
-            res.send("false")
-        } else if (customFilter.isProfane(fields.username)) {
-            res.send("profane")
         } else {
-            let json = {}
-            json["username"] = fields.username
-            json["password"] = crypto.createHash('sha256').update(fields.password).digest('hex')
-            json["first"] = customFilter.clean(fields.first)
-            json["last"] = customFilter.clean(fields.last)
-            json["email"] = fields.email
+            if (fields.username.length > 30 || fields.password.length > 255 || fields.first.length > 30 || fields.last.length > 30 || fields.email.length > 50) {
+                res.send("false")
+            } else if (customFilter.isProfane(fields.username)) {
+                res.send("profane")
+            } else {
+                let json = {}
+                json["username"] = fields.username
+                json["password"] = crypto.createHash('sha256').update(fields.password).digest('hex')
+                json["first"] = customFilter.clean(fields.first)
+                json["last"] = customFilter.clean(fields.last)
+                json["email"] = fields.email
 
-            fetch(api_host + '/postregister', {
-                method: 'POST',
-                mode: 'no-cors',
-                cache: 'no-cache',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(json)
-            }).then((res) => {
-                return res.text()
-            }).then((result) => {
-                res.send(result)
-            }).catch((err) => {
-                res.sendStatus(500)
-            })
+                fetch(api_host + '/postregister', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    cache: 'no-cache',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(json)
+                }).then((res) => {
+                    return res.text()
+                }).then((result) => {
+                    res.send(result)
+                }).catch((err) => {
+                    res.sendStatus(500)
+                })
+            }
         }
     })
 })
@@ -158,25 +159,25 @@ app.post('/allreq', (req, res) => {
     incoming.parse(req, (err, fields) => {
         if (err) {
             log(err)
+        } else {
+            let json = {}
+            json["userid"] = fields.userid
+            fetch(api_host + '/allmemopost', {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(json)
+            }).then((res) => {
+                return res.json()
+            }).then((result) => {
+                res.send(JSON.stringify(result))
+            }).catch((err) => {
+                res.sendStatus(500)
+            })
         }
-
-        let json = {}
-        json["userid"] = fields.userid
-        fetch(api_host + '/allmemopost', {
-            method: 'POST',
-            mode: 'no-cors',
-            cache: 'no-cache',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(json)
-        }).then((res) => {
-            return res.json()
-        }).then((result) => {
-            res.send(JSON.stringify(result))
-        }).catch((err) => {
-            res.sendStatus(500)
-        })
     })
 })
 
@@ -186,26 +187,44 @@ app.post('/delreq', (req, res) => {
     incoming.parse(req, (err, fields) => {
         if (err) {
             log(err)
+        } else {
+            let json = {}
+            json["filename"] = fields.filename
+
+            fetch(api_host + '/delpost', {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(json)
+            }).then((res) => {
+                return res.text()
+            }).then((result) => {
+                try {
+                    fs.unlinkSync('../public/uploads/' + fields.filename)
+                } catch (error) {
+                    // File DNE, just delete db entry
+                }
+                res.send(result)
+            }).catch((err) => {
+                res.sendStatus(500)
+            })
         }
+    })
+})
 
-        let json = {}
-        json["filename"] = fields.filename
-
-        fetch(api_host + '/delpost', {
-            method: 'POST',
-            mode: 'no-cors',
-            cache: 'no-cache',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(json)
-        }).then((res) => {
-            return res.text()
-        }).then((result) => {
-            fs.unlinkSync('../public/uploads/' + fields.filename)
-            res.send(result)
-        }).catch((err) => {
-            res.sendStatus(500)
-        })
+app.get('/recreq', (req, res) => {
+    fetch(api_host + '/recpost', {
+        method: 'GET',
+        mode: 'no-cors',
+        cache: 'no-cache',
+    }).then((res) => {
+        return res.json()
+    }).then((result) => {
+        res.send(result)
+    }).catch((err) => {
+        res.sendStatus(500)
     })
 })

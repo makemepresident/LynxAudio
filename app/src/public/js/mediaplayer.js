@@ -38,10 +38,17 @@ if (document.referrer.includes("myrecordings.html")) {
 
 // Volume button handlers
 
-volumebutton.onclick = () => {
+volumebutton.onclick = (event) => {
+    event.stopPropagation()
     if (!volumeshown) {
         volumeshown = true;
         volumecontainer.style = "visibility: visible;"
+        document.onclick = (event) => {
+            if (!volumecontroller.contains(event.target)) {
+                volumeshown = false;
+                volumecontainer.style = "visibility: hidden;"
+            }
+        }
     } else {
         volumeshown = false;
         volumecontainer.style = "visibility: hidden;"
@@ -53,18 +60,12 @@ volumedot.onmouseup = () => {
 }
 
 volumedot.onmousedown = (event) => {
-    event = event || window.event;
-    event.preventDefault();
-
     let x = event.clientX
     let min = 0
     let max = parseInt(window.getComputedStyle(volumeslider).width)
     let current = parseInt(window.getComputedStyle(volumeprogress).width)
 
     window.onmousemove = (event2) => {
-        event2 = event2 || window.event;
-        event2.preventDefault();
-            
         let calculatedwidth = (event2.clientX - x) + parseInt(current)
         if (calculatedwidth >= min && calculatedwidth < max) {
             let ratio = (calculatedwidth / max)
@@ -100,18 +101,12 @@ audiocontroller.onloadedmetadata = () => {
     }
     
     dot.onmousedown = (event) => {
-        event = event || window.event
-        event.preventDefault()
-    
         let x = event.clientX
         let min = 0
         let max = parseInt(window.getComputedStyle(slider).width)
         let current = parseInt(window.getComputedStyle(progress).width)
     
         window.onmousemove = (event2) => {
-            event2 = event2 || window.event;
-            event2.preventDefault();
-            
             let calculatedwidth = (event2.clientX - x) + parseInt(current)
             if (calculatedwidth >= min && calculatedwidth <= max) {
                 let ratio = (calculatedwidth / max)

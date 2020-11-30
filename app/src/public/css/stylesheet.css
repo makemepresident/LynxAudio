@@ -214,6 +214,11 @@ input:checked + .toggledot:before {
 	right: 10px;
 }
 
+#signedin {
+    font-size: 20px;
+    margin-right: 5px;
+}
+
 .loginbuttons {
 	font-size: 15px;
 	margin-top: 10px;
@@ -255,7 +260,7 @@ input:checked + .toggledot:before {
 }
 
 .loginbuttons.logout {
-	font-size: 13px;
+	font-size: 16px;
 	padding: 0.35em 0.5em;
 }
 

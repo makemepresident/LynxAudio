@@ -159,6 +159,23 @@ app.post('/delpost', (req, res) => {
     })
 })
 
+app.get('/recpost', (req, res) => {
+    let that = res
+
+    let client = construct_client()
+    client.connect()
+    let text = "SELECT * FROM audio_clips ORDER BY id DESC LIMIT 5"
+    client.query(text, (err, res) => {
+        if (err) {
+            log(err)
+        } else {
+            log("Query successful")
+            client.end()
+            that.send(JSON.stringify(res.rows))
+        }
+    })
+})
+
 app.listen(port, () => {
     log("API is running on port " + port)
 })

@@ -22,7 +22,6 @@ if (userid == null) {
             return res.json()
         }
     }).then((result) => {
-        console.log(result)
         if (result) {
             if (result.length == 0) {
                 error.innerHTML = "No recordings exist for your userid!"
@@ -47,21 +46,15 @@ if (userid == null) {
                     row.className = "row"
                     let row2 = document.createElement("div")
                     row2.className = "row"
-                    let row3 = document.createElement("div")
-                    row3.className = "row"
                     let row4 = document.createElement("div")
                     row4.className = "row"
                     let row5 = document.createElement("div")
                     row5.className = "row"
-                    let row6 = document.createElement("div")
-                    row6.className = "row"
 
                     column.appendChild(row)
                     column.appendChild(row2)
-                    column.appendChild(row3)
                     column2.appendChild(row4)
                     column2.appendChild(row5)
-                    column2.appendChild(row6)
 
                     let clipname = document.createElement("h5")
                     clipname.className = "infoitem"
@@ -77,15 +70,8 @@ if (userid == null) {
 
                     let cliplength = document.createElement("p")
                     cliplength.className = "infocontent"
-                    cliplength.innerHTML = " " + result[i].cliplength
-
-                    let size = document.createElement("h5")
-                    size.className = "infoitem"
-                    size.innerHTML = "File size: "
-
-                    let filesize = document.createElement("p")
-                    filesize.className = "infocontent"
-                    filesize.innerHTML = " " + result[i].filesize
+                    let inseconds = (result[i].cliplength / 1000).toFixed(2)
+                    cliplength.innerHTML = " " + inseconds + " seconds"
 
                     let file = document.createElement("h5")
                     file.className = "infoitem"
@@ -97,39 +83,59 @@ if (userid == null) {
 
                     let hash = document.createElement("h5")
                     hash.className = "infoitem"
-                    hash.innerHTML = "URL Hash: "
+                    hash.innerHTML = "URL: "
 
                     let urlhash = document.createElement("p")
                     urlhash.className = "infocontent"
                     urlhash.innerHTML = " " + result[i].url_hash
 
-                    let id = document.createElement("h5")
-                    id.className = "infoitem"
-                    id.innerHTML = "Database ID: "
-
-                    let dbid = document.createElement("p")
-                    dbid.className = "infocontent"
-                    dbid.innerHTML = " " + result[i].id
-
                     row.appendChild(clipname)
                     row.appendChild(usergivenid)
                     row2.appendChild(length)
                     row2.appendChild(cliplength)
-                    row3.appendChild(size)
-                    row3.appendChild(filesize)
                     row4.appendChild(file)
                     row4.appendChild(filename)
                     row5.appendChild(hash)
                     row5.appendChild(urlhash)
-                    row6.appendChild(id)
-                    row6.appendChild(dbid)
 
                     let webview = document.createElement("a")
                     webview.className = "loginbuttons webplayerview"
-                    webview.innerHTML = "View in Webplayer"
+                    webview.innerHTML = "View"
                     webview.href = "../webplayer/" + result[i].url_hash
 
+                    let deletebtn = document.createElement("a")
+                    deletebtn.classList.add("loginbuttons")
+                    deletebtn.classList.add("webplayerview")
+                    deletebtn.id = result[i].filename
+                    deletebtn.onclick = () => {
+                        let formbody2 = new FormData()
+                        formbody2.append("filename", deletebtn.id)
+                        fetch(delreq_path, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            cache: 'no-cache',
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: formbody2
+                        }).then((res) => {
+                            if (res.status == 500) {
+                                console.error("Internal server error, check to make sure API is running")
+                            } else {
+                                return res.text()
+                            }
+                        }).then((result) => {
+                            if (result == "success") {
+                                location.reload()
+                            } else {
+                                console.log("Error deleting")
+                            }
+                        })
+                    }
+                    deletebtn.innerHTML = "Delete"
+
                     column3.appendChild(webview)
+                    column3.appendChild(deletebtn)
 
                     mediaplayer.appendChild(infocontainer)
                 }

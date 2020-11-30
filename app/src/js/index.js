@@ -202,10 +202,28 @@ app.post('/delreq', (req, res) => {
         }).then((res) => {
             return res.text()
         }).then((result) => {
-            fs.unlinkSync('../public/uploads/' + fields.filename)
+            try {
+                fs.unlinkSync('../public/uploads/' + fields.filename)
+            } catch (error) {
+                console.log("file DNE, deleting from db anyways")
+            }
             res.send(result)
         }).catch((err) => {
             res.sendStatus(500)
         })
+    })
+})
+
+app.get('/recreq', (req, res) => {
+    fetch(api_host + '/recpost', {
+        method: 'GET',
+        mode: 'no-cors',
+        cache: 'no-cache',
+    }).then((res) => {
+        return res.json()
+    }).then((result) => {
+        res.send(result)
+    }).catch((err) => {
+        res.sendStatus(500)
     })
 })

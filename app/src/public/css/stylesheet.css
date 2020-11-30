@@ -124,6 +124,10 @@ button {
     padding: 5px;
 }
 
+.button {
+    align-items: center;
+}
+
 .mainpagebutton {
 	width: 120px;
 }
@@ -132,6 +136,74 @@ button {
 	position: fixed;
 	right: 10px;
 	top: 10px;
+}
+
+/* Menu slider */
+
+
+
+.toggleparent {
+    margin: 15px 0;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.showrecordings {
+    display: inline-block;
+    margin: 0;
+    height:
+     100%;
+}
+.toggleslider {
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    width: 50px;
+    border-radius: 0.12em;
+}
+
+.toggleslider input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggledot {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #CCC;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.toggledot:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .toggledot {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+input:focus + .toggledot {
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+input:checked + .toggledot:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
 }
 
 #signeddiv {
@@ -268,6 +340,7 @@ button {
     background-color: rgba(0, 0, 0, 0.12);
     padding: 15px;
     margin: 0 0 25px 0;
+    height: 105px;
     border: #000;
     box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.75);
 }
@@ -285,44 +358,35 @@ button {
 
 .webplayerview {
     margin: 0;
-    display: flex;
     align-items: center;
+    height: 30px;
 }
 
 .infocontent {
     overflow-x: hidden;
 }
 
-.myrecordings {
+.row {
     overflow-x: scroll;
     margin-right: 10px;
+    margin-bottom: 5px;
 }
 
-.myrecordings {
-    overflow-x: scroll;
-    margin-right: 10px;
-}
-
-.myrecordings::-webkit-scrollbar {
+.row::-webkit-scrollbar {
     width: 5px;
     height: 5px;
 }
 
-.myrecordings::-webkit-scrollbar-track {
+.row::-webkit-scrollbar-track {
     background: none;
 }
 
-.myrecordings::-webkit-scrollbar-thumb {
+.row::-webkit-scrollbar-thumb {
     background: none;
     border-radius: 4px;
 }
 
-.myrecordings:hover::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-.myrecordings::-webkit-scrollbar-thumb:hover {
+.row:hover::-webkit-scrollbar-thumb {
     background: #555;
 }
 

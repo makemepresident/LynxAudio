@@ -22,25 +22,9 @@
 		<label id="signedin"></label>
 		<a href="myrecordings.html" class="loginbuttons logout">My Recordings</a>
 		<a onclick="logout()" class="loginbuttons logout">Logout</a>
-	</div>
-	
-	<div class="parentgrid1 middlepage">
-		<div id="recordaudio" class="column">
-			<label for="usergivenid" class="inp">
-				<input type="text" id="usergivenid" placeholder="&nbsp;">
-				<span class="label"id="usergivenidlabel">Record Name</span>
-				<span class="focus-bg"></span>
-			</label>
-		</div>
-		<div class="column">
-			<button id="recordbutton" class="loginbuttons"></button>
-		</div>
-		<div class="progressbarcontainer">
-			<div id="progressbar" class= "progressbar"></div>
-		</div>
     </div>
-
-	<div id="logindiv" class="parentgrid1">
+    
+    <div id="logindiv" class="parentgrid1">
 		<div class="column">
 			<label for="username" class="inp">
 				<input type="text" id="username" placeholder="&nbsp;">
@@ -61,11 +45,40 @@
 				</div>
 			</div>
 		</div>
-	</div>
+    </div>
+
+	<div class="parentgrid1 middlepage">
+		<div id="recordaudio" class="column">
+			<label for="usergivenid" class="inp">
+				<input type="text" id="usergivenid" placeholder="&nbsp;">
+				<span class="label"id="usergivenidlabel">Record Name</span>
+				<span class="focus-bg"></span>
+			</label>
+		</div>
+		<div class="column">
+			<button id="recordbutton" class="loginbuttons"></button>
+		</div>
+		<div class="progressbarcontainer">
+			<div id="progressbar" class="progressbar"></div>
+		</div>
+    </div>
+
+    <div class="toggleparent">
+        <label class="toggleslider">
+            <input type="checkbox" id="recentrecordings">
+            <span class="toggledot"></span>
+        </label>
+        <p class="showrecordings">Show Recent Recordings</p>
+    </div>
+    
+    <div id="mediaplayer" style="display: none;">
+        <!-- rendered by recentrecordings.js -->
+    </div>
 
 	<script src="./js/lib/WebAudioRecorder.js"></script>
 	<script src="./js/record.js"></script>
-	<script src="./js/login.js"></script>
+    <script src="./js/login.js"></script>
+    <script src="./js/recentrecordings.js"></script>
 	<script type="text/javascript">
 		if (document.cookie.includes("regsuccess")) {
 			document.getElementById("regsuccess").style = "display: visible"

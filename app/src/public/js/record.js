@@ -12,17 +12,22 @@ let text = document.getElementById('usergivenid')
 
 text.onkeyup = () => {
     if (text.value.length > 50) {
-        document.getElementById("nameerror").innerHTML = "Name too long"
+        setRed("usergivenidlabel", text, "Name too long")
         recbtn.disabled = true
     } else {
-        document.getElementById("nameerror").innerHTML = ""
+        setWhite("usergivenidlabel", text, "Record Name")
         recbtn.disabled = false
     }
 }
 
 let a = false
 recbtn.onclick = () => {
+    let bar = document.getElementById("progressbar")
+    width = 0
+
     if(a == true) {
+        clearInterval(interval)
+        bar.style.width = "0%"
         gumStream.getAudioTracks()[0].stop()
         a = false
         recorder.finishRecording()
@@ -30,67 +35,69 @@ recbtn.onclick = () => {
         return
     }
 
-
     
+    navigator.permissions.query({name:"microphone"}).then((res) => {
+        if (res.state == "granted") {
+            navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
+                audioContext = new AudioContext();
 
-    navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
-        audioContext = new AudioContext();
+                gumStream = stream
 
-        gumStream = stream
+                input = audioContext.createMediaStreamSource(stream);
 
-        input = audioContext.createMediaStreamSource(stream);
+                recorder = new WebAudioRecorder(input, {
+                    workerDir: '../js/lib/',
+                    encoding: 'wav',
+                    numChannels: 2,
+                    onEncoderLoading: function(recorder, encoding) {
+                        console.log("Loading encoder " + encoding)
+                    },
+                    onEncoderLoaded: function(recorder, encoding) {
+                        console.log("Loaded encoder " + encoding)
+                    }
+                })
 
-        recorder = new WebAudioRecorder(input, {
-            workerDir: '../js/lib/',
-            encoding: 'wav',
-            numChannels: 2,
-            onEncoderLoading: function(recorder, encoding) {
-                console.log("Loading encoder " + encoding)
-            },
-            onEncoderLoaded: function(recorder, encoding) {
-                console.log("Loaded encoder " + encoding)
-            }
-        })
+                recorder.onComplete = (rec, blob) => {
+                    recbtn.style.backgroundColor = null
+                    end = new Date()
+                    postMemo(blob, recorder.encoding)
+                }
 
-        recorder.onComplete = (rec, blob) => {
-            recbtn.style.backgroundColor = null
-            end = new Date()
-            postMemo(blob, recorder.encoding)
+                recorder.setOptions({
+                    timelimit: 5,
+                    encodeAfterRecord: true
+                })
+
+                a = true
+                recbtn.style.backgroundColor = 'rgb(199, 0, 0)'
+                start = new Date();
+
+                recorder.startRecording()
+                interval = setInterval(frame, (10000 / 100))
+
+                function frame() {
+                    if (width >= 100) {
+                        clearInterval(interval)
+                        gumStream.getAudioTracks()[0].stop()
+                        a = false
+                        recorder.finishRecording()
+                        recbtn.style.backgroundColor = null
+                    } else {
+                        width++;
+                        bar.style.width = width + '%'
+                    }
+                }
+            })
+        } else if (res.state == "prompt") {
+            navigator.mediaDevices.getUserMedia({audio: true})
+        } else if (res.state == "denied") {
+            document.getElementById("micperms").style = "display: visible"
         }
-
-        recorder.setOptions({
-            timelimit: 5,
-            encodeAfterRecord: true
-        })
-
-        a = true
-        recbtn.style.backgroundColor = 'rgb(199, 0, 0)'
-        start = new Date();
-        recorder.startRecording()
     })
-
-    let bar = document.getElementById("progressbar")
-    width = 0
-    interval = setInterval(frame, (10000 / 100))
-
-    function frame() {
-        if (width >= 100) {
-            clearInterval(interval)
-            gumStream.getAudioTracks()[0].stop()
-            a = false
-            recorder.finishRecording()
-            recbtn.style.backgroundColor = null
-        } else {
-            width++;
-            bar.style.width = width + '%'
-        }
-    }
+    
 }
 
 async function postMemo(blob, encoding) {
-    if (text.value == "") {
-        text.value = "Unnamed"
-    }
     let fd = new FormData()
     fd.append('blob', blob)
     fd.append('duration', end - start)
@@ -102,12 +109,26 @@ async function postMemo(blob, encoding) {
         cache: 'no-cache',
         body: fd
     }).then((res) => {
-        return res.text()
-    }).then((hash) => {
-        if (hash == "Internal Server Error") {
-            console.log("Quit being sneaky and trying to write bad stuff to the db")
+        if (res.status == 500) {
+            console.error("Internal server error, check to make sure API is running")
         } else {
+            return res.text()
+        }
+    }).then((hash) => {
+        if (hash) {
             window.location.href = "/webplayer/" + hash;
         }
     })
+}
+
+function setRed(label, input, text) {
+    document.getElementById(label).innerHTML = text
+    document.getElementById(label).style.color = "rgb(255, 0, 0)"
+    input.style.boxShadow = "inset 0 -2px 0 #F00"
+}
+
+function setWhite(label, input, text) {
+    document.getElementById(label).innerHTML = text
+    document.getElementById(label).style.color = "rgba(255, 255, 255, 0.75)"
+    input.style.boxShadow = "inset 0 -2px 0 #FFF"
 }

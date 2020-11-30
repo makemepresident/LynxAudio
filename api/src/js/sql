@@ -1,19 +1,19 @@
 CREATE TABLE IF NOT EXISTS audio_clips (
     id SERIAL,
     userid INTEGER,
-    audiobinary BYTEA,
-    cliplength SMALLINT,
-    filesize SMALLINT,
+    filename VARCHAR(255)
+    cliplength INTEGER
+    filesize INTEGER,
     url_hash VARCHAR(10),
     PRIMARY KEY (ID) SERIAL
 );
 
 CREATE TABLE IF NOT EXISTS users (
-    id INTEGER,
-    username CHAR(64),
-    "password" VARCHAR(30),
-    "first" VARCHAR(12),
-    "last" VARCHAR(12),
-    email VARCHAR(30),
-    icon BYTEA
+    id SERIAL,
+    username VARCHAR(30),
+    password VARCHAR(255),
+    first VARCHAR(30),
+    last VARCHAR(30),
+    email VARCHAR(50),
+    PRIMARY KEY (ID) SERIAL
 );

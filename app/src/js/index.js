@@ -205,7 +205,7 @@ app.post('/delreq', (req, res) => {
             try {
                 fs.unlinkSync('../public/uploads/' + fields.filename)
             } catch (error) {
-                console.log("file DNE, deleting from db anyways")
+                // File DNE, just delete db entry
             }
             res.send(result)
         }).catch((err) => {

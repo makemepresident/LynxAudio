@@ -159,6 +159,7 @@ button {
     display: inline-block;
     height: 20px;
     width: 50px;
+    border: 0.1em solid #FFF;
     border-radius: 0.12em;
 }
 
@@ -176,6 +177,7 @@ button {
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.12);
+    border-radius: 0.12em;
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -185,8 +187,8 @@ button {
     content: "";
     height: 12px;
     width: 16px;
-    left: 4px;
-    bottom: 4px;
+    left: 2.5px;
+    bottom: 2.5px;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;

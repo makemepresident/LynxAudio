@@ -15,8 +15,7 @@ fetch(recreq_path, {
 }).then((result) => {
     if (result) {
         if (result.length == 0) {
-            //error.innerHTML = "No recent records exist!"
-            //document.getElementById("top").style = "visibility: visible"
+            document.getElementById("recentfailure").style = "display: block"
         } else {
             for (i = 0; i < result.length; i++) {
                 let infocontainer = document.createElement("div")
@@ -65,11 +64,11 @@ fetch(recreq_path, {
 
                 let file = document.createElement("h5")
                 file.className = "infoitem"
-                file.innerHTML = "File name: "
+                file.innerHTML = "Created by: "
 
                 let filename = document.createElement("p")
                 filename.className = "infocontent"
-                filename.innerHTML = " " + result[i].filename
+                filename.innerHTML = " " + result[i].username
 
                 let hash = document.createElement("h5")
                 hash.className = "infoitem"

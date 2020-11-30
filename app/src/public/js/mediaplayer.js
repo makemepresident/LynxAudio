@@ -24,7 +24,17 @@ let volumeslider = document.getElementById("volslider")
 let volumeprogress = document.getElementById("volprogress")
 let volumedot = document.getElementById("voldot")
 
+// Buttons
+let returntohome = document.getElementById("returntohome")
+let returntorecordings = document.getElementById("returntorecordings")
+
 let volumeshown = false
+
+if (document.referrer.includes("myrecordings.html")) {
+    returntorecordings.style = "display: block"
+} else {
+    returntohome.style = "display: block"
+}
 
 // Volume button handlers
 

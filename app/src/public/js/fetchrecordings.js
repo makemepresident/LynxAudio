@@ -28,7 +28,7 @@ if (userid == null) {
                 document.getElementById("top").style = "visibility: visible"
             } else {
                 let mediaplayer = document.getElementById("mediaplayer")
-                for (i = result.length - 1; i >=0; i--) {
+                for (i = 0; i < result.length; i++) {
                     let infocontainer = document.createElement("div")
                     infocontainer.className = "infocontainer"
 
@@ -140,68 +140,6 @@ if (userid == null) {
                     mediaplayer.appendChild(infocontainer)
                 }
             }
-
-
-            /*} else {
-                for (i = result.length - 1; i >= 0; i--) {
-                    let container = document.createElement("div")
-                    container.classList.add("recordingcontainer")
-
-                    let title = document.createElement("h5")
-                    title.classList.add("mediatitle")
-                    title.innerHTML = result[i].usergivenid
-
-                    let filesize = document.createElement("h5")
-                    filesize.classList.add("filesize")
-                    filesize.innerHTML = "Filesize " + result[i].filesize
-
-                    let audioplayer = document.createElement("audio")
-                    audioplayer.nodeType="audio/wav"
-                    audioplayer.classList.add("audioplayer")
-                    audioplayer.controls = 'controls'
-
-                    let source = document.createElement("source")
-                    source.id = "audiosource"
-                    source.src = "../uploads/" + result[i].filename
-
-                    let deletebtn = document.createElement("button")
-                    deletebtn.classList.add("loginbuttons")
-                    deletebtn.classList.add("deletebutton")
-                    deletebtn.onclick = () => {
-                        let formbody2 = new FormData()
-                        formbody2.append("filename", source.src.split("/uploads/")[1])
-                        fetch(delreq_path, {
-                            method: 'POST',
-                            mode: 'no-cors',
-                            cache: 'no-cache',
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: formbody2
-                        }).then((res) => {
-                            if (res.status == 500) {
-                                console.error("Internal server error, check to make sure API is running")
-                            } else {
-                                return res.text()
-                            }
-                        }).then((result) => {
-                            if (result == "success") {
-                                location.reload()
-                            } else {
-                                console.log("Error deleting")
-                            }
-                        })
-                    }
-                    deletebtn.innerHTML = "Delete Memo"
-
-                    audioplayer.appendChild(source)
-                    container.appendChild(title)
-                    container.appendChild(filesize)
-                    container.appendChild(deletebtn)
-                    container.appendChild(audioplayer)
-                    mediaplayer.appendChild(container)
-                }
-            }*/
         } else {
             error.innerHTML = "Internal Server Error"
             document.getElementById("top").style = "visibility: visible"

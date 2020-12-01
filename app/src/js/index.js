@@ -10,8 +10,8 @@ const Filter = require('bad-words')
 const fs = require('fs')
 const app = exp()
 
-const api_host = "http://localhost:8080"
-const port = 8080
+const api_host = "http://localhost:5432"
+const port = 5433
 const log = console.log
 
 const upload = multer({ dest: '../public/uploads/' })
@@ -225,6 +225,7 @@ app.get('/recreq', (req, res) => {
     }).then((result) => {
         res.send(result)
     }).catch((err) => {
+        console.log(err)
         res.sendStatus(500)
     })
 })

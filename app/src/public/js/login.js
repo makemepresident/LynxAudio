@@ -27,7 +27,7 @@ loginbutton.onclick = () => {
     username.style.boxShadow = "inset 0 -2px 0 #FFF"
     passwordlabel.innerHTML = "Password"
     passwordlabel.style.color = "rgba(255, 255, 255, 0.75)"
-    username.style.boxShadow = "inset 0 -2px 0 #FFF"
+    password.style.boxShadow = "inset 0 -2px 0 #FFF"
     login();
 }
 

@@ -11,7 +11,7 @@ const fs = require('fs')
 const app = exp()
 
 const api_host = "http://localhost:5432"
-const port = 5433
+const port = 443
 const log = console.log
 
 const upload = multer({ dest: '../public/uploads/' })

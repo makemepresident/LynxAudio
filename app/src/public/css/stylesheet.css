@@ -319,6 +319,7 @@ input:checked + .toggledot:before {
     width: 100%;
     text-align: center;
     resize: none;
+    overflow: hidden;
 }
 
 #share {
@@ -393,12 +394,10 @@ input:checked + .toggledot:before {
     border-radius: 4px;
 }
 
-.row:hover::-webkit-scrollbar-thumb {
-    background: #555;
-}
-
 .row {
     white-space: nowrap;
+    scrollbar-width: thin;
+    scrollbar-color: #555 rgba(0, 0, 0, 0.0);
 }
 
 /* Audio container */

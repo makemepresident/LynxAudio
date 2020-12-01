@@ -225,7 +225,6 @@ app.get('/recreq', (req, res) => {
     }).then((result) => {
         res.send(result)
     }).catch((err) => {
-        console.log(err)
         res.sendStatus(500)
     })
 })

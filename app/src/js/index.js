@@ -1,3 +1,4 @@
+const https = require("https")
 const exp = require('express')
 const path = require('path')
 const fetch = require('node-fetch')
@@ -11,7 +12,7 @@ const fs = require('fs')
 const app = exp()
 
 const api_host = "http://localhost:5435"
-const port = 80
+const port = 443
 const log = console.log
 
 const upload = multer({ dest: '../public/uploads/' })
@@ -24,9 +25,16 @@ app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "../public"))
 app.engine('html', require('ejs').renderFile)
 
-app.listen(port, () => {
-    log("Webapp is running")
+https.createServer({
+    key: fs.readFileSync('../server.key'),
+    cert: fs.readFileSync('../server.cert')
+}, app).listen(port, () => {
+    log("Webapp is running on port " + port)
 })
+
+/*app.listen(port, () => {
+    log("Webapp is running")
+})*/
 
 app.get('/webplayer/:url_hash', (req, res) => {
     // req.params returns object with url hash as string {url_hash: 'henlo}

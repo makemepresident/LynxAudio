@@ -1,5 +1,5 @@
-const allreq_path = 'http://localhost:80/allreq'
-const delreq_path = "http://localhost:80/delreq"
+const allreq_path = 'https://localhost:443/allreq'
+const delreq_path = "https://localhost:443/delreq"
 const error = document.getElementById("error")
 const mediaplayer = document.getElementById("mediaplayer")
 

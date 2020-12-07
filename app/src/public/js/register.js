@@ -133,7 +133,7 @@ async function postRegister() {
     formbody.append('last', last.value)
     formbody.append('email', email.value)
 
-    // Send request to db with the form information
+    // Request the information from the server with the form
     await fetch(register_path, {
         method: 'POST',
         mode: 'no-cors',

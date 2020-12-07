@@ -67,7 +67,7 @@ async function postMemo(blob, encoding) {
     fd.append('duration', end - start)
     fd.append('usergivenid', text.value)
     fd.append('userid', userid)
-    // Send information in form to server
+    // Request the information from the server with the form
     await fetch(app_path, {
         method: 'POST',
         mode: 'no-cors',

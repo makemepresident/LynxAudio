@@ -2,7 +2,7 @@ const recreq_path = 'http://localhost:8080/recreq'
 let recordingtoggle = document.getElementById("recentrecordings")
 let mediaplayer = document.getElementById("mediaplayer")
 
-// Send a get request to server to grab the recent recordings from the db
+// Request the information from the server
 fetch(recreq_path, {
     method: 'GET',
     mode: 'no-cors',

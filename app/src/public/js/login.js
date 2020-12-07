@@ -47,7 +47,7 @@ async function login() {
     let ld = new FormData()
     ld.append('username', username.value)
     ld.append('password', password.value)
-    // Send the data to the db using a fetch
+    // Request the information from the server with the form
     await fetch(login_path, {
         method: 'POST',
         mode: 'no-cors',

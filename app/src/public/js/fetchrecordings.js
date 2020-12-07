@@ -12,10 +12,7 @@ if (userid == null) {
     let formbody = new FormData()
     formbody.append("userid", userid)
 
-    /**
-     * Get the information from the server using a fetch request
-     * body: Contains the users UserID stored in the cookie
-     */
+    // Request the information from the server with the form
     fetch(allreq_path, {
         method: 'POST',
         mode: 'no-cors',

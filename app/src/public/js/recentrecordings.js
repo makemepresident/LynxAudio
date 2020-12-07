@@ -100,6 +100,8 @@ fetch(recreq_path, {
         }
 
     }
+}).catch((err) => {
+    console.log(err)
 })
 
 recordingtoggle.onchange = () => {

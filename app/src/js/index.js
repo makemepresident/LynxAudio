@@ -11,8 +11,6 @@ const Filter = require('bad-words')
 const fs = require('fs')
 const app = exp()
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 const api_host = "http://localhost:5435"
 const port = 443
 const log = console.log

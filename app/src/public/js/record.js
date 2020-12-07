@@ -3,7 +3,7 @@ let input;
 let recorder;
 let gumStream;
 const limit = 10000 // 10s record limit
-const app_path = 'https://localhost:443/memoreq'
+const app_path = 'https://52.14.141.136/memoreq'
 let hasMicrophone = false
 let start = null
 let end = null

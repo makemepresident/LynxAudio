@@ -32,10 +32,6 @@ https.createServer({
     log("Webapp is running on port " + port)
 })
 
-/*app.listen(port, () => {
-    log("Webapp is running")
-})*/
-
 app.get('/webplayer/:url_hash', (req, res) => {
     // req.params returns object with url hash as string {url_hash: 'henlo}
     // extract url hash

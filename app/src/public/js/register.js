@@ -6,7 +6,7 @@ let last = document.getElementById("last")
 let email = document.getElementById("email")
 let error = document.getElementById("error")
 let register = document.getElementById("register")
-const register_path = 'http://localhost:8080/regreq'
+const register_path = 'http://localhost:80/regreq'
 
 let validpass = false
 let validverify = false

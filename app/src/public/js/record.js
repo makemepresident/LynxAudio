@@ -68,6 +68,8 @@ async function postMemo(blob, encoding) {
         if (hash) {
             window.location.href = "/webplayer/" + hash;
         }
+    }).catch((err) => {
+        console.error(err)
     })
 }
 

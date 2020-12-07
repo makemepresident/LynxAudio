@@ -147,6 +147,8 @@ async function postRegister() {
                 register.disabled = false
             }
         }
+    }).catch((err) => {
+        console.error(err)
     })
 }
 

@@ -4,7 +4,7 @@ const usernamelabel = document.getElementById("usernamelabel")
 const passwordlabel = document.getElementById("passwordlabel")
 const username = document.getElementById("username")
 const password = document.getElementById("password")
-const login_path = 'http://localhost:5433/loginreq'
+const login_path = 'http://localhost:80/loginreq'
 
 const cookies = document.cookie
 let userid = null

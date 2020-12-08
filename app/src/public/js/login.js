@@ -11,18 +11,19 @@ let userid = null
 let usernamecook = null
 let first = null
 
-// If the cookies are set, parse them for information to append to the logindiv
+// If the cookies are set, parse them for information to append to the signed in div
 if (cookies.includes("id")) {
     let splitCookie = cookies.split("; ")
     userid = splitCookie[0].split("=")[1]
     usernamecook = splitCookie[1].split("=")[1]
     first = splitCookie[2].split("=")[1]
     loginconf.innerHTML = "Hello " + first + "!"
+    // Show signed in div and hide login div
     document.getElementById("signeddiv").style = "display: visible"
     document.getElementById("logindiv").style.display = "none"
 }
 
-// If the user clicks the login button, make sure red fields are white again and run login fetch
+// If the user clicks the login button, make sure red fields are white again and run login function
 loginbutton.onclick = () => {
     usernamelabel.innerHTML = "Username"
     usernamelabel.style.color = "rgba(255, 255, 255, 0.75)"
@@ -33,7 +34,7 @@ loginbutton.onclick = () => {
     login();
 }
 
-// Remove cookies from browser and reload the page
+// Remove cookies from browser by setting them as expired and reload the page
 function logout() {
     document.cookie = "id=;expires=Thu, 01 Jan 1970 00:00:00;path=/;"
     document.cookie = "username=;expires=Thu, 01 Jan 1970 00:00:00;path=/;"
@@ -47,7 +48,8 @@ async function login() {
     let ld = new FormData()
     ld.append('username', username.value)
     ld.append('password', password.value)
-    // Request the information from the server with the form
+
+    // Request the information be checked against the db
     await fetch(login_path, {
         method: 'POST',
         mode: 'no-cors',
@@ -62,20 +64,20 @@ async function login() {
         }
     // Take parsed result data and do more checks
     }).then((result) => {
-        // If result has data, continue
+        // If result didn't error, continue
         if (result) {
-            // If credentials are valid, db returns true
+            // If credentials are valid, API and APP return true result, set cookies and reload page
             if (result.result == "true") {
                 document.cookie = "id=" + result.id + ";path=/"
                 document.cookie = "username=" + result.username + ";path=/"
                 document.cookie = "firstname=" + result.firstname + ";path=/"
                 location.reload()
-            // If username is invalid, db returns userresult
+            // If username is invalid, db returns userresult, present information to user
             } else if (result.result == "userresult") {
                 usernamelabel.innerHTML = "Username invalid."
                 usernamelabel.style.color = "rgb(255, 0, 0)"
                 username.style.boxShadow = "inset 0 -2px 0 #F00"
-            // if password is invalid, db returns passresult
+            // if password is invalid, db returns passresult, present information to user
             } else if (result.result == "passresult") {
                 passwordlabel.innerHTML = "Incorrect username/password!"
                 passwordlabel.style.color = "rgb(255, 0, 0)"

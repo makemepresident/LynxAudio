@@ -8,12 +8,11 @@ const Blob = require('node-blob')
 const e = require('express')
 const log = console.debug
 
-// Tell express to use JSON parser for parsing incoming body data
+// Tell express to use JSON parser for parsing incoming POST body data
 app.use(exp.json())
 
 // Construct the database credentials
 function construct_client() {
-    // convert to grabbing from local config file/other js file
     let client = new Client({
         user: 'postgres',
         host: 'lynxdb-1.cbqydpcjfuag.us-east-2.rds.amazonaws.com',
@@ -27,15 +26,21 @@ function construct_client() {
 app.post('/postlogin', (req, res) => {
     let username = req.body.username
     let password = req.body.password
-    let result = {} // Build empty JSON object to be added to
+
+    // Build empty JSON object to be added to
+    let result = {} 
+
+    // res.send is not able to be called in the query callback, assigning it to a variable inside the scope allows it to be called
     let that = res
 
     // Build connection to DB
     let client = construct_client()
     client.connect()
+
     // Prepare PostgresSQL statement to fetch information from the database
     let input = [username]
     let text = 'SELECT id, username, password, first FROM users WHERE username=$1'
+
     // Send the query to the database
     client.query(text, input, (err, res) => {
         if (err)  {
@@ -63,13 +68,17 @@ app.post('/postlogin', (req, res) => {
 
 // DB handling for a registration request
 app.post('/postregister', (req, res) => {
-    let that = res // res.send is not able to be called in the query callback, assigning it to a variable inside the scope allows it to be called
+    // res.send is not able to be called in the query callback, assigning it to a variable inside the scope allows it to be called
+    let that = res 
+
     // Prepare PostgresSQL statement to insert information into the database
     let query = 'INSERT INTO users(username, password, first, last, email) VALUES($1, $2, $3, $4, $5) ON CONFLICT ON CONSTRAINT users_username_key DO NOTHING'
     let input = [req.body.username, req.body.password, req.body.first, req.body.last, req.body.email]
+
     // Build connection to DB
     let client = construct_client()
     client.connect()
+
     // Send the query to the database
     client.query(query, input, (err, res) =>  {
         if (err) {
@@ -103,8 +112,8 @@ app.post('/postmemo', (req, res) => {
     let input = [null, req.body.filename, parseInt(req.body.duration), parseInt(req.body.filesize), unique_string, req.body.usergivenid]
     let text = 'INSERT INTO audio_clips(userid, filename, cliplength, filesize, url_hash, usergivenid) VALUES($1, $2, $3, $4, $5, $6)'
 
-    // If the user is signed in, userid to an int for insertion to db
-    // If the user is not signed in, will keep input[0] null
+    // If the user is signed in, parse userid to an int for insertion to db
+    // If the user is not signed in, input[0] stays null
     if (!isNaN(parseInt(req.body.userid))) {
         input[0] = parseInt(req.body.userid)
     }
@@ -120,16 +129,19 @@ app.post('/postmemo', (req, res) => {
         } else {
             // End db connection
             client.end()
-            // Send the generated string back to the client
+            // Send the generated unique string back to app/index
             that.send(unique_string)
         }
     })
 })
 
-// DB hanging for when a user requests a file based on unique hash
+// DB handling for when a user requests a file based on unique hash
 app.get('/dbreq/:unique_hash', (req, res) => {
-    let that = res // res.send is not able to be called in the query callback, assigning it to a variable inside the scope allows it to be called
-    let filename = {} // Build empty JSON object to be added to
+    // res.send is not able to be called in the query callback, assigning it to a variable inside the scope allows it to be called
+    let that = res 
+
+    // Build empty JSON object to be added to
+    let filename = {} 
 
     // Build connection to DB
     let client = construct_client()
@@ -152,7 +164,7 @@ app.get('/dbreq/:unique_hash', (req, res) => {
                 filename["result"] = res.rows[0]
             }
         }
-        // End db connection and send result JSON back to client
+        // End db connection and send audio_clip filename back to client
         client.end()
         that.send(JSON.stringify(filename))
     })
@@ -160,13 +172,14 @@ app.get('/dbreq/:unique_hash', (req, res) => {
 
 // DB handling for "myrecordings" page
 app.post('/allmemopost', (req, res) => {
-    let that = res // res.send is not able to be called in the query callback, assigning it to a variable inside the scope allows it to be called
+    // res.send is not able to be called in the query callback, assigning it to a variable inside the scope allows it to be called
+    let that = res 
 
     // Build connection to DB
     let client = construct_client()
     client.connect()
 
-    // Prepare PostgresSQL statement to select all users file metadata into the database
+    // Prepare PostgresSQL statement to select all of the users audio clip metadata in the database
     let text = 'SELECT * FROM audio_clips WHERE userid=$1 ORDER BY audio_clips.id DESC'
     let input = [req.body.userid]
 
@@ -184,7 +197,8 @@ app.post('/allmemopost', (req, res) => {
 
 // DB handling for audio clip deletion
 app.post('/delpost', (req, res) => {
-    let that = res // res.send is not able to be called in the query callback, assigning it to a variable inside the scope allows it to be called
+    // res.send is not able to be called in the query callback, assigning it to a variable inside the scope allows it to be called
+    let that = res 
 
     // Build connection to DB
     let client = construct_client()
@@ -210,7 +224,8 @@ app.post('/delpost', (req, res) => {
 
 // DB handling for recent recordings
 app.get('/recpost', (req, res) => {
-    let that = res // res.send is not able to be called in the query callback, assigning it to a variable inside the scope allows it to be called
+    // res.send is not able to be called in the query callback, assigning it to a variable inside the scope allows it to be called
+    let that = res 
 
     // Build connection to DB
     let client = construct_client()

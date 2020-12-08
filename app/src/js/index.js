@@ -30,7 +30,7 @@ app.use(favicon(path.join(__dirname, "../public/favicon.ico")))
 app.set("view engine", "ejs")
 // Tell the view engine where to find the 'views'
 app.set("views", path.join(__dirname, "../public"))
-// Tell the app to use the view engine on html files
+// Allow the app to use the view engine on html files
 app.engine('html', require('ejs').renderFile)
 
 // Tell express to begin listening for http requests on selected ports (this section differs on the server
@@ -41,8 +41,7 @@ app.listen(port, () => {
 
 // Handle client request for a certain URL hash
 app.get('/webplayer/:url_hash', (req, res) => {
-
-    // Sends request to db for file metadata
+    // Send request to db for filename
     fetch(api_host + '/dbreq/' + req.params.url_hash, {
         method: 'GET',
         mode: 'no-cors',
@@ -52,7 +51,7 @@ app.get('/webplayer/:url_hash', (req, res) => {
         return res.json()
     // Take parsed information
     }).then((recordparams) => {
-        // If the result was successful, update with file location on the server and render the mediaplayer with the file location
+        // If the result was successful, update with file location on the server directory and render the mediaplayer with the file location
         if (recordparams.result != "error") {
             recordparams.result.filename = path.join("../uploads/", recordparams.result.filename)
             res.render(path.join(__dirname, "../public/mediaplayer.html"), {data: JSON.stringify(recordparams.result)})
@@ -66,7 +65,8 @@ app.get('/webplayer/:url_hash', (req, res) => {
     })
 })
 
-// Handle client request to upload an audio clip and send metadata to db
+// Handle client request to upload an audio clip
+// Upload.single uploads the blob in the form coming from the client to the server directory specified above
 app.post('/memoreq', upload.single('blob'), (req, res) => {
     // Prepare JSON to add metadata to
     var json = {} 
@@ -89,7 +89,7 @@ app.post('/memoreq', upload.single('blob'), (req, res) => {
             json["usergivenid"] = customFilter.clean(req.body.usergivenid)
         }
 
-        // Send request to db to insert file metadata into db
+        // Send request to API to insert file metadata into db
         fetch(api_host + '/postmemo', {
             method: 'POST',
             mode: 'no-cors',
@@ -123,6 +123,7 @@ app.post('/loginreq', (req, res) => {
     incoming.parse(req, (err, fields) =>  {
         // Build empty JSON object to be added to
         let json = {}
+
         if (err) {
             log(err)
         } else {
@@ -130,7 +131,7 @@ app.post('/loginreq', (req, res) => {
             json["username"] = fields.username
             json["password"] = crypto.createHash('sha256').update(fields.password).digest('hex')
 
-            // Send request to db to insert file metadata into db
+            // Send request to API to check credentials
             fetch(api_host + '/postlogin', {
                 method: 'POST',
                 mode: 'no-cors',
@@ -181,7 +182,7 @@ app.post('/regreq', (req, res) => {
                 json["last"] = customFilter.clean(fields.last)
                 json["email"] = fields.email
 
-                // Send request to db to insert registration data into db
+                // Send request to API to insert registration data into db
                 fetch(api_host + '/postregister', {
                     method: 'POST',
                     mode: 'no-cors',
@@ -221,7 +222,7 @@ app.post('/allreq', (req, res) => {
             let json = {}
             json["userid"] = fields.userid
 
-            // Send request to db to get recent recordings based on userid
+            // Send request to API to get recent recordings based on userid
             fetch(api_host + '/allmemopost', {
                 method: 'POST',
                 mode: 'no-cors',
@@ -260,7 +261,7 @@ app.post('/delreq', (req, res) => {
             let json = {}
             json["filename"] = fields.filename
 
-            // Send request to db to delete audio clip metadata
+            // Send request to API to delete audio clip metadata
             fetch(api_host + '/delpost', {
                 method: 'POST',
                 mode: 'no-cors',
@@ -292,7 +293,7 @@ app.post('/delreq', (req, res) => {
 
 // Handling for front page recent recordings from other users tab
 app.get('/recreq', (req, res) => {
-    // Send request to db to get 5 recent audio clips
+    // Send request to API to get recent audio clips
     fetch(api_host + '/recpost', {
         method: 'GET',
         mode: 'no-cors',

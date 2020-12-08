@@ -15,7 +15,7 @@ fetch(recreq_path, {
         return res.json()
     }
 }).then((result) => {
-    // If result is empty, no data returned, if result has data, continue
+    // If result is null, error occured, if result has data, continue
     if (result) {
         // If result has no values, no recent recordings have been made
         if (result.length == 0) {

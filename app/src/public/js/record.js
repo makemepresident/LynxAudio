@@ -11,10 +11,10 @@ let clicked = false
 let recbtn = document.getElementById('recordbutton')
 let text = document.getElementById('usergivenid')
 
-// Prompt user to accept microphone access when they visit the page
+// Prompt user to accept microphone access when they visit the main page
 navigator.mediaDevices.getUserMedia({audio: true})
 
-// Check for if the user has entered too many characters in the recording name box
+// Client-side check if the user has entered too many characters in the recording name box
 text.onkeyup = () => {
     if (text.value.length > 50) {
         setRed("usergivenidlabel", text, "Name too long")
@@ -30,21 +30,22 @@ recbtn.onclick = () => {
     let bar = document.getElementById("progressbar")
     width = 0
 
-    // If the user is clicking it a second time (finishing recording)
+    // If the user is clicking it a second time (ending recording)
     if(clicked == true) {
         recorder.finishRecording()
         return
     }
 
     // Check to make sure the user has given microphone permissions
+    // This was where the error in out presentation occured, navigator.permissions.query is not a valid method on FireFox (as intended design)
     navigator.permissions.query({name:"microphone"}).then((res) => {
         // If user has, begin the recording
         if (res.state == "granted") {
             queryRecording(bar, width)
-        // If user has not granted or denied, prompt them
+        // If user has neither granted nor denied, prompt them
         } else if (res.state == "prompt") {
             navigator.mediaDevices.getUserMedia({audio: true})
-        // If user has denied, show denial box
+        // If user has denied, show denial HTML box
         } else if (res.state == "denied") {
             document.getElementById("micperms").style = "display: visible"
         }
@@ -58,16 +59,16 @@ recbtn.onclick = () => {
 /**
  * Sends the blob and data to the db
  * @param {*} blob The recording blob
- * @param {*} encoding The encoding type
+ * @param {*} encoding The encoding type (always WAV)
  */
 async function postMemo(blob, encoding) {
-    // Append the blob, duration, id, and user's id to the form
+    // Append the blob, duration, user given clip name, and user id to the form
     let fd = new FormData()
     fd.append('blob', blob)
     fd.append('duration', end - start)
     fd.append('usergivenid', text.value)
     fd.append('userid', userid)
-    // Request the information from the server with the form
+    // Send the information to app/index with the form
     await fetch(app_path, {
         method: 'POST',
         mode: 'no-cors',
@@ -80,7 +81,7 @@ async function postMemo(blob, encoding) {
         } else {
             return res.text()
         }
-    // Open webplayer for made recording
+    // Open webplayer for just-made recording
     }).then((hash) => {
         if (hash) {
             window.location.href = "/webplayer/" + hash;
@@ -91,14 +92,14 @@ async function postMemo(blob, encoding) {
     })
 }
 
-// Sets the passed text element to red styling
+// Sets the passed text input element to red styling
 function setRed(label, input, text) {
     document.getElementById(label).innerHTML = text
     document.getElementById(label).style.color = "rgb(255, 0, 0)"
     input.style.boxShadow = "inset 0 -2px 0 #F00"
 }
 
-// Resets the passed text element to normal styling
+// Resets the passed text input element to normal styling
 function setWhite(label, input, text) {
     document.getElementById(label).innerHTML = text
     document.getElementById(label).style.color = "rgba(255, 255, 255, 0.75)"
@@ -116,7 +117,7 @@ function queryRecording(bar, width) {
         // Reset the audio context
         audioContext = new AudioContext();
 
-        // Make a global stream for use later
+        // Make a global stream for use in recordingfinished
         gumStream = stream
 
         // Make the input stream
@@ -135,7 +136,7 @@ function queryRecording(bar, width) {
             }
         })
 
-        // When recorder.finishRecording() is called, change some styling and end the audio stream, then post the memo to the db
+        // When recorder.finishRecording() is called, change some styling and end the audio stream, then send the memo to app/index
         recorder.onComplete = (rec, blob) => {
             end = new Date()
             recbtn.style.backgroundColor = null
@@ -157,12 +158,12 @@ function queryRecording(bar, width) {
         recbtn.style.backgroundColor = 'rgb(199, 0, 0)'
         start = new Date();
 
-        // Begin recording and progress the progress bar by interval
+        // Begin recording and progress the progress bar on an interval
         recorder.startRecording()
         interval = setInterval(frame, (10000 / 100))
 
         /**
-         * Progress the progress bar, when at 100%, finish recording
+         * Progress the progress bar, when at 100% (10s), finish recording
          */
         function frame() {
             if (width >= 100) {

@@ -9,10 +9,11 @@ if (userid == null) {
     document.getElementById("top").style = "visibility: visible"
 // The user is signed in
 } else {
+    // Build form to be sent to app/index
     let formbody = new FormData()
     formbody.append("userid", userid)
 
-    // Request the information from the server with the form
+    // Request the information from app/index with the form
     fetch(allreq_path, {
         method: 'POST',
         mode: 'no-cors',
@@ -27,7 +28,7 @@ if (userid == null) {
         }
     // Take parsed result data and do more checks
     }).then((result) => {
-        // If result is empty, no data returned, if result has data, continue
+        // If result is empty, error occured, if result has data, continue
         if (result) {
             // If result has no values, no recordings exist for this userid
             if (result.length == 0) {
@@ -126,11 +127,13 @@ if (userid == null) {
                     deletebtn.classList.add("loginbuttons")
                     deletebtn.classList.add("webplayerview")
                     deletebtn.id = result[i].filename
+                    // Append a fetch to the delete button so that the file and db entry can be removed by the user when the delete button is pressed
                     deletebtn.onclick = () => {
-                        // Append a fetch to the delete button so that the file and db entry can be removed by the user when the delete button is pressed
+                        // Build form to be sent
                         let formbody2 = new FormData()
                         formbody2.append("filename", deletebtn.id)
-                        // Send the filename for the file we want to delete from the server
+
+                        // Send the filename for the file we want to delete to app/index
                         fetch(delreq_path, {
                             method: 'POST',
                             mode: 'no-cors',

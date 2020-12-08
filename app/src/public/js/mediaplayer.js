@@ -42,18 +42,21 @@ if (document.referrer.includes("myrecordings.html")) {
 
 // When you click the volume button on the mediaplayer
 volumebutton.onclick = (event) => {
+    // Stop event from propogating and accidentally hiding the volume container simutaneously
     event.stopPropagation()
+
     if (!volumeshown) {
         volumeshown = true;
         volumecontainer.style = "visibility: visible;"
-        // when the user clicks outside the volume button, hide the volume container
+
+        // When the user clicks outside the volume container, hide the volume container
         document.onclick = (event) => {
             if (!volumecontroller.contains(event.target)) {
                 volumeshown = false;
                 volumecontainer.style = "visibility: hidden;"
             }
         }
-    // if the user clicks the volume button again, hide the volume container
+    // If the user clicks the volume button again, hide the volume container
     } else {
         volumeshown = false;
         volumecontainer.style = "visibility: hidden;"
@@ -74,18 +77,21 @@ volumedot.onmousedown = (event) => {
     let current = parseInt(window.getComputedStyle(volumeprogress).width)
 
     // Appended to window just in case the user moves the mouse off the volume dot while still clicked down
-    // When the user moves their mouse, calculate the portion it moved and update accordingly
+    // When the user moves their mouse, calculate the x portion it moved and update volume accordingly
     window.onmousemove = (event2) => {
         let calculatedwidth = (event2.clientX - x) + parseInt(current)
+        // Make sure volume button is within the size of the bar
         if (calculatedwidth >= min && calculatedwidth < max) {
+            // Set volume to the ratio of moved dot position and max dot position
             let ratio = (calculatedwidth / max)
+
             // Change the volume of the controller, automatically calls onvolumechange()
             audiocontroller.volume = ratio.toFixed(2)
         }
     }
 }
 
-// Move the progressbar to where the user moved the dot to
+// Move the progressbar color to where the user moved the dot to
 audiocontroller.onvolumechange = () => {
     volumeprogress.style.width = (audiocontroller.volume * 100) + "%"
 }
@@ -110,18 +116,20 @@ playpause.onclick = () => {
 audiocontroller.onloadedmetadata = () => {
     // Hide the loading icon
     loading.style = "display: none"
+
     // Show the play/pause icon
     playpausevis.style = "display: visible"
+
     // Update the clip length html
     let totalseconds = audiocontroller.duration.toFixed(2)
     totaltime.innerHTML = totalseconds
 
-    // Reset the onmousemove to null to stop from being changed after mouse button is lifted
+    // Reset the onmousemove to null to stop the scrubber from moving after mouse button is lifted
     window.onmouseup = () => {
         window.onmousemove = null;
     }
     
-    // Finds where the user clicked the srub button and increments or decrements the width of the progress bar depending
+    // Finds where the user clicked the scrub button and increments or decrements the width of the progress bar depending
     // on where the mouse moves to
     dot.onmousedown = (event) => {
         let x = event.clientX
@@ -134,8 +142,12 @@ audiocontroller.onloadedmetadata = () => {
         window.onmousemove = (event2) => {
             let calculatedwidth = (event2.clientX - x) + parseInt(current)
             if (calculatedwidth >= min && calculatedwidth <= max) {
+                // Find ratio of current position and maximum position
                 let ratio = (calculatedwidth / max)
+                
+                // Use ratio to find what the clip time at that ratio is
                 let value = (ratio * totalseconds)
+                
                 // Change the current time of the controller, automatically calls ontimeupdate()
                 audiocontroller.currentTime = value
             }

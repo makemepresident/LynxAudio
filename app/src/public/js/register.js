@@ -89,7 +89,7 @@ verify.onkeyup = () => {
     }
 }
 
-// Check to make sure the email looks valid and is under the db max of 50 characters (does not have any implementation use yet)
+// Check to make sure the email looks valid and is under the db max of 50 characters ("looks valid meaning it has an @ and a .")
 email.onkeyup = () => {
     if (email.value.includes("@") && email.value.includes(".") && email.value.length <= 50) {
         setWhite("emaillabel", email, "Email valid")
@@ -124,6 +124,9 @@ function printError(errorMsg) {
     error.innerHTML = errorMsg
 }
 
+/**
+ * Send registration information to app/index to be posted to API
+ */
 async function postRegister() {
     // Build form using all entered data
     let formbody = new FormData()
@@ -146,9 +149,9 @@ async function postRegister() {
         } else {
             return res.text()
         }
-    // Check server send result
+    // Check server sent result
     }).then((result) => {
-        // If no result, do nothing
+        // If result is null, error occured, do nothing
         if (result) {
             // If result is true, registration success, set success cookie and redirect to index.html for the user to sign in
             if (result == "true") {

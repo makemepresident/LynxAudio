@@ -40,91 +40,128 @@ if (document.referrer.includes("myrecordings.html")) {
 
 // Volume controller handlers
 
+// When you click the volume button on the mediaplayer
 volumebutton.onclick = (event) => {
+    // Stop event from propogating and accidentally hiding the volume container simutaneously
     event.stopPropagation()
+
     if (!volumeshown) {
         volumeshown = true;
         volumecontainer.style = "visibility: visible;"
+
+        // When the user clicks outside the volume container, hide the volume container
         document.onclick = (event) => {
             if (!volumecontroller.contains(event.target)) {
                 volumeshown = false;
                 volumecontainer.style = "visibility: hidden;"
             }
         }
+    // If the user clicks the volume button again, hide the volume container
     } else {
         volumeshown = false;
         volumecontainer.style = "visibility: hidden;"
     }
 }
 
+// Reset the onmousemove to null to stop from being changed accidentally
 volumedot.onmouseup = () => {
     window.onmousemove = null
 }
 
+// Finds where the user clicked the volume button and increments or decrements the width of the progress bar depending
+// on where the mouse moves to
 volumedot.onmousedown = (event) => {
     let x = event.clientX
     let min = 0
     let max = parseInt(window.getComputedStyle(volumeslider).width)
     let current = parseInt(window.getComputedStyle(volumeprogress).width)
 
+    // Appended to window just in case the user moves the mouse off the volume dot while still clicked down
+    // When the user moves their mouse, calculate the x portion it moved and update volume accordingly
     window.onmousemove = (event2) => {
         let calculatedwidth = (event2.clientX - x) + parseInt(current)
+        // Make sure volume button is within the size of the bar
         if (calculatedwidth >= min && calculatedwidth < max) {
+            // Set volume to the ratio of moved dot position and max dot position
             let ratio = (calculatedwidth / max)
+
+            // Change the volume of the controller, automatically calls onvolumechange()
             audiocontroller.volume = ratio.toFixed(2)
         }
     }
 }
 
+// Move the progressbar color to where the user moved the dot to
 audiocontroller.onvolumechange = () => {
     volumeprogress.style.width = (audiocontroller.volume * 100) + "%"
 }
 
 // Audio controller handers
 
+// When you click the play/pause button
 playpause.onclick = () => {
+    // If it is currently paused
     if (audiocontroller.paused == true) {
+        // Change the style to a pause button and play the recording
         playpausepath.setAttribute("d", "M 0 0 L 0 24 L 6 24 L 6 0 M 18 0 L 18 24 L 12 24 L 12 0")
         audiocontroller.play()
     } else {
+        // Change the style to a play button and pause the recording
         playpausepath.setAttribute("d", "M 18 12 L 0 24 V 0 0")
         audiocontroller.pause()
     }
 }
 
+// When the controller has loaded the file properly
 audiocontroller.onloadedmetadata = () => {
+    // Hide the loading icon
     loading.style = "display: none"
+
+    // Show the play/pause icon
     playpausevis.style = "display: visible"
+
+    // Update the clip length html
     let totalseconds = audiocontroller.duration.toFixed(2)
     totaltime.innerHTML = totalseconds
 
-    window.onmouseup = (event) => {
+    // Reset the onmousemove to null to stop the scrubber from moving after mouse button is lifted
+    window.onmouseup = () => {
         window.onmousemove = null;
     }
     
+    // Finds where the user clicked the scrub button and increments or decrements the width of the progress bar depending
+    // on where the mouse moves to
     dot.onmousedown = (event) => {
         let x = event.clientX
         let min = 0
         let max = parseInt(window.getComputedStyle(slider).width)
         let current = parseInt(window.getComputedStyle(progress).width)
     
+        // Appended to window just in case the user moves the mouse off the scrubbing dot while still clicked down
+        // When the user moves their mouse, calculate the portion it moved and update accordingly
         window.onmousemove = (event2) => {
             let calculatedwidth = (event2.clientX - x) + parseInt(current)
             if (calculatedwidth >= min && calculatedwidth <= max) {
+                // Find ratio of current position and maximum position
                 let ratio = (calculatedwidth / max)
+                
+                // Use ratio to find what the clip time at that ratio is
                 let value = (ratio * totalseconds)
-
+                
+                // Change the current time of the controller, automatically calls ontimeupdate()
                 audiocontroller.currentTime = value
             }
         }
     }
 }
 
+// Move progress bar to where the current time is and update the current time html
 audiocontroller.ontimeupdate = () => {
     currenttime.innerHTML = audiocontroller.currentTime.toFixed(2)
     progress.style.width = ((audiocontroller.currentTime / audiocontroller.duration) * 100).toFixed(2) + "%"
 }
 
+// When the playback is finished, reset the player back to the beginning and make the pause button a play button
 audiocontroller.onended = () => {
     playpausepath.setAttribute("d", "M 18 12 L 0 24 V 0 0")
     progress.style.width = "0%"

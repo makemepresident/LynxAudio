@@ -8,6 +8,7 @@ let error = document.getElementById("error")
 let register = document.getElementById("register")
 const register_path = 'http://localhost:8080/regreq'
 
+// Bools that indicate whether or not a field is valid
 let validpass = false
 let validverify = false
 let validemail = false
@@ -15,6 +16,7 @@ let validfirst = false
 let falidlast = false
 let validusername = false
 
+// Check to make sure the username is not empty and it is not greater than the db max of 30
 username.onkeyup = () => {
     if (username.value.length > 0) {
         if (username.value.length > 30) {
@@ -30,6 +32,7 @@ username.onkeyup = () => {
     }
 }
 
+// Check to make sure the first name is not empty and it is not greater than the db max of 30
 first.onkeyup = () => {
     if (first.value.length > 0) {
         if (first.value.length > 30) {
@@ -45,6 +48,7 @@ first.onkeyup = () => {
     }
 }
 
+// Check to make sure the last name is not empty and it is not greater than the db max of 30
 last.onkeyup = () => {
     if (last.value.length > 0) {
         if (last.value.length > 30) {
@@ -60,6 +64,7 @@ last.onkeyup = () => {
     }
 }
 
+// Check to make sure the password is at least 8 characters long
 password.onkeyup = () => {
     if (password.value.length < 8) {
         setRed("passwordlabel", password, "Password invalid")
@@ -73,6 +78,7 @@ password.onkeyup = () => {
     }
 }
 
+// Check to make sure the password matches the verified password
 verify.onkeyup = () => {
     if (password.value != verify.value) {
         setRed("verifylabel", verify, "Passwords do not match")
@@ -83,6 +89,7 @@ verify.onkeyup = () => {
     }
 }
 
+// Check to make sure the email looks valid and is under the db max of 50 characters ("looks valid meaning it has an @ and a .")
 email.onkeyup = () => {
     if (email.value.includes("@") && email.value.includes(".") && email.value.length <= 50) {
         setWhite("emaillabel", email, "Email valid")
@@ -97,6 +104,8 @@ email.onkeyup = () => {
     }
 }
 
+// When the user clicks the register button, make sure all fields are reported as valid and send the request to the db
+// Disables the register button to prevent double submissions
 register.onclick = () => {
     if (validusername && validemail && validpass && validverify && validfirst && validlast) {
         register.disabled = true
@@ -106,12 +115,20 @@ register.onclick = () => {
     }
 }
 
+/**
+ * Prints error in dedicated error box and shows it to user
+ * @param {*} errorMsg 
+ */
 function printError(errorMsg) {
     error.style = "visibility: visible"
     error.innerHTML = errorMsg
 }
 
+/**
+ * Send registration information to app/index to be posted to API
+ */
 async function postRegister() {
+    // Build form using all entered data
     let formbody = new FormData()
     formbody.append('username', username.value)
     formbody.append('password', password.value)
@@ -119,27 +136,34 @@ async function postRegister() {
     formbody.append('last', last.value)
     formbody.append('email', email.value)
 
+    // Request the information from the server with the form
     await fetch(register_path, {
         method: 'POST',
         mode: 'no-cors',
         cache: 'no-cache',
         body: formbody
+    // Parse result, if status is 500, error occured, if not, parse returned data as text
     }).then((res) => {
         if (res.status == 500) {
             console.error("Internal server error, check to make sure API is running")
         } else {
             return res.text()
         }
+    // Check server sent result
     }).then((result) => {
+        // If result is null, error occured, do nothing
         if (result) {
+            // If result is true, registration success, set success cookie and redirect to index.html for the user to sign in
             if (result == "true") {
                 document.cookie = "regsuccess=" + result + ";path=/"
                 window.location.href = "./index.html"
+            // If result is false, username is already taken, notify user to change username and re-enable register button
             } else if (result == "false") {
                 document.getElementById("usernamelabel").innerHTML = "Username taken"
                 document.getElementById("usernamelabel").style.color = "rgb(255, 0, 0)"
                 username.style.boxShadow = "inset 0 -2px 0 #F00"
                 register.disabled = false
+            // If result is profane, user used bad words in his username, notify user to change and renable register button
             } else if (result == "profane") {
                 document.getElementById("usernamelabel").innerHTML = "Username contains profanity"
                 document.getElementById("usernamelabel").style.color = "rgb(255, 0, 0)"
@@ -147,15 +171,20 @@ async function postRegister() {
                 register.disabled = false
             }
         }
+    // Just in case a random error occurs
+    }).catch((err) => {
+        console.error(err)
     })
 }
 
+// Sets the elements border and text to red
 function setRed(label, input, text) {
     document.getElementById(label).innerHTML = text
     document.getElementById(label).style.color = "rgb(255, 0, 0)"
     input.style.boxShadow = "inset 0 -2px 0 #F00"
 }
 
+// Sets the elements border and text to white
 function setWhite(label, input, text) {
     document.getElementById(label).innerHTML = text
     document.getElementById(label).style.color = "rgba(255, 255, 255, 0.75)"

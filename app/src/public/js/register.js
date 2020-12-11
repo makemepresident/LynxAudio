@@ -6,7 +6,7 @@ let last = document.getElementById("last")
 let email = document.getElementById("email")
 let error = document.getElementById("error")
 let register = document.getElementById("register")
-const register_path = 'https://localhost:443/regreq'
+const register_path = 'https://52.14.141.136/regreq'
 
 // Bools that indicate whether or not a field is valid
 let validpass = false

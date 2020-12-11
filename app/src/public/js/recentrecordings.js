@@ -1,4 +1,4 @@
-const recreq_path = 'https://localhost:443/recreq'
+const recreq_path = 'https://52.14.141.136/recreq'
 let recordingtoggle = document.getElementById("recentrecordings")
 let mediaplayer = document.getElementById("mediaplayer")
 

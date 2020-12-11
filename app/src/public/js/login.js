@@ -14,9 +14,21 @@ let first = null
 // If the cookies are set, parse them for information to append to the signed in div
 if (cookies.includes("id")) {
     let splitCookie = cookies.split("; ")
-    userid = splitCookie[0].split("=")[1]
+    
+    for (i = 0; i < splitCookie.length; i++) {
+        let currentsplit = splitCookie[i].split("=");
+        if (currentsplit[0] == "firstname") {
+            first = currentsplit[1]
+        } else if (currentsplit[0] == "id") {
+            userid = currentsplit[1];
+        } else if (currentsplit[0] == "username") {
+            usernamecook = currentsplit[1];
+        }
+    }
+
+    /*userid = splitCookie[0].split("=")[1]
     usernamecook = splitCookie[1].split("=")[1]
-    first = splitCookie[2].split("=")[1]
+    first = splitCookie[2].split("=")[1]*/
     loginconf.innerHTML = "Hello " + first + "!"
     // Show signed in div and hide login div
     document.getElementById("signeddiv").style = "display: visible"

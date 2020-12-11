@@ -10,7 +10,7 @@ const Filter = require('bad-words')
 const fs = require('fs')
 const app = exp()
 
-const api_host = "http://localhost:80"
+const api_host = "http://localhost:5435"
 const port = 8080
 const log = console.log
 

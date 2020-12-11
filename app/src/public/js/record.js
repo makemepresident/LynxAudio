@@ -1,5 +1,5 @@
 const limit = 10000 // 10s record limit
-const app_path = 'http://localhost:8080/memoreq'
+const app_path = 'https://localhost:443/memoreq'
 let audioContext = new AudioContext()
 let input;
 let recorder;

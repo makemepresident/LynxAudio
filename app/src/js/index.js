@@ -1,3 +1,4 @@
+const https = require('https')
 const exp = require('express')
 const path = require('path')
 const fetch = require('node-fetch')
@@ -11,7 +12,7 @@ const fs = require('fs')
 const app = exp()
 
 const api_host = "http://localhost:5435"
-const port = 8080
+const port = 443
 const log = console.log
 
 // Set upload destination for multer to send blob files to
@@ -35,8 +36,11 @@ app.engine('html', require('ejs').renderFile)
 
 // Tell express to begin listening for http requests on selected ports (this section differs on the server
 // Version because microphone permissions must be enabled on an https connection)
-app.listen(port, () => {
-    log("Webapp is running")
+https.createServer({
+    key: fs.readFileSync('../server.key'),
+    cert: fs.readFileSync('../server.cert')
+}, app).listen(port, () => {
+    log("Webapp is running on port " + port)
 })
 
 // Handle client request for a certain URL hash
